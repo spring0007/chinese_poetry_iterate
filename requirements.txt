@@ -1,0 +1,10 @@
+# Test runner. This was pinned to pytest 5.3.2 (a 2019 release) which uses
+# ast.Str, removed in Python 3.12 — it cannot run a single test on a modern
+# interpreter. The GitHub workflow already ignored the pin and installed the
+# latest release anyway, so this only makes the declared pin honest.
+pytest>=7,<9
+
+# Traditional -> Simplified folding for the unified database. Pure Python,
+# no transitive dependencies. Imported lazily inside loader/folding.py, so
+# the existing JSON loaders keep working without it installed.
+zhconv==1.4.3

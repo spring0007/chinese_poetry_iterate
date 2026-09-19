@@ -1,0 +1,8 @@
+# 构建 / 查询 / 校验 都只需要这两个
+zstandard==0.23.0   # bundle 分片的 zstd 压缩
+zhconv==1.4.3       # 繁 -> 简归一（硬依赖，缺失时 norm_text 直接抛错，不静默降级）
+
+# tkinter 不在这里：它由解释器自带，pip 装不了。
+#   Windows / macOS 官方 Python：自带，无需处理。
+#   Linux（Debian 系）：sudo apt install python3-tk
+# 只有 app.py（桌面窗口）需要 tkinter，其余脚本不需要。

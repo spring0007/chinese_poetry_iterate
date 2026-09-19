@@ -1,0 +1,17 @@
+{
+  "name": "poetry-bundle-query",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "读 poetry-pipeline 产出的 bundle 分片（zstd 压缩 JSONL）做检索",
+  "scripts": {
+    "info": "node bundle_query.mjs info",
+    "search": "node bundle_query.mjs search"
+  },
+  "dependencies": {
+    "fzstd": "^0.1.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,266 @@
+{
+    "cp_path": "./",
+    "datasets": {
+        "wudai-huajianji": {
+            "name": "五代-花间集",
+            "id": 0,
+            "path": "五代诗词/huajianji/",
+            "excludes": ["README.md"],
+            "tag": "paragraphs",
+            "dynasty": "wudai",
+            "kind": "ci",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs",
+                "rhythmic": "$.rhythmic"
+            }
+        },
+        "wudai-nantang": {
+            "name": "五代-南唐",
+            "id": 1,
+            "path": "五代诗词/nantang/poetrys.json",
+            "tag": "paragraphs",
+            "dynasty": "wudai",
+            "kind": "ci",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs",
+                "rhythmic": "$.rhythmic"
+            }
+        },
+        "yuanqu": {
+            "name": "元曲",
+            "id": 2,
+            "path": "元曲/yuanqu.json",
+            "tag": "paragraphs",
+            "kind": "qu",
+            "dynasty_rules": [{"match": "*", "dynasty": "yuan"}],
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs",
+                "dynasty": "$.dynasty"
+            },
+            "comments": "唯一一个自带 dynasty 字段的数据集(11057 条全为 'yuan'), 故 mapping.dynasty 直取记录字段而非用数据集默认值。dynasty_rules 的 '*' 规则与之一致, 只是兜底。"
+        },
+        "tangsong": {
+            "name": "全唐诗全宋诗",
+            "id": 3,
+            "path": "全唐诗/",
+            "excludes": ["README.md", "表面结构字.json", "error", "authors.song.json", "authors.tang.json"],
+            "tag": "paragraphs",
+            "kind": "shi",
+            "dynasty_rules": [
+                {"match": "poet.song.*", "dynasty": "song"},
+                {"match": "*", "dynasty": "tang"}
+            ],
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs",
+                "external_id": "$.id",
+                "tags": "$.tags"
+            },
+            "comments": "一个数据集跨两个朝代: 文件名为 poet.tang.NNNN.json / poet.song.NNNN.json, 故用 dynasty_rules 按文件名分流, 默认 tang。id 是 UUID, 二期 strains 平仄数据 join 用。tags 稀疏存在(tang 1000 条中 67 条 / song 1000 条中 29 条)。"
+        },
+        "sishuwujing": {
+            "name": "四书五经",
+            "id": 4,
+            "path": "四书五经/",
+            "excludes": ["README.md"],
+            "tag": "paragraphs",
+            "root": "dict_or_list",
+            "dynasty": "xianqin",
+            "kind": "wen",
+            "default_author": "佚名",
+            "mapping": {
+                "root": "dict_or_list",
+                "title": "$.chapter",
+                "author": "$.author",
+                "body": "$.paragraphs"
+            },
+            "comments": "原为 mengzi 单文件条目, id 仍钉在 4 以保证 id_table 的数字键不变。daxue.json / zhongyong.json 是裸 dict, mengzi.json 是 list, 但三者记录形状一致({chapter, paragraphs}), 故用 root: dict_or_list 统一读取; chapter 即篇名, 可作 title。记录里没有 author 字段, 用 default_author 兜底。"
+        },
+        "songci": {
+            "name": "宋词",
+            "id": 5,
+            "path": "宋词/",
+            "excludes": ["author.song.json", "ci.db", "main.py", "README.md", "UpdateCi.py"],
+            "tag": "paragraphs",
+            "dynasty": "song",
+            "kind": "ci",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs",
+                "rhythmic": "$.rhythmic"
+            },
+            "comments": "记录只有 author/paragraphs/rhythmic, 没有 title —— 词以词牌为题, 故 work.title 为 NULL, rhythmic 才是标识。注意 excludes 里的 author.song.json 是单数, 全唐诗/ 下的是复数 authors.*.json, 两处拼写不同是因为文件本身就不同, 不要统一。"
+        },
+        "youmengying": {
+            "name": "幽梦影-张潮文集",
+            "id": 6,
+            "path": "幽梦影/youmengying.json",
+            "tag": "content",
+            "dynasty": "qing",
+            "kind": "wen",
+            "default_author": "张潮",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.content"
+            },
+            "comments": "全库唯一一处 content 是单个 str 而非 list 的数据集(219 条全是 str), 由 mapping.normalise_lines 归一化。记录里没有 author/title 字段, 作者是张潮本人(数据集名即'幽梦影-张潮文集')。"
+        },
+        "yudingquantangshi": {
+            "name": "御定全唐詩",
+            "id": 7,
+            "path": "御定全唐詩/json/",
+            "tag": "paragraphs",
+            "dynasty": "tang",
+            "kind": "shi",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs"
+            },
+            "comments": "每条另有 biography(80 字以内作者小传, 与全唐诗/authors.tang.json 同源) 与 volume / no#, 二期接简介时用。"
+        },
+        "caocao": {
+            "name": "曹操诗集",
+            "id": 8,
+            "path": "曹操诗集/caocao.json",
+            "tag": "paragraphs",
+            "dynasty": "han",
+            "kind": "shi",
+            "default_author": "曹操",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs"
+            },
+            "comments": "整个数据集就是曹操一人, 记录里没有 author 字段, default_author 直接钉死。"
+        },
+        "chuci": {
+            "name": "楚辞",
+            "id": 9,
+            "path": "楚辞/chuci.json",
+            "tag": "content",
+            "dynasty": "xianqin",
+            "kind": "fu",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.content"
+            },
+            "comments": "content 是 list(65 条全是), 与 youmengying 同名不同型, 故 mapping 各自声明而不是按 tag 猜。另有 section(卷次) 未纳入。"
+        },
+        "shuimotangshi": {
+            "name": "水墨唐诗",
+            "id": 10,
+            "path": "水墨唐诗/shuimotangshi.json",
+            "tag": "paragraphs",
+            "dynasty": "tang",
+            "kind": "shi",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs"
+            },
+            "comments": "另有 prologue(序) 未纳入。"
+        },
+        "nalanxingde": {
+            "name": "纳兰性德",
+            "id": 11,
+            "path": "纳兰性德/纳兰性德诗集.json",
+            "tag": "para",
+            "dynasty": "qing",
+            "kind": "ci",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.para"
+            },
+            "comments": "正文键是全库唯一的 para, 这也是声明式 mapping 存在的理由之一。蒙学文件夹下的非常规格式文件没有包括在这个json中"
+        },
+        "lunyu": {
+            "name": "论语",
+            "id": 12,
+            "path": "论语/lunyu.json",
+            "tag": "paragraphs",
+            "dynasty": "xianqin",
+            "kind": "wen",
+            "default_author": "孔子",
+            "mapping": {
+                "root": "list",
+                "title": "$.chapter",
+                "author": "$.author",
+                "body": "$.paragraphs"
+            },
+            "comments": "chapter 即篇名(学而第一/为政第二), 作 title; 记录无 author 字段。"
+        },
+        "shijing": {
+            "name": "诗经",
+            "id": 13,
+            "path": "诗经/shijing.json",
+            "tag": "content",
+            "dynasty": "xianqin",
+            "kind": "shi",
+            "default_author": "佚名",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.content"
+            },
+            "comments": "content 是 list。另有 chapter / section 未纳入。"
+        }
+    },
+    "biographies": {
+        "authors.tang": {
+            "name": "全唐诗作者小传(唐)",
+            "path": "全唐诗/authors.tang.json",
+            "name_key": "name",
+            "bio_key": "desc",
+            "dynasty": "tang",
+            "comments": "3675 条, 其中 1102 条 desc 为空, 由 collect() 计入 dropped['empty']。"
+        },
+        "authors.song": {
+            "name": "全唐诗作者小传(宋)",
+            "path": "全唐诗/authors.song.json",
+            "name_key": "name",
+            "bio_key": "desc",
+            "dynasty": "song",
+            "comments": "8934 条, 仅 6 条 desc 为空。"
+        },
+        "songci.authors": {
+            "name": "宋词作者小传",
+            "path": "宋词/author.song.json",
+            "name_key": "name",
+            "bio_key": "description",
+            "dynasty": "song",
+            "comments": "1563 条。用 description 而非 short_description(仅 35 条非空); bio_short 由 first_sentence(description) 派生。与 authors.song 同朝代重名者取更长者。"
+        },
+        "nantang.authors": {
+            "name": "南唐作者小传",
+            "path": "五代诗词/nantang/authors.json",
+            "name_key": "name",
+            "bio_key": "desc",
+            "dynasty": "wudai",
+            "comments": "仅 2 条(李璟/李煜), 但确实是独立来源。"
+        }
+    }
+}

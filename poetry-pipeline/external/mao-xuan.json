@@ -1,0 +1,10 @@
+{
+  "collection": "mao-xuan",
+  "label": "毛选",
+  "dynasty": "modern",
+  "kind": "article",
+  "default_author": "",
+  "enabled": false,
+  "note": "摄入接口已就绪，items 故意留空。原因：毛选全文的版权与发布口径需要你自己确认，我不代你填充内容。确认后把 enabled 改成 true、按下面的格式往 items 里加即可；诗词类条目把 kind 改成 poem（或在单条上覆盖）。",
+  "items": []
+}
