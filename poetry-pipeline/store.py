@@ -437,7 +437,7 @@ def count_edited(con) -> int:
 def export_edits(con, path: str) -> int:
     """
     把"修订过的构建期数据"导出成 JSONL，作为修正备份。
-    why：这类数据源码（chinese-poetry-master 仓库）里没有修正版，重跑 build.py
+    why：这类数据源码（chinese_poetry_iterate 仓库）里没有修正版，重跑 build.py
     会从源码重生成、把修正覆盖掉。导出后至少保留了你的订正内容，可人工/脚本回填。
     """
     rows = con.execute(

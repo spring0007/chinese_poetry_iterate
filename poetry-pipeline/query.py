@@ -110,7 +110,7 @@ def strains_of(con, pid: int) -> str:
     return S.unpack_strains(row["data"], row["len"]) if row else ""
 
 
-COLS = ("p.id AS pid, a.name AS author, p.title AS title, "
+COLS = ("p.id AS pid, p.uid AS uid, a.name AS author, p.title AS title, "
         "r.name AS rhythmic, p.body, p.tags, p.notes, p.score, p.n_char, s.name AS src")
 
 _FROM = ("FROM poems p "

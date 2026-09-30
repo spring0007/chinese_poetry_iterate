@@ -13,6 +13,7 @@
 """
 
 from __future__ import annotations
+import uuid
 from dataclasses import dataclass, field
 from typing import List, Optional
 
@@ -29,7 +30,8 @@ except ImportError:
 #   2.0  简体归一、无空格、佚名=NULL、字典化；poem_strains 仍在主库
 #   3.0  平仄拆成独立可选包（主库不再有 poem_strains 表），新增外接数据/自建号段
 #        判断方法：主库 meta.schema_version >= 3.0 即代表平仄需从 poetry-strains.db 取
-SCHEMA_VERSION = "3.0"
+#   3.1  poems 表新增 uid 列：内容派生的稳定 uuid，供 extras 等外部数据关联
+SCHEMA_VERSION = "3.1"
 
 # ---------------------------------------------------------------- 编码表
 # 位布局: (dynasty << 27) | (kind << 24) | seq  -> 最大 2^31-1，可存进 int32
@@ -94,6 +96,33 @@ def parse_id(pid: int) -> tuple[str, str, int]:
         KIND_NAME[(pid >> SEQ_BITS) & 0x7],
         pid & SEQ_MAX,
     )
+
+
+# uid 用的是固定命名空间，换掉会让全库 uid 集体失效（等于把 extras 全打散），别改。
+POEM_NS = uuid.UUID("6f5b1c0e-9a3d-4f86-8c21-7d4e2a9b1f30")
+
+
+def make_uid(dynasty: str, author: str, title: str, body: str) -> str:
+    """由内容派生的稳定 uid（uuid5：确定性哈希，不是随机数，重建 N 次结果一致）。
+
+    why 需要它：int32 的 id 高位编码 dynasty/kind、低位是**序号**，
+    dedup 或集合顺序一变，序号整体位移，id 就跟着变 —— 挂在主库外面的
+    extras（译文/注释/赏析/配图）是按 id 关联的，一重建就全错位。
+    uid 只由内容决定，所以对「重建 / 重排序 / 增删别的诗」完全免疫。
+
+    字段组合是实测选出来的（345,358 首全量跑过）：
+      朝代+作者+标题+正文        冲突 0 组            ← 采用
+      朝代+标题+正文(去作者)     冲突 468 组 / 1094 行
+      标题+正文                  冲突 801 组 / 1764 行
+      仅正文                     冲突 2387 组 / 5129 行
+    去掉作者虽能换来「改作者不改 uid」，但会造出近千条撞号，不可用。
+
+    代价（必须说清楚）：uid 是内容哈希，所以**改动这一首自身的作者/标题/正文，
+    uid 就会变**。它对别人的增删免疫，对自己被改写不免疫。改完内容后需要把
+    对应 extras 记录的 uid 刷新一次（见 remap_extras_uid.py）。
+    """
+    return str(uuid.uuid5(POEM_NS, "\x01".join(
+        x or "" for x in (dynasty, author, title, body))))
 
 
 # ---------------------------------------------------------------- 平仄打包

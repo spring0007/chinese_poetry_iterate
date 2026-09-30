@@ -31,7 +31,7 @@ from typing import Dict, List, Tuple, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import schema as S
-from schema import Poem, make_id, pack_strains, quantize_score
+from schema import Poem, make_id, make_uid, parse_id, pack_strains, quantize_score
 import sources as SRC
 
 # 产物默认落在工程目录下的 dist/，按脚本位置解析而非工作目录
@@ -260,19 +260,36 @@ def normalize_all(poems: List[Poem]):
 
 
 def dedup(poems: List[Poem]) -> List[Poem]:
-    """同一 (dynasty,kind,author,title,正文) 视为重复。实测源库重复率仅 0.05%，
-    去重收益小但成本低，且能避免检索出两遍同样的诗。"""
+    """
+    按 **uid** 去重，也就是 (dynasty, author, title, body) 四元组。
+
+    why 必须用 uid 而不是自己再拼一个键：曾经这里拼的是
+    `(dynasty, kind, author, title, "".join(lines))`，多了个 `kind`——
+    而 `make_uid` 里没有 kind。于是两首诗只要分属不同集合（kind 不同），
+    哪怕朝代/作者/标题/正文完全一样，也会被这里放过、却在建唯一索引时撞号。
+
+    2026-09-30 用百度百科补齐 9025 条正文后就真的撞了：同一首诗在两个集合里
+    各存一份、原本一份被截断一份完整，补齐之后正文变得一模一样 ⇒
+    `CREATE UNIQUE INDEX ix_poems_uid` 直接 IntegrityError，整个构建中断
+    （还留下一个 malformed 的 db）。去重键跟 uid 对齐即可，丢掉的那几条
+    本来就是内容完全相同的重复项。
+    """
     seen = set()
     out = []
     dropped = 0
+    samples = []
     for p in poems:
-        key = (p.dynasty, p.kind, p.author, p.title, "".join(p.lines))
+        key = make_uid(p.dynasty, p.author, p.title, p.body)
         if key in seen:
             dropped += 1
+            if len(samples) < 5:
+                samples.append((p.title, p.author or "佚名", p.kind))
             continue
         seen.add(key)
         out.append(p)
     print("  去重: 保留=%d 丢弃=%d" % (len(out), dropped))
+    for t, a, k in samples:
+        print("    重复样例 《%s》%s [%s]" % (t, a, k))
     return out
 
 
@@ -331,6 +348,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     con.execute("""
         CREATE TABLE poems(
             id INTEGER PRIMARY KEY,
+            uid TEXT NOT NULL,
             author_id INTEGER NOT NULL DEFAULT 0,
             title TEXT NOT NULL DEFAULT '',
             rhythmic_id INTEGER NOT NULL DEFAULT 0,
@@ -360,6 +378,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     for p in poems:
         rows.append((
             p.id,
+            make_uid(p.dynasty, p.author, p.title, p.body),
             author_ids.get(p.author, 0),
             p.title,
             _tid(rhythmic_ids, p.rhythmic),
@@ -376,8 +395,8 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         warn("%d 条记录有作者名却拿不到 author_id，会被误当成佚名" % lost)
 
     con.executemany(
-        "INSERT INTO poems(id,author_id,title,rhythmic_id,src_id,body,tags,notes,"
-        "score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?)", rows)
+        "INSERT INTO poems(id,uid,author_id,title,rhythmic_id,src_id,body,tags,notes,"
+        "score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?,?)", rows)
 
     n_by_author = collections.Counter(p.author for p in poems if p.author)
     con.executemany("INSERT INTO authors VALUES(?,?,?,?,?)", [
@@ -390,6 +409,10 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
 
     # 注意：rhythmics.name / sources.name 已声明 UNIQUE，SQLite 会自动建
     # sqlite_autoindex_*，再手动建一个同名索引就是纯浪费（实测白白多占一份）。
+    # uid 是给外部数据（extras 等）关联用的主键，必须唯一；顺带承担点查。
+    # why 不直接拿它当 PRIMARY KEY：id 的 int32 高位编码 dynasty/kind 是查询
+    # 与分片的基础（见 schema.make_id），uid 只是「对外稳定引用」，两者分工不同。
+    con.execute("CREATE UNIQUE INDEX ix_poems_uid ON poems(uid)")
     con.execute("CREATE INDEX ix_poems_author ON poems(author_id)")
     con.execute("CREATE INDEX ix_poems_title ON poems(title)")
     con.execute("CREATE INDEX ix_poems_rhythmic ON poems(rhythmic_id)")
@@ -422,7 +445,9 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         ("strains_pkg", "1" if with_strains else "0"),
         ("note", "全库简体归一、无空格。body 兼作检索列，查询词需先转简体。"
                  "dynasty/kind 由 id 高位反解；author_id=0 表示佚名。"
-                 "平仄在独立可选包 poetry-strains.db，通过 id 关联。"),
+                 "平仄在独立可选包 poetry-strains.db，通过 id 关联。"
+                 "uid 是内容派生的稳定 uuid：外部数据（extras）一律用 uid 关联，"
+                 "不要用 id —— id 含序号，会因 dedup/重排而整体位移。"),
     ])
     # ANALYZE 必须有：没有 sqlite_stat1 时，SQLite 会为了吃掉 ORDER BY score DESC
     # 而选 ix_poems_score 做全索引扫描，把 p.title = ? 这种高选择性查询拖到 900ms+。
@@ -508,10 +533,15 @@ def restore_user_data(con, snapshot) -> int:
         sid = src_ids[p["src_name"]]
         # INSERT OR REPLACE：修订条目 id 与构建期同 id，直接覆盖那一行；
         # 自建条目 id 落在 custom 号段，不会撞，正常插入。
+        # uid 必须跟着写：poems.uid 是 NOT NULL，而且外部数据（extras）靠它关联。
+        # dynasty/kind 从 id 高位反解（主表不存这两列，见 schema.parse_id）；
+        # 作者名用上面按名对齐后的 aname，保证与构建期同一首诗算出同一个 uid。
+        _dyn, _kind, _seq = parse_id(p["id"])
         con.execute(
-            "INSERT OR REPLACE INTO poems(id,author_id,title,rhythmic_id,src_id,body,tags,notes,score,n_char) "
-            "VALUES(?,?,?,?,?,?,?,?,?,?)",
-            (p["id"], aid, p["title"], rid, sid, p["body"], p["tags"], p["notes"],
+            "INSERT OR REPLACE INTO poems(id,uid,author_id,title,rhythmic_id,src_id,body,tags,notes,score,n_char) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            (p["id"], make_uid(_dyn, aname or "", p["title"], p["body"]),
+             aid, p["title"], rid, sid, p["body"], p["tags"], p["notes"],
              p["score"], p["n_char"]))
     con.execute("UPDATE authors SET n_poems=0")
     counts = con.execute(

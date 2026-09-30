@@ -1,0 +1,17 @@
+# 图片清单模板 —— 每行一条：poem_id  图片URL  [说明]
+#
+# 用法：
+#   python fetch_extras.py images ./external/images.txt --referer https://www.shuge.org/
+#
+# 行为：图片下载到 dist/extras/images/<url的sha1>.jpg，
+#       dist/extras/extras.jsonl 里只登记 "images/xxxx.jpg" 这样的相对地址。
+#       同一个 URL 只下一份，重复跑不会累积副本。
+#
+# 许可：下面的示例来自书格（shuge.org），CC BY 4.0，须保留署名：
+#       "图片来源：书格 shuge.org，公有领域古籍数字化资源，CC BY 4.0"
+#
+# 注意：示例图是通用古籍书影 / 外销画，不是针对某一首诗的专属插图。
+#       生产使用时请把 URL 换成与内容真正相关的资源。
+
+536879037 https://www.shuge.org/wp-content/uploads/2026/09/zi_jing_bian00-845x321.jpg 紫镜笺书影（示例）
+536879037 https://www.shuge.org/wp-content/uploads/2026/09/lagrene-chinese-export-paintings-845x321.jpg 中国外销画（示例）

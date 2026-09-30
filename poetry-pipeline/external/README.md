@@ -1,6 +1,6 @@
 # 外接数据目录
 
-源库（`E:\chinese-poetry-master`）里没有的集合放这里。**往这个目录丢一个 JSON 文件，
+源库（`E:\chinese_poetry_iterate`）里没有的集合放这里。**往这个目录丢一个 JSON 文件，
 构建时自动发现，不需要改任何代码。**
 
 ## 文件格式

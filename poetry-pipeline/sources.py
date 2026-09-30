@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Iterator, Callable, Optional
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_LEGACY_ROOT = r"E:\chinese-poetry-master"
+_LEGACY_ROOT = r"E:\chinese_poetry_iterate"
 
 # 源库位置自适应，不再写死盘符。why：工程会跟着源库一起搬（比如放到源库根目录下
 # 用 PyCharm 打开），写死绝对路径意味着每换一台机器就要改代码，而这类改动最容易

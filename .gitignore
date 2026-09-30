@@ -1,8 +1,21 @@
-.idea
+# PyCharm：工程状态（workspace/索引）不入库，但共享的运行配置要入库——
+# 它们用 $PROJECT_DIR$ 写死 poetry-pipeline/.venv，换机器/换人打开即可用。
+.idea/*
+!.idea/runConfigurations/
+.idea/**/workspace.xml
+# poetry-pipeline 下那份是早期放错位置的副本，真正的配置在根 .idea 里
+poetry-pipeline/.idea/
 .pyenv
 .venv/
 __pycache__
 .pytest_cache
 build/
+# PyInstaller 每次打包都会重新生成，真正的构建参数在 README 的命令行里
+*.spec
 poetry-pipeline/dist/
 log.log
+# 各脚本的运行日志（都是生成物）；xcheck/ 下的 crawl/extras/check-*.log 同理
+reconcile_gui.log
+zhconv_*.log
+poetry-pipeline/xcheck/*.log
+poetry-pipeline/xcheck/html/
