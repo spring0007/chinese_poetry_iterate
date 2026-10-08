@@ -321,21 +321,22 @@ def test_first_sentence():
 
 
 def test_shipped_alias_table_parses():
-    """The three measured pairs where folding cannot join two spellings.
+    """The one measured pair where folding cannot join two spellings.
 
     If this ever grows past a handful of entries, someone has started guessing.
+    Two others (朱庆余 → 朱庆馀, 349 works; 魏征 → 魏徵, 95 works) were removed
+    on 2026-10-07: the biography source gained a simplified row for each, so
+    both spellings merged upstream and rung 1 now takes every work. An entry
+    the build routes around is not harmless — it keeps asserting a claim about
+    the corpus that stopped being true, and only the slow sibling's exact
+    count notices.
     """
     aliases = authors.load_aliases()
-    assert aliases == {
-        ("魏征", "tang"): "魏徵",
-        ("李嘉佑", "tang"): "李嘉祐",
-        ("朱庆余", "tang"): "朱庆馀",
-    }
+    assert aliases == {("李嘉佑", "tang"): "李嘉祐"}
     # Why the table is read verbatim and not folded: folding 朱庆馀 again moves
     # it to 朱庆余, which is a *different* author row, so an entry folded on the
     # way in would name a person nobody asked about and silently never fire.
     assert folding.fold("朱庆馀") == "朱庆余"
-    assert aliases[("朱庆余", "tang")] == "朱庆馀"
 
 
 @pytest.mark.slow
@@ -413,11 +414,15 @@ def test_real_database_biography_coverage(repo_root):
         # author field) or the other datasets that have no biography source at
         # all. It is a different fraction, not a missed target.
         assert resolved / total > 0.93, stats
-        # The three shipped aliases are load-bearing and each one is a fixed
-        # number of works: 36 (魏征) + 134 (李嘉佑) + 1 (朱庆余) = 171. Rung 2 is
-        # the one place a fold that is applied twice silently does nothing, so
-        # the exact total -- not ">= 1" -- is the guard.
-        assert stats["alias"][1] == 171, stats
+        # The one shipped alias, and the exact number of works it is responsible for.
+        # 李嘉佑 (134 works) is the alias rung: fold() does not map 祐->佑, so
+        # the second spelling cannot reach the biography on its own.
+        # Rung 2 is the one place a fold applied twice silently does nothing,
+        # so the exact total -- not ">= 1" -- is the guard. Two entries that
+        # used to be here (朱庆余, 魏征) were dropped on 2026-10-07 once the
+        # biography source acquired a simplified row for each and rung 1 took
+        # over; the number moving is the signal that they are really gone.
+        assert stats["alias"][1] == 134, stats
         # 王建 is a Tang poet and a Song poet and 全唐诗 + 宋词 both describe him
         rows = conn.execute(
             "SELECT dynasty, bio IS NOT NULL FROM author WHERE name = '王建'"

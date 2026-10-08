@@ -239,6 +239,19 @@ AUTHOR_SOURCES: List[AuthorSource] = [
     AuthorSource("authors.song", "song", r"全唐诗\authors.song.json"),
     AuthorSource("songci.authors", "song", r"宋词\author.song.json", desc_key="description"),
     AuthorSource("nantang.authors", "wudai", r"五代诗词\nantang\authors.json"),
+    # 元曲此前完全没有作者文件，正文里的元曲作者只能退化为佚名（author_id=0）。
+    # 字段结构与 全唐诗\authors.tang.json 一致（desc/name/id）。
+    AuthorSource("yuanqu.authors", "yuan", r"元曲\authors.json"),
+    # 阶段 2 新建：这四个语料此前同样没有作者文件，其作者全部退化为佚名。
+    # 屈原、东方朔、贾谊、刘向等楚辞名家，以及纳兰性德、周兴嗣、朱柏庐等，
+    # 在此之前 load_authors() 里查不到任何记录。字段结构同上（desc/name/id）。
+    AuthorSource("chuci.authors", "chuci", r"楚辞\authors.json"),
+    AuthorSource("nalan.authors", "nalan", r"纳兰性德\authors.json"),
+    AuthorSource("mengxue.authors", "mengxue", r"蒙学\authors.json"),
+    AuthorSource("shuimotang.authors", "shuimotang", r"水墨唐诗\authors.json"),
+    # 御定全唐詩（清康熙年奉敕编纂，900 卷）同样无作者文件，
+    # 正文在 json\ 子目录下分卷存放。字段结构同上。
+    AuthorSource("yuding.authors", "tang", r"御定全唐詩\authors.json"),
 ]
 
 # ---------------------------------------------------------------- 关联数据

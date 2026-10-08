@@ -123,13 +123,23 @@ def load_aliases(path=ALIASES_PATH):
 
     **Neither side is folded, and both sides are written in the database's own
     spelling.** Folding them would be the double-fold this module opens by
-    warning about, and it would silently disable the entries: 朱庆馀 is stored
-    as ``朱庆馀`` (that is what folding the source's 朱慶餘 produces) but folding
-    it again gives ``朱庆余``, so a canonical spelling that had been folded on
-    the way in no longer equals the biography key it is supposed to name — the
-    rung would simply never fire, and the alias table would look maintained
-    while doing nothing. ``test_shipped_alias_table_parses`` and its slow
-    sibling check that every entry parses *and* fires.
+    warning about, and it would silently disable the entries: a canonical
+    spelling that had been folded on the way in no longer equals the biography
+    key it is supposed to name once folded a second time (朱慶餘 and 朱庆余
+    both land on 朱庆余, so a table entry written against either intermediate
+    form stops firing) — the rung would simply never fire, and the alias table
+    would look maintained while doing nothing.
+    ``test_shipped_alias_table_parses`` and its slow sibling check that every
+    entry parses *and* fires.
+
+    An entry that has become redundant should be deleted rather than left
+    pointing at a name no source describes: two of the three originally
+    shipped entries (朱庆余 → 朱庆馀, 魏征 → 魏徵) were dropped on 2026-10-07
+    once the biography source acquired a simplified row for each and rung 1
+    took over every work. A table whose entries can outlive their reason is
+    worse than an empty one — ``load_aliases`` cannot tell a live entry from a
+    dead one, and the only thing that notices is the exact alias-rung count
+    ``test_real_database_biography_coverage`` asserts.
     """
     if not path or not os.path.exists(path):
         return {}
