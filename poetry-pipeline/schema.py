@@ -31,7 +31,22 @@ except ImportError:
 #   3.0  平仄拆成独立可选包（主库不再有 poem_strains 表），新增外接数据/自建号段
 #        判断方法：主库 meta.schema_version >= 3.0 即代表平仄需从 poetry-strains.db 取
 #   3.1  poems 表新增 uid 列：内容派生的稳定 uuid，供 extras 等外部数据关联
-SCHEMA_VERSION = "3.1"
+#   3.2  authors 表新增 uid 列、poems 表新增 author_uid 列（作者稳定标识，与
+#        author_id 同步）；新增 poem_extras 表（dist/extras/extras.jsonl 的落库
+#        镜像，以 uid 为唯一 id），poems.notes 的内容迁入该表并清空
+#   3.3  poems 表**移除 notes 列**（注释的唯一存放处是 poem_extras.notes，
+#        构建期从源语料直接写进去，不再"先落主库再搬一次"）；poem_extras 精简
+#        为 7 列——去掉 source / alt_sources / license / url（溯源信息留在权威源
+#        extras.jsonl 里，库里只放渲染要用的东西），updated 由 ISO 文本改成
+#        Unix 整数秒
+#   3.4  poems 表**移除 author_id 列**：作者关联只走 author_uid。author_id 是
+#        authors 表的导入顺序序号（源库增删一位作者，其后全体位移），在 34 万行
+#        主表里留一份副本既冗余、又要求每次重建重写全表；authors 表本身保留 id
+#        作主键（它承担表内唯一性与 n_poems 计数）。
+#        判断方法：poems 上有没有 author_id 列。消费方一律改用
+#        `LEFT JOIN authors a ON a.uid = p.author_uid`；佚名仍是 author_uid=''
+#        （join 不上任何作者行，等价于原来的 author_id=0 的 NULL 语义）。
+SCHEMA_VERSION = "3.4"
 
 # ---------------------------------------------------------------- 编码表
 # 位布局: (dynasty << 27) | (kind << 24) | seq  -> 最大 2^31-1，可存进 int32
@@ -123,6 +138,33 @@ def make_uid(dynasty: str, author: str, title: str, body: str) -> str:
     """
     return str(uuid.uuid5(POEM_NS, "\x01".join(
         x or "" for x in (dynasty, author, title, body))))
+
+
+# ---------------------------------------------------------------- 作者稳定标识
+# 与 POEM_NS 同理：固定命名空间，换掉等于全库作者 uid 集体失效（挂在作者上的
+# 外部引用全部对不上），别改。
+AUTHOR_NS = uuid.UUID("b41d7c62-0e58-4a93-9d17-2f6b8a5c0e31")
+
+
+def make_author_uid(name: str, dynasty: str) -> str:
+    """由 (姓名, 朝代) 派生的作者稳定 uid（uuid5：确定性哈希，重建 N 次结果一致）。
+
+    为什么需要它：authors.id 是**导入顺序的序号**（build.py 里 `enumerate(authors)`
+    出来的 i+1），源库多一个作者、少一个作者，它后面所有作者的 id 就整体位移。
+    任何挂在作者上的外部引用（收藏、笔记、第三方按作者聚合的数据）一重建就全错位——
+    这与 poems.id 的问题完全同构，解法也一致：给一个只由内容决定的稳定标识。
+
+    为什么键是「姓名 + 朝代」而不是只用人名：authors 表是按 (name, dynasty) 去重建的，
+    同名可以跨朝代并存（实测 275 组，如 严武 / 乐史 / 伍乔 在唐宋各有一条）。
+    只用人名会撞号，加上朝代才能保证 uid 与 authors 行**一一对应**。
+
+    代价（与 make_uid 相同，必须说清楚）：改姓名或朝代，这个作者的 uid 就变；
+    对别的作者的增删免疫，对自己被改写不免疫。
+
+    v3.4 起它还是 poems 关联作者**唯一**的列（poems.author_id 已删）：主表里
+    只有一个 36 字符的稳定标识，而不再同时背一份"会随重建位移的序号副本"。
+    """
+    return str(uuid.uuid5(AUTHOR_NS, "\x01".join((name or "", dynasty or ""))))
 
 
 # ---------------------------------------------------------------- 平仄打包

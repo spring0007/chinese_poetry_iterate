@@ -51,7 +51,15 @@ ROOTS = ("list", "dict", "dict_or_list")
 #: ``dynasty`` field and every one of its 11,057 records says ``"yuan"``. Using
 #: the corpus' convention rather than Chinese names keeps a join against it
 #: possible and matches the ``--dynasty tang`` the CLI was specified with.
-DYNASTIES = ("xianqin", "han", "wudai", "tang", "song", "yuan", "qing")
+#:
+#: 近现代 is the one entry that is Chinese, and it is here for the same reason
+#: the rest are ASCII: it is what the corpus itself says. Every record of
+#: ``近现代/poet.jinxiandai.*.json`` carries ``dynasty: "近现代"``, so recording
+#: anything else here would disagree with the ``mapping.dynasty`` default that
+#: reads that very field. (The corpus' other convention, for the dynasties the
+#: site's own paths name in pinyin, is ``jinxiandai``; that spelling is used for
+#: the dataset key and the shard filenames, not for the value.)
+DYNASTIES = ("xianqin", "han", "wudai", "tang", "song", "yuan", "qing", "jinxiandai")
 
 #: Attributed when neither the record nor the dataset names an author. The
 #: classical convention for "author not recorded"; 论语, 诗经 and 四书五经 have

@@ -795,8 +795,9 @@ class App:
         两个刻意定下的交互语义：
           - 清空某栏再保存 = 删除该字段（底层 put() 是"非空才覆盖"，
             不放这个语义的话用户根本没法删内容）。
-          - 配图框每行一个 URL，http 的会下载到本地 images/ 目录，
-            JSONL 里只登记相对地址，图片本体在目录里另行妥善保存。
+          - 配图框每行一个地址，http 的会下载到本地 images/ 目录，
+            JSONL 里只登记**纯文件名**（如 395f….jpg，不带 images/ 前缀），
+            图片本体在目录里另行妥善保存。
         """
         sel = self.tree.selection()
         if not sel:
@@ -812,7 +813,8 @@ class App:
         win.title("扩展资料 · id=%d" % pid)
         win.geometry("680x700")
         ttk.Label(win, text="清空某栏再保存 = 删除该字段。配图每行一个地址，"
-                            "http 开头的会自动下载到本地 images/ 目录",
+                            "http 开头的会自动下载到本地 images/ 目录；"
+                            "保存时只记文件名（不带 images/ 前缀）",
                   font=FONT_SM, foreground="#888").pack(anchor="w", padx=8, pady=(8, 2))
 
         boxes = {}
@@ -944,7 +946,11 @@ class App:
             messagebox.showinfo("提示", "先在上方结果里选中一条，再点「编辑作者」")
             return
         pid = int(sel[0])
-        row = self.con.execute("SELECT author_id FROM poems WHERE id=?", (pid,)).fetchone()
+        # poems 里只有 author_uid（v3.4），作者行要经 authors.uid 反查；
+        # 佚名的 author_uid='' 关联不上任何作者，NULLIF 把它折成 NULL。
+        row = self.con.execute(
+            "SELECT a.id FROM poems p JOIN authors a "
+            "ON a.uid = NULLIF(p.author_uid, '') WHERE p.id=?", (pid,)).fetchone()
         if not row or not row[0]:
             messagebox.showinfo("提示", "该诗作者为佚名（无作者记录），暂不支持编辑作者简介")
             return

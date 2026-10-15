@@ -227,6 +227,23 @@
                 "body": "$.content"
             },
             "comments": "content 是 list。另有 chapter / section 未纳入。"
+        },
+        "jinxiandai": {
+            "name": "近现代诗词",
+            "id": 14,
+            "path": "近现代/",
+            "excludes": ["authors.jinxiandai.json"],
+            "tag": "paragraphs",
+            "dynasty": "近现代",
+            "kind": "shi",
+            "mapping": {
+                "root": "list",
+                "title": "$.title",
+                "author": "$.author",
+                "body": "$.paragraphs",
+                "external_id": "$.id"
+            },
+            "comments": "2026-10 逐页遍历 shicihui.com 近现代分类(494 页)采集：11848 首 / 101 位作者，分片命名与 全唐诗 同构(poet.jinxiandai.NNNN.json，每片 1000 首)，故沿用同一套 external_id(UUID)。dynasty 写中文'近现代'而不是拼音码：这批记录每条自带 dynasty='近现代'，照录源库自己的写法才不会与 mapping.dynasty($.dynasty) 打架——若这里写别的码，记录级的值仍会覆盖它，两边说法就不一致了。kind 记 shi，是因为这一集诗/词/文混杂(既有大量词，也有《少年中国说》这类文)，没有单一体裁可写，'shi' 在这里是『诗词』的粗粒度桶，与源站 /poems/dynasty/jinxiandai 的分类口径一致。记录里的 authorId 与稀疏的 annotation/translation/background/appreciation 均未纳入：主库存原文+最小元数据，扩展内容属于 extras 层。"
         }
     },
     "biographies": {
@@ -261,6 +278,14 @@
             "bio_key": "desc",
             "dynasty": "wudai",
             "comments": "仅 2 条(李璟/李煜), 但确实是独立来源。"
+        },
+        "jinxiandai.authors": {
+            "name": "近现代作者小传",
+            "path": "近现代/authors.jinxiandai.json",
+            "name_key": "name",
+            "bio_key": "desc",
+            "dynasty": "近现代",
+            "comments": "101 条, 与 datas 里的 jinxiandai 一集同源。dynasty 必须写成与那一集完全相同的 '近现代': 简介的 join 键是 (fold(name), dynasty), 两处不一致的话 exact 档一条也匹配不上, 11848 首会整批掉进 dynasty_gap/stub。字段是 desc/name/id, 与 全唐诗 作者文件同构, 只是没有 url。"
         }
     }
 }

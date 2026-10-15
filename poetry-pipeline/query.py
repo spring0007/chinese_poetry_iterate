@@ -4,7 +4,8 @@
 
 v2 起库里只有 body 一份正文（简体 + 无空格），不再有 body_s 简体副本；
 用户输入的查询词走与构建期同一个 norm_text（转简体 + 去空格 + 跑到不动点），
-所以输繁体、输带空格的写法都能命中。作者为佚名时返回 None（对应 author_id=0）。
+所以输繁体、输带空格的写法都能命中。作者为佚名时返回 None
+（对应 author_uid=''，v3.4 起 poems 里只有这一列关联作者）。
 
 为什么不用 FTS5（实测依据，254,248 条宋诗）：
     FTS5 trigram   索引使库 59MB -> 245.6MB，且 2 字查询（"明月"/"梅花"）命中 0
@@ -110,13 +111,82 @@ def strains_of(con, pid: int) -> str:
     return S.unpack_strains(row["data"], row["len"]) if row else ""
 
 
-COLS = ("p.id AS pid, p.uid AS uid, a.name AS author, p.title AS title, "
-        "r.name AS rhythmic, p.body, p.tags, p.notes, p.score, p.n_char, s.name AS src")
+def has_extras(con) -> bool:
+    """主库是否带 poem_extras 表（schema 3.2 起有）。
 
-_FROM = ("FROM poems p "
-         "LEFT JOIN authors a ON a.id = p.author_id "
-         "LEFT JOIN rhythmics r ON r.id = p.rhythmic_id "
-         "LEFT JOIN sources s ON s.id = p.src_id")
+    why 每次都查一次 sqlite_master 而不是缓存成模块级开关：query.py 会同时
+    连接新旧两种库（还有 ATTACH 进来的平仄包），把"能不能读注释"绑在第一次
+    打开的库上，换库之后就是错的。这一次查询是内存里的 sqlite_master 扫描，
+    代价可以忽略。
+    """
+    return con.execute(
+        "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='poem_extras'"
+    ).fetchone()[0] > 0
+
+
+def _has_col(con, table: str, col: str) -> bool:
+    """表里有没有这一列。用来兼容新旧库——poems.notes 在 v3.3 被删掉了。"""
+    return any(r[1] == col for r in con.execute("PRAGMA table_info(%s)" % table))
+
+
+def _notes_expr(con) -> str:
+    """SELECT 里的注释列。对外一律是 `\\x1f` 连接的多值形态，但**取值来源**随版本变。
+
+    三种库形态都要能读，否则老库直接报 no such column：
+      - v3.3（当前）：poems 没有 notes 列，注释只在 poem_extras.notes；
+      - v3.2：两处都在（主库那列理论上已迁空，但老库可能残留几条没迁干净的行，
+        所以留个 COALESCE 兜底，读到谁算谁）；
+      - ≤ v3.1：没有 poem_extras，注释在 poems.notes。
+    还要考虑 v3.3 用 `--no-extras` 建的库：表在但空，注释只在 JSONL 里，
+    这时候能给出的就是空——不是错误，是那份库本来就不带注释。
+    """
+    extras, old = has_extras(con), _has_col(con, "poems", "notes")
+    if extras and old:
+        src = "COALESCE(NULLIF(p.notes,''), pe.notes, '')"
+    elif extras:
+        src = "COALESCE(pe.notes,'')"
+    elif old:
+        src = "p.notes"
+    else:
+        return "'' AS notes"
+    # 换行转回 \x1f：调用方（app.py 的 row_view、CLI 展示）都按多值约定拆项，
+    # 存储形态（\n 更可读）不该泄漏到接口上。
+    return "replace(%s, char(10), char(31)) AS notes" % src
+
+
+def _cols(con) -> str:
+    """SELECT 的列清单。
+
+    每次按连接现算而不是缓存成模块级常量：query.py 会同时连接新旧两种库
+    （还有 ATTACH 进来的平仄包），把列清单绑在第一次打开的库上，换库就是错的。
+    """
+    return ("p.id AS pid, p.uid AS uid, a.name AS author, p.title AS title, "
+            "r.name AS rhythmic, p.body, p.tags, %s, p.score, p.n_char, s.name AS src"
+            % _notes_expr(con))
+
+
+def _author_join(con) -> str:
+    """poems -> authors 的关联条件，按库的实际列动态选。
+
+    v3.4 起主表只有 author_uid（author_id 已删），标准写法是
+    `a.uid = p.author_uid`；≤3.3 的旧库两列都在（v3.2/3.3 保证两者始终指向同一
+    作者），照旧用 author_id 关联即可——两种都给出正确结果，但旧库上沿用原来的
+    条件能保证行为与升级前逐字节一致，便于拿老库做对照。
+    """
+    if _has_col(con, "poems", "author_uid"):
+        return "a.uid = p.author_uid"
+    return "a.id = p.author_id"
+
+
+def _from(con) -> str:
+    # poem_extras.uid 是主键，这里是 1:1 的 LEFT JOIN，不会让结果行数膨胀
+    base = ("FROM poems p "
+            "LEFT JOIN authors a ON %s "
+            "LEFT JOIN rhythmics r ON r.id = p.rhythmic_id "
+            "LEFT JOIN sources s ON s.id = p.src_id" % _author_join(con))
+    if has_extras(con):
+        base += " LEFT JOIN poem_extras pe ON pe.uid = p.uid"
+    return base
 
 
 def _decorate(row) -> dict:
@@ -135,7 +205,7 @@ def search(con, q: str, dynasty="", kind="", author="", limit=10, offset=0):
     全文子串检索。库已全量简体归一，只查 body 一次；
     查询词先转简体，所以用户输繁体同样能命中。
     """
-    sql = "SELECT %s %s WHERE p.body LIKE ?" % (COLS, _FROM)
+    sql = "SELECT %s %s WHERE p.body LIKE ?" % (_cols(con), _from(con))
     args = ["%" + to_simplified(q) + "%"]
     if dynasty:
         lo, hi = _dynasty_range(dynasty)
@@ -153,12 +223,12 @@ def search(con, q: str, dynasty="", kind="", author="", limit=10, offset=0):
 
 
 def by_author(con, author: str, limit=20, offset=0):
-    sql = "SELECT %s %s WHERE a.name = ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (COLS, _FROM)
+    sql = "SELECT %s %s WHERE a.name = ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (_cols(con), _from(con))
     return [_decorate(r) for r in con.execute(sql, (to_simplified(author), limit, offset)).fetchall()]
 
 
 def count_author(con, author: str) -> int:
-    return con.execute("SELECT COUNT(*) %s WHERE a.name = ?" % _FROM,
+    return con.execute("SELECT COUNT(*) %s WHERE a.name = ?" % _from(con),
                        (to_simplified(author),)).fetchone()[0]
 
 
@@ -173,23 +243,23 @@ def by_title(con, title: str, limit=20, offset=0):
     """
     t = to_simplified(title)
     rows = [_decorate(r) for r in con.execute(
-        "SELECT %s %s WHERE p.title = ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (COLS, _FROM),
+        "SELECT %s %s WHERE p.title = ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (_cols(con), _from(con)),
         (t, limit, offset)).fetchall()]
     if rows:
         # 等值命中就不再跑子串兜底：实测 LIKE '%x%' 在只有 1 个匹配时要把
         # ix_poems_score 走完一遍（884 ms），而等值已经用 ix_poems_title 拿到了结果。
         return rows
     return [_decorate(r) for r in con.execute(
-        "SELECT %s %s WHERE p.title LIKE ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (COLS, _FROM),
+        "SELECT %s %s WHERE p.title LIKE ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (_cols(con), _from(con)),
         ("%" + t + "%", limit, offset)).fetchall()]
 
 
 def title_count(con, title: str) -> int:
     t = to_simplified(title)
-    n = con.execute("SELECT COUNT(*) %s WHERE p.title = ?" % _FROM, (t,)).fetchone()[0]
+    n = con.execute("SELECT COUNT(*) %s WHERE p.title = ?" % _from(con), (t,)).fetchone()[0]
     if n:
         return n
-    return con.execute("SELECT COUNT(*) %s WHERE p.title LIKE ?" % _FROM,
+    return con.execute("SELECT COUNT(*) %s WHERE p.title LIKE ?" % _from(con),
                        ("%" + t + "%",)).fetchone()[0]
 
 
@@ -202,7 +272,7 @@ def by_rhythmic(con, r: str, limit=20, offset=0):
     rid = con.execute("SELECT id FROM rhythmics WHERE name = ?", (to_simplified(r),)).fetchone()
     if rid is None:
         return []
-    sql = "SELECT %s %s WHERE p.rhythmic_id = ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (COLS, _FROM)
+    sql = "SELECT %s %s WHERE p.rhythmic_id = ? ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?" % (_cols(con), _from(con))
     return [_decorate(x) for x in con.execute(sql, (rid[0], limit, offset)).fetchall()]
 
 
@@ -215,7 +285,7 @@ def count_rhythmic(con, r: str) -> int:
 
 def search_count(con, q: str, dynasty="", kind="", author="") -> int:
     """与 search() 完全相同的 WHERE 条件，只取 COUNT——供分页算总页数。"""
-    sql = "SELECT COUNT(*) %s WHERE p.body LIKE ?" % _FROM
+    sql = "SELECT COUNT(*) %s WHERE p.body LIKE ?" % _from(con)
     args = ["%" + to_simplified(q) + "%"]
     if dynasty:
         lo, hi = _dynasty_range(dynasty)
@@ -252,20 +322,46 @@ def run_query(con, *, kw="", dynasty="", kind="", author="", rhy="", limit=50, o
     return total, rows
 
 
+def _authors_uid_col(con) -> str:
+    """作者稳定标识列。旧库（schema < 3.2）没有 authors.uid，退回空串而不是报错。"""
+    if any(r[1] == "uid" for r in con.execute("PRAGMA table_info(authors)")):
+        return "uid"
+    return "'' AS uid"
+
+
+def _author_of(con, pid: int):
+    """取一条诗对应的作者行（id/uid/dynasty/desc）。佚名或作者行已不在库里时返回 None。
+
+    v3.4 起 poems 只有 author_uid，按它取；老库（≤3.3）退回 author_id。
+    用 NULLIF 把空串折成 NULL：佚名的 author_uid=''，而 `uid = NULL` 永不成立，
+    免得万一库里存在一行 uid='' 的作者被误当成"这首诗的作者"。
+    """
+    if _has_col(con, "poems", "author_uid"):
+        sql = ("SELECT id,%s,dynasty,desc FROM authors "
+               "WHERE uid = NULLIF((SELECT author_uid FROM poems WHERE id=?), '')"
+               % _authors_uid_col(con))
+    else:
+        sql = ("SELECT id,%s,dynasty,desc FROM authors "
+               "WHERE id = NULLIF((SELECT author_id FROM poems WHERE id=?), 0)"
+               % _authors_uid_col(con))
+    return con.execute(sql, (pid,)).fetchone()
+
+
 def get_by_id(con, pid: int):
-    row = con.execute("SELECT %s %s WHERE p.id = ?" % (COLS, _FROM), (pid,)).fetchone()
+    row = con.execute("SELECT %s %s WHERE p.id = ?" % (_cols(con), _from(con)), (pid,)).fetchone()
     if row is None:
         return None
     out = _decorate(row)
     out["strains_text"] = strains_of(con, pid)
-    arow = con.execute("SELECT id,dynasty,desc FROM authors WHERE id="
-                       "(SELECT author_id FROM poems WHERE id=?)", (pid,)).fetchone()
+    arow = _author_of(con, pid)
     if arow:
-        out["author_id"] = arow["id"]
+        out["author_id"] = arow["id"]      # authors 表主键，UI 编辑作者档案时用
+        out["author_uid"] = arow["uid"]
         out["author_dynasty"] = arow["dynasty"]
         out["author_desc"] = arow["desc"]
     else:
         out["author_id"] = 0
+        out["author_uid"] = ""
         out["author_dynasty"] = ""
         out["author_desc"] = ""
     return out

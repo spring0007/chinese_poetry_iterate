@@ -77,19 +77,22 @@ try:
     # ---- 修订（edit）闭环：挑一条构建期诗，改标题后写回，再还原
     row = con.execute(
         "SELECT p.id,p.title,a.name,p.src_id FROM poems p "
-        "LEFT JOIN authors a ON a.id=p.author_id "
+        "LEFT JOIN authors a ON a.uid=p.author_uid "
         "WHERE p.src_id NOT IN (SELECT id FROM sources WHERE name IN ('user-added','user-edit')) "
         "LIMIT 1").fetchone()
     pid, o_title, o_author, o_src = row["id"], row["title"], row["name"], row["src_id"]
     o_body = con.execute("SELECT body FROM poems WHERE id=?", (pid,)).fetchone()[0]
+    # uid 也要一起还原：update_poem 会按内容重算 uid（schema 3.2），只还原标题
+    # 不还原 uid 的话，生产库里会永久留一条"内容哈希对不上"的记录。
+    o_uid = con.execute("SELECT uid FROM poems WHERE id=?", (pid,)).fetchone()[0]
     ST.update_poem(con, pid, title=o_title + "【冒烟】", author=o_author or "",
                    lines=o_body.split("\n"))
     src_now = con.execute(
         "SELECT s.name FROM poems p JOIN sources s ON s.id=p.src_id WHERE p.id=?",
         (pid,)).fetchone()[0]
     flag_ok = (src_now == "user-edit")
-    # 还原：标题与来源都回到原始构建值（作者未变，不触动计数）
-    con.execute("UPDATE poems SET title=?, src_id=? WHERE id=?", (o_title, o_src, pid))
+    # 还原：标题、来源、uid 都回到原始构建值（作者未变，不触动计数）
+    con.execute("UPDATE poems SET title=?, src_id=?, uid=? WHERE id=?", (o_title, o_src, o_uid, pid))
     con.commit()
     src_back = con.execute(
         "SELECT s.name FROM poems p JOIN sources s ON s.id=p.src_id WHERE p.id=?",

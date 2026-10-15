@@ -99,9 +99,52 @@ def open_rw(path: str, strains_db: str = "") -> sqlite3.Connection:
     con.row_factory = sqlite3.Row
     con.execute("PRAGMA foreign_keys=ON")
     check_version(con, path)
+    require_writable_schema(con, path)
     if strains_db and os.path.exists(strains_db):
         con.execute("ATTACH DATABASE ? AS strainsdb", (strains_db,))
     return con
+
+
+def _has_table(con, name: str) -> bool:
+    return con.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?",
+                       (name,)).fetchone()[0] > 0
+
+
+def _has_column(con, table: str, col: str) -> bool:
+    return any(r[1] == col for r in con.execute("PRAGMA table_info(%s)" % table))
+
+
+def require_writable_schema(con, path: str) -> None:
+    """写路径必须确认主库是当前 schema（3.4）的形态，缺什么一次性说清楚。
+
+    why 单独一步：缺少列时 sqlite 抛的是 "NOT NULL constraint failed: poems.uid"
+    这种**指向症状而不是病因**的错误，调用方（GUI）只能原样弹给用户看。
+    3.1 时代 store.py 就是这么坏的——诗查得到、却一条也写不进去，报的还是一句
+    看不懂的约束名。这里把"库版本旧了，重跑 build.py"直接讲明白。
+    """
+    miss = []
+    if not _has_column(con, "poems", "uid"):
+        miss.append("缺 poems.uid")
+    if not _has_column(con, "poems", "author_uid"):
+        miss.append("缺 poems.author_uid")
+    if not _has_column(con, "authors", "uid"):
+        miss.append("缺 authors.uid")
+    if not _has_table(con, "poem_extras"):
+        miss.append("缺 poem_extras 表")
+    if _has_column(con, "poems", "notes"):
+        # v3.3 把这一列删了。还留着它的库说明写路径没跟上：继续往里写就会退回
+        # "注释有两个家"的状态，而读侧（query.py）已经只认 poem_extras.notes。
+        miss.append("多了 poems.notes 列（v3.3 已移除）")
+    if _has_column(con, "poems", "author_id"):
+        # v3.4 把这一列删了。留着它本身不会写错数据，但会诱使调用方继续按 id
+        # 关联作者，而这里写进去的 author_id 会随 authors 表重建整体位移——
+        # 正是这次要消灭的那个坑。宁可直接拦下来让人重建一次。
+        miss.append("多了 poems.author_id 列（v3.4 已移除，作者关联请用 author_uid）")
+    if miss:
+        raise Rejected(
+            "数据库 %s 的结构与当前写路径不匹配（%s）——它是旧版本的产物；"
+            "请用当前版本重跑 build.py 生成新库（旧库可只读使用）"
+            % (path, "；".join(miss)))
 
 
 # ---------------------------------------------------------------- 号段
@@ -140,12 +183,61 @@ def _ensure_dict(con, table: str, name: str) -> int:
 
 
 def ensure_author(con, name: str, dynasty: str) -> int:
-    row = con.execute("SELECT id FROM authors WHERE name=?", (name,)).fetchone()
+    """保证作者行存在，返回 author_id（authors 表主键；poems 已不存这一列，
+    调用方通常只需要它来维护 n_poems 计数）。"""
+    return ensure_author_row(con, name, dynasty)[0]
+
+
+def ensure_author_row(con, name: str, dynasty: str) -> tuple:
+    """保证作者行存在，返回 (author_id, author_uid)。
+
+    同名跨朝代的作者在库里并存（实测 275 组，如 严武 / 乐史 唐宋各一条），
+    这里**取 id 最大的那条**：build.py 里 author_uids 是 {name: 最后一条} 的
+    "同名后者覆盖前者"，而 authors 行是按列表顺序、id 递增插入的，所以"最大 id"
+    就是构建期真正被诗词引用的那一行。两边选行口径一致，重建前后才不会换人。
+
+    why 仍然返回 author_id：v3.4 起 poems 已经不存这一列（作者关联只走
+    author_uid），但它仍是 authors 表的主键，写 authors.n_poems 计数时要用。
+    """
+    row = con.execute(
+        "SELECT id, uid FROM authors WHERE name=? ORDER BY id DESC LIMIT 1",
+        (name,)).fetchone()
     if row:
-        return row[0]
-    cur = con.execute("INSERT INTO authors(name,dynasty,desc,n_poems) VALUES(?,?,?,0)",
-                      (name, dynasty, ""))
-    return cur.lastrowid
+        return row[0], row[1]
+    uid = S.make_author_uid(name, dynasty)
+    cur = con.execute(
+        "INSERT INTO authors(uid,name,dynasty,desc,n_poems) VALUES(?,?,?,?,0)",
+        (uid, name, dynasty, ""))
+    return cur.lastrowid, uid
+
+
+def set_notes(con, uid: str, notes) -> None:
+    """把注释写进 poem_extras —— v3.3 起，注释的**唯一**存放处。
+
+    why 不写 poems.notes：那一列已经在 v3.3 删掉了（构建期源语料的注释也是直接
+    落这张表）。再往主库写就变成同一个字段有两个家，query.py 又得回去写 COALESCE，
+    而"两处都能写"正是 v3.2 丢过一次数据的结构性原因。
+    notes 传空列表 = 显式清空注释。
+    """
+    text = "\n".join(str(x) for x in notes) if isinstance(notes, (list, tuple)) else (notes or "")
+    text = text.strip()
+    if text:
+        # updated 是 Unix 整数秒（v3.3 起），与列声明的 INTEGER 一致：
+        # 存成 ISO 文本会让 `WHERE updated > ?` 静默失效。
+        con.execute(
+            "INSERT INTO poem_extras(uid,notes,updated) VALUES(?,?,?) "
+            "ON CONFLICT(uid) DO UPDATE SET notes=excluded.notes,updated=excluded.updated",
+            (uid, text, int(time.time())))
+    else:
+        con.execute("UPDATE poem_extras SET notes='' WHERE uid=?", (uid,))
+
+
+def notes_of(con, uid: str) -> list:
+    """读回注释（按行拆开），供 CLI 在未指定字段时当默认值。"""
+    row = con.execute("SELECT notes FROM poem_extras WHERE uid=?", (uid,)).fetchone()
+    if not row or not row[0]:
+        return []
+    return [x for x in row[0].split("\n") if x.strip()]
 
 
 def ensure_src(con) -> int:
@@ -183,20 +275,29 @@ def add_poem(con, *, dynasty: str = "custom", kind: str = "poem",
     n_notes = [S.norm_text(t) for t in (notes or []) if S.norm_text(t)]
 
     pid = next_id(con, dynasty, kind)
-    aid = ensure_author(con, n_author, dynasty) if n_author else 0
+    aid, auid = ensure_author_row(con, n_author, dynasty) if n_author else (0, "")
     rid = _ensure_dict(con, "rhythmics", n_rhythmic) if n_rhythmic else 0
     sid = ensure_src(con)
     body = "\n".join(n_lines)
+    # uid 由内容派生（schema.make_uid），必须在这里算出来写进去：poems.uid 是
+    # NOT NULL，而且外部数据（extras）就是靠它关联的。author_uid 同理——v3.4 起
+    # 它是 poems 关联作者的**唯一**一列（author_id 已从主表移除），必须与
+    # authors.uid 指向同一行，写漏了这条诗就会显示成佚名。
+    uid = S.make_uid(dynasty, n_author, n_title, body)
 
     con.execute(
-        "INSERT INTO poems(id,author_id,title,rhythmic_id,src_id,body,tags,notes,"
+        "INSERT INTO poems(id,uid,author_uid,title,rhythmic_id,src_id,body,tags,"
         "score,n_char) VALUES(?,?,?,?,?,?,?,?,0,?)",
-        (pid, aid, n_title, rid, sid, body,
-         "\x1f".join(n_tags), "\x1f".join(n_notes), sum(len(x) for x in n_lines)))
+        (pid, uid, auid, n_title, rid, sid, body,
+         "\x1f".join(n_tags), sum(len(x) for x in n_lines)))
+    # 注释落 poem_extras —— v3.3 起 poems 已经**没有** notes 列，这里不是"留空",
+    # 而是主库根本不存注释（理由见 set_notes 的注释）。
+    set_notes(con, uid, n_notes)
     if n_author:
         con.execute("UPDATE authors SET n_poems=n_poems+1 WHERE id=?", (aid,))
     con.commit()
-    return {"id": pid, "author_id": aid, "new_author": aid != 0,
+    return {"id": pid, "uid": uid, "author_id": aid, "author_uid": auid,
+            "new_author": aid != 0,
             "title": n_title, "n_char": sum(len(x) for x in n_lines)}
 
 
@@ -212,13 +313,31 @@ def update_poem(con, pid: int, *, title: str = "", author: str = "",
 
     修订后的记录会把来源标记成 EDIT_SRC（原本就是自建的则保持 user-added），
     以便和原始构建数据区分、并在重建前可一并导出备份。
+
+    关于 uid 与 author_uid（schema 3.2 / 3.4）：
+      - author_uid 跟随新的作者一起重算，并即时写成 poems 里那一列（v3.4 起
+        poems 关联作者只有这一列，写漏就等于这条诗变成佚名）。
+      - uid 由 (朝代, 作者, 标题, 正文) 派生，改了这几项就必须重算——不重算
+        库里会留下一个和内容对不上的 uid，下次重建立刻变成另一个值。
+        重算时 poem_extras 里那一行会一起搬到新 uid 上（译文/赏析不脱钩），
+        但 dist/extras/extras.jsonl 的键不会变（它是权威源），返回值里的
+        `uid_changed=True` 就是提示这件事：需要一次按内容重映射，否则重跑
+        build.py 时那条扩展资料会变成孤儿行。
+      - notes 传 None = 不动注释；传空列表 = 显式清空。
     """
     row = con.execute(
-        "SELECT id,author_id,rhythmic_id,src_id,body,score FROM poems WHERE id=?",
+        "SELECT id,uid,author_uid,rhythmic_id,src_id,body,score FROM poems WHERE id=?",
         (pid,)).fetchone()
     if row is None:
         raise Rejected("id=%d 不存在，无法修改" % pid)
-    old_aid, old_rid, old_src = row["author_id"], row["rhythmic_id"], row["src_id"]
+    old_uid = row["uid"]
+    old_auid, old_rid, old_src = row["author_uid"], row["rhythmic_id"], row["src_id"]
+    # 旧作者的 authors.id：n_poems 计数回退要用（主表已经没有 author_id 这一列，
+    # 只能按 author_uid 反查那一行）。
+    old_aid = 0
+    if old_auid:
+        a = con.execute("SELECT id FROM authors WHERE uid=?", (old_auid,)).fetchone()
+        old_aid = a[0] if a else 0
 
     if lines is None:                       # 不传正文 = 保留原文（CLI 用）
         raw_lines = (row["body"] or "").split("\n")
@@ -243,20 +362,36 @@ def update_poem(con, pid: int, *, title: str = "", author: str = "",
 
     # author / rhythmic 重新解析字典 id：与 add_poem 同一套规则，保证检索一致
     dyn = S.parse_id(pid)[0]
-    aid = ensure_author(con, n_author, dyn) if n_author else 0
+    aid, auid = ensure_author_row(con, n_author, dyn) if n_author else (0, "")
     rid = _ensure_dict(con, "rhythmics", n_rhythmic) if n_rhythmic else 0
+    new_uid = S.make_uid(dyn, n_author, n_title, body)
 
     con.execute(
-        "UPDATE poems SET author_id=?,title=?,rhythmic_id=?,body=?,tags=?,notes=?,n_char=? "
-        "WHERE id=?",
-        (aid, n_title, rid, body, "\x1f".join(n_tags), "\x1f".join(n_notes), n_char, pid))
+        "UPDATE poems SET uid=?,author_uid=?,title=?,rhythmic_id=?,body=?,"
+        "tags=?,n_char=? WHERE id=?",
+        (new_uid, auid, n_title, rid, body, "\x1f".join(n_tags), n_char, pid))
+
+    # uid 变了就把 poem_extras 里那一行一起搬过去，否则译文/注释/赏析与这首诗脱钩
+    if new_uid != old_uid:
+        exists = con.execute("SELECT 1 FROM poem_extras WHERE uid=?", (new_uid,)).fetchone()
+        if exists:
+            # 目标 uid 上已经有记录（这首诗此前被改回过同一内容）：留下那份、
+            # 丢掉旧的一份，否则主键冲突会让整次修订失败。
+            con.execute("DELETE FROM poem_extras WHERE uid=?", (old_uid,))
+        else:
+            con.execute("UPDATE poem_extras SET uid=? WHERE uid=?", (new_uid, old_uid))
+
+    # notes 传 None = 不动注释（CLI edit 不传此参数时保留原文，否则会静默清空注释）；
+    # 传空列表 = 显式清空。
+    if notes is not None:
+        set_notes(con, new_uid, n_notes)
 
     # 作者计数：作者变了才动，避免无谓写库；旧作者无人引用就回收
     if old_aid != aid:
         if old_aid:
             con.execute("UPDATE authors SET n_poems=MAX(n_poems-1,0) WHERE id=?", (old_aid,))
-            left = con.execute("SELECT COUNT(*) FROM poems WHERE author_id=?",
-                               (old_aid,)).fetchone()[0]
+            left = con.execute("SELECT COUNT(*) FROM poems WHERE author_uid=?",
+                               (old_auid,)).fetchone()[0]
             if left == 0:
                 con.execute("DELETE FROM authors WHERE id=?", (old_aid,))
         if aid:
@@ -268,7 +403,14 @@ def update_poem(con, pid: int, *, title: str = "", author: str = "",
         con.execute("UPDATE poems SET src_id=? WHERE id=?", (sid, pid))
 
     con.commit()
-    return {"id": pid, "author_id": aid, "title": n_title, "n_char": n_char}
+    if new_uid != old_uid:
+        # 不静默：这次修订让 uid 变了，extras.jsonl 里那条扩展资料还挂旧键上，
+        # 重跑 build.py 会变成孤儿行。调用方（GUI / CLI）可据此提示用户。
+        print("提示：id=%d 内容已变，uid %s -> %s；dist/extras/extras.jsonl 里"
+              "对应的键需要按内容重映射一次" % (pid, old_uid, new_uid), file=sys.stderr)
+    return {"id": pid, "uid": new_uid, "uid_changed": new_uid != old_uid,
+            "author_id": aid, "author_uid": auid,
+            "title": n_title, "n_char": n_char}
 
 
 # ---------------------------------------------------------------- 作者档案
@@ -278,33 +420,66 @@ def update_author(con, aid: int, *, name=None, dynasty=None, desc=None) -> dict:
     作者朝代是独立的元数据（诗词的朝代来自 id 高位，互不干扰），
     改作者简介不会影响检索与平仄关联。
 
-    作者名改了只改 authors 表这一行，所有指向该 author_id 的诗会一起显示新名字
-    （它们在 poems.author_id 上关联，不存作者名副本）。
+    作者名改了只改 authors 表这一行，所有指向该作者的诗会一起显示新名字
+    （它们在 poems.author_uid 上关联，主表不存作者名副本）。
+
+    关于 uid（schema 3.2 / 3.4）：authors.uid 由 (姓名, 朝代) 派生，所以改名/改朝代会
+    换 uid；换完必须把 poems.author_uid 级联刷一遍，否则那一列指向的作者标识
+    就不存在了（v3.4 起这是主表里**唯一**的作者关联列，漏刷等于这批诗全部变佚名）。
+    **但 poems.uid 不会跟着重算**：它内嵌了作者名，改名等于让这一批
+    诗的 uid 全部失效——那是"按内容重映射"的活（会连带搬到 extras.jsonl），
+    需要时单独跑，不在一次改名里顺手做大范围改写。
     """
-    row = con.execute("SELECT id,name FROM authors WHERE id=?", (aid,)).fetchone()
+    row = con.execute("SELECT id,name,dynasty,uid FROM authors WHERE id=?", (aid,)).fetchone()
     if row is None:
         raise Rejected("作者 id=%d 不存在，无法修改" % aid)
+    name = None if name is None else S.norm_text(name)
+    if name is not None and not name:
+        raise Rejected("作者名不能为空")
+    if dynasty is not None and dynasty and dynasty not in S.DYNASTY:
+        raise Rejected("未知朝代 %r，可选：%s" % (dynasty, "/".join(sorted(S.DYNASTY))))
+
     sets, args = [], []
     if name is not None:
-        nm = S.norm_text(name)
-        if not nm:
-            raise Rejected("作者名不能为空")
         sets.append("name=?")
-        args.append(nm)
+        args.append(name)
     if dynasty is not None:
-        if dynasty and dynasty not in S.DYNASTY:
-            raise Rejected("未知朝代 %r，可选：%s" % (dynasty, "/".join(sorted(S.DYNASTY))))
         sets.append("dynasty=?")
         args.append(dynasty)
     if desc is not None:
         sets.append("desc=?")
         args.append(S.norm_text(desc))
     if not sets:
-        return {"id": aid, "changed": False}
+        return {"id": aid, "changed": False, "uid": row["uid"]}
+
+    new_uid = S.make_author_uid(name if name is not None else row["name"],
+                                dynasty if dynasty is not None else row["dynasty"])
+    sets.append("uid=?")
+    args.append(new_uid)
     args.append(aid)
-    con.execute("UPDATE authors SET %s WHERE id=?" % ",".join(sets), args)
+    try:
+        con.execute("UPDATE authors SET %s WHERE id=?" % ",".join(sets), args)
+    except sqlite3.IntegrityError as e:
+        # 改成和另一个作者完全同名同朝代 => uid 撞车。这里必须回滚后报明确原因，
+        # 直接抛 IntegrityError 的话 GUI 只会显示一句 "UNIQUE constraint failed"。
+        con.rollback()
+        raise Rejected("改完后与已有作者（姓名=%s，朝代=%s）重复，authors.uid 必须唯一"
+                       "（同一个作者请直接编辑那一条）：%s"
+                       % (name or row["name"], dynasty or row["dynasty"], e))
+
+    # 作者标识一变就级联刷引用方。v3.4 起 poems 只有 author_uid 一列，
+    # 所以 WHERE 也按 author_uid 匹配（旧值）——这也是主表只留一列的好处：
+    # 不存在"只刷了一列、另一列还是旧值"的可能。
+    n_sync = con.execute("UPDATE poems SET author_uid=? WHERE author_uid=?",
+                         (new_uid, row["uid"])).rowcount
     con.commit()
-    return {"id": aid, "changed": True}
+    renamed = name is not None and name != row["name"]
+    if renamed and n_sync:
+        print("提示：作者 id=%d 已改名，%d 首诗的 poems.uid 内嵌旧作者名、已不再等于"
+              "内容哈希；如需恢复 uid 与 extras 的对应关系，需要单独做一次按内容重映射"
+              % (aid, n_sync), file=sys.stderr)
+    return {"id": aid, "changed": True, "uid": new_uid,
+            "author_uid_synced": n_sync, "poems_uid_stale": renamed and n_sync > 0}
 
 
 # ---------------------------------------------------------------- 删除
@@ -336,16 +511,23 @@ def delete_poem(con, pid: int, force: bool = False) -> bool:
         raise Rejected("id=%d 不是用户来源条目，拒绝删除（构建期原始数据请重新 build.py 生成）" % pid)
     # 作者计数要跟着回退，否则删几次之后 authors.n_poems 会一直虚高。
     # 作者行本身保留：可能有别的作品还指着他，且重名作者本来就无法区分。
-    row = con.execute("SELECT author_id FROM poems WHERE id=?", (pid,)).fetchone()
+    # 主表只有 author_uid（v3.4），按它反查 authors.id 来改计数。
+    row = con.execute("SELECT author_uid FROM poems WHERE id=?", (pid,)).fetchone()
+    auid = row[0] if row else ""
     con.execute("DELETE FROM poems WHERE id=?", (pid,))
-    if row and row[0]:
-        con.execute("UPDATE authors SET n_poems=MAX(n_poems-1,0) WHERE id=?", (row[0],))
+    if auid:
+        aid_row = con.execute("SELECT id FROM authors WHERE uid=?", (auid,)).fetchone()
+        aid = aid_row[0] if aid_row else 0
+    else:
+        aid = 0
+    if aid:
+        con.execute("UPDATE authors SET n_poems=MAX(n_poems-1,0) WHERE id=?", (aid,))
         # 没有人再引用就顺手删掉，否则每录一个测试作者 authors 表就永久多一行。
         # 只删"零引用"的，有别的作品指向它的作者行一定会留着。
-        left = con.execute("SELECT COUNT(*) FROM poems WHERE author_id=?",
-                           (row[0],)).fetchone()[0]
+        left = con.execute("SELECT COUNT(*) FROM poems WHERE author_uid=?",
+                           (auid,)).fetchone()[0]
         if left == 0:
-            con.execute("DELETE FROM authors WHERE id=?", (row[0],))
+            con.execute("DELETE FROM authors WHERE id=?", (aid,))
     # 来源行同理：自建条目全删光后 sources 里会留一条没人引用的 'user-added'，
     # 于是 sources 表行数会比构建期多 1（实测 17 -> 18），看着像凭空多了一个数据源。
     # 下次 add_poem 会按需重建，所以这里可以放心回收。
@@ -364,7 +546,7 @@ def list_user_added(con, limit: int = 200, offset: int = 0) -> List[dict]:
     rows = con.execute(
         "SELECT p.id, p.title, a.name AS author, p.body, p.n_char, "
         "r.name AS rhythmic, p.tags "
-        "FROM poems p LEFT JOIN authors a ON a.id=p.author_id "
+        "FROM poems p LEFT JOIN authors a ON a.uid=p.author_uid "
         "LEFT JOIN rhythmics r ON r.id=p.rhythmic_id "
         "JOIN sources s ON s.id=p.src_id "
         "WHERE s.name=? ORDER BY p.id DESC LIMIT ? OFFSET ?",
@@ -382,7 +564,7 @@ def get_current(con, pid: int) -> Optional[dict]:
     """取一条现有记录的文本字段，供 CLI edit 在未指定某字段时作默认值。"""
     row = con.execute(
         "SELECT p.title, a.name AS author, r.name AS rhythmic, p.tags "
-        "FROM poems p LEFT JOIN authors a ON a.id=p.author_id "
+        "FROM poems p LEFT JOIN authors a ON a.uid=p.author_uid "
         "LEFT JOIN rhythmics r ON r.id=p.rhythmic_id WHERE p.id=?",
         (pid,)).fetchone()
     if row is None:
@@ -406,7 +588,7 @@ def list_mine(con, limit: int = 500, offset: int = 0) -> List[dict]:
     rows = con.execute(
         "SELECT p.id, p.title, a.name AS author, p.body, p.n_char, "
         "r.name AS rhythmic, p.tags, s.name AS src "
-        "FROM poems p LEFT JOIN authors a ON a.id=p.author_id "
+        "FROM poems p LEFT JOIN authors a ON a.uid=p.author_uid "
         "LEFT JOIN rhythmics r ON r.id=p.rhythmic_id "
         "JOIN sources s ON s.id=p.src_id "
         "WHERE s.name IN (?,?) ORDER BY p.id DESC LIMIT ? OFFSET ?",
@@ -442,7 +624,7 @@ def export_edits(con, path: str) -> int:
     """
     rows = con.execute(
         "SELECT p.id,p.title,a.name AS author,p.body,p.tags,s.name AS src "
-        "FROM poems p LEFT JOIN authors a ON a.id=p.author_id "
+        "FROM poems p LEFT JOIN authors a ON a.uid=p.author_uid "
         "JOIN sources s ON s.id=p.src_id WHERE s.name=?", (EDIT_SRC,)).fetchall()
     n = 0
     with open(path, "w", encoding="utf-8") as f:

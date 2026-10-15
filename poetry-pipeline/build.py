@@ -4,6 +4,7 @@
 
 产物分三块，共用同一套规范化中间层：
   1. poetry.db            SQLite 主库          —— 服务端 / 桌面 / iOS / Android / Flutter
+                          （含 poem_extras 表：译文/注释/简介/创作背景/赏析/配图）
   2. bundle/              JSONL 分片 + zstd     —— Web / 小程序 / 离线包 / CDN 按需拉取
   3. poetry-strains.db   平仄可选包（--with-strains 才出）
      + bundle-strains/   平仄分片
@@ -19,6 +20,8 @@
     python build.py --out ./dist --strains-only   # 只出平仄包
     python build.py --out ./dist --with-optional  # 额外打包御定全唐詩（异文版本）
     python build.py --out ./dist --no-external    # 忽略 external/ 下的外接数据
+    python build.py --out ./dist --no-extras      # 不把 extras.jsonl 落成 poem_extras 表
+                                                  # （注释仍写回 JSONL；这种库读不到注释）
     python build.py --out ./dist --with-fts       # 建 FTS5（体积 x4.2，默认关）
     python build.py --out ./dist --limit 3000     # 冒烟：每个集合只取前 N 条
 
@@ -31,8 +34,9 @@ from typing import Dict, List, Tuple, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import schema as S
-from schema import Poem, make_id, make_uid, parse_id, pack_strains, quantize_score
+from schema import Poem, make_id, make_uid, make_author_uid, parse_id, pack_strains, quantize_score
 import sources as SRC
+import extras_db as XDB
 
 # 产物默认落在工程目录下的 dist/，按脚本位置解析而非工作目录
 # （PyCharm 里工作目录可能与工程根不一致，写 "./dist" 会建到意想不到的地方）。
@@ -207,9 +211,10 @@ def merge_poem_authors(authors: List[dict], poems: List[Poem]) -> List[dict]:
     作者 id 字典不能只由作者库文件（authors.tang/song/ci/nantang）构成。
 
     这几个文件只覆盖唐/宋/五代，汉（曹操）、元（元曲作者）、清（张潮）以及
-    楚辞、蒙学里出现的姓名根本不在里面。只按作者库建 id 的话，
-    author_ids.get(name) 取不到 → 落 0 → 与"佚名"同义，等于把真作者静默抹掉。
-    这是最难发现的一类脏数据：表面上一切正常，只有按作者检索时人才不见了。
+    楚辞、蒙学里出现的姓名根本不在里面。只按作者库建映射的话，
+    author_uids.get(name) 取不到 → author_uid 落空 → 与"佚名"同义，
+    等于把真作者静默抹掉。这是最难发现的一类脏数据：表面上一切正常，
+    只有按作者检索时人才不见了。
     """
     known = {a["name"] for a in authors}
     miss: Dict[str, str] = {}
@@ -333,8 +338,11 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
 
     # 字典表：作者/标题/词牌/来源在全库里大量重复，34 万行各存一遍纯属浪费。
     # 存成 int 后主表每行只剩正文这一个"长字段"，索引也从字符串索引变整数索引。
+    # authors.uid 是**稳定标识**：id 是导入顺序的序号（源库多一个作者，后面全体位移），
+    # uid 由 (姓名, 朝代) 内容派生，重建不变。挂在作者上的外部引用一律用 uid。
     con.execute("CREATE TABLE authors("
-                "id INTEGER PRIMARY KEY, name TEXT NOT NULL, dynasty TEXT NOT NULL DEFAULT '',"
+                "id INTEGER PRIMARY KEY, uid TEXT NOT NULL DEFAULT '', "
+                "name TEXT NOT NULL, dynasty TEXT NOT NULL DEFAULT '',"
                 "desc TEXT NOT NULL DEFAULT '', n_poems INTEGER NOT NULL DEFAULT 0)")
     con.execute("CREATE TABLE rhythmics(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
     con.execute("CREATE TABLE sources(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
@@ -344,24 +352,42 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # 重复率只有 1.3 次/值，字典表省不下数据，却要多付一份表 + 唯一索引 + 普通索引
     # 共 29.3 MB；逐行存只要 2.71 MB。字典化只对高重复列（作者 25.7 次/值、
     # 词牌 236 次/值、来源 23024 次/值）才划算。
-    # 佚名用 author_id=0 表示（0 不指向任何 authors 行，即 NULL 语义）。
+    # 作者关联只走 author_uid（v3.4 起）：它是 authors.uid 的伴生列，由 (姓名, 朝代)
+    # 内容派生，重建不变；佚名的 author_uid=''（join 不上任何作者行，等价于 NULL）。
+    # why 不再同时存 author_id：那一列是 authors 的**导入顺序序号**，源库增删一位
+    # 作者、后面全体位移，于是每次重建都要在 34 万行主表上重写一遍这一列 + 重建
+    # 它的索引（实测 ix_poems_author 约 1.8 MB），换来的信息量为零——
+    # authors.id 本来就是 authors 表内部的主键，主表持有一份副本只会制造
+    # "两份作者标识谁说了算"的歧义（v3.2 两列并存时，两者一旦不同步就是静默挂错人）。
     con.execute("""
         CREATE TABLE poems(
             id INTEGER PRIMARY KEY,
             uid TEXT NOT NULL,
-            author_id INTEGER NOT NULL DEFAULT 0,
+            author_uid TEXT NOT NULL DEFAULT '',
             title TEXT NOT NULL DEFAULT '',
             rhythmic_id INTEGER NOT NULL DEFAULT 0,
             src_id INTEGER NOT NULL DEFAULT 0,
             body TEXT NOT NULL,
             tags TEXT NOT NULL DEFAULT '',
-            notes TEXT NOT NULL DEFAULT '',
             score INTEGER NOT NULL DEFAULT 0,
             n_char INTEGER NOT NULL DEFAULT 0
         )""")
+    # v3.3 起 poems 没有 notes 列：注释的唯一存放处是 poem_extras.notes，构建期
+    # 从源语料直接写进去（见下面 notes_map 与 main 第 5.5 步）。why 要删掉这一列
+    # 而不是留着不用：留着就永远有"两处都能写"的可能，而 v3.2 的返工正是踩在
+    # "先落主库、再搬一次"这条往返链路上——同一条数据过两次手就必然会有一次丢。
     # 平仄不在这里建表：它是可选包（见 emit_strains）。主库保持"只有检索必需的东西"。
+    # extras 落库表在这里只建结构，内容由 extras_db.sync() 灌（见 main 第 5.5 步）。
+    XDB.create_table(con)
 
-    author_ids = {a["name"]: i + 1 for i, a in enumerate(authors)}
+    # 作者名 -> 稳定 uid。uid 按 (姓名, 朝代) 算，与 authors 行一一对应（同名跨朝代
+    # 是不同的人，实测 275 组，见 schema.make_author_uid）。
+    # 同名跨朝代时**后者覆盖前者**（字典推导天然如此）：authors 行是按列表顺序、
+    # id 递增插入的，所以"列表里最后一条"就是原来 author_ids = {name: i+1} 指的那
+    # 一行。这个口径必须与 store.ensure_author_row（取 id 最大的一条）一致——
+    # 它是 v3.2 起就定下的既有语义，不能借"去掉 author_id"顺手改成别的选行规则，
+    # 否则重建前后同一首诗会挂到另一个同名作者上。
+    author_uids = {a["name"]: make_author_uid(a["name"], a["dynasty"]) for a in authors}
     rhythmic_ids: Dict[str, int] = {}
     src_ids: Dict[str, int] = {}
 
@@ -375,32 +401,48 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         return v
 
     rows = []
+    # uid -> 注释文本。v3.3 起 poems 不存注释，这批内容由 5.5 步交给 extras_db：
+    # 先写回权威源 extras.jsonl，再随 JSONL 一起重放进 poem_extras。
+    notes_map: Dict[str, str] = {}
     for p in poems:
+        uid = make_uid(p.dynasty, p.author, p.title, p.body)
         rows.append((
             p.id,
-            make_uid(p.dynasty, p.author, p.title, p.body),
-            author_ids.get(p.author, 0),
+            uid,
+            author_uids.get(p.author, ""),
             p.title,
             _tid(rhythmic_ids, p.rhythmic),
             _tid(src_ids, p.src),
             p.body,
             "\x1f".join(p.tags),
-            "\x1f".join(p.notes),
             p.score,
             p.n_char,
         ))
+        if p.notes:
+            notes_map[uid] = "\n".join(p.notes)
 
-    lost = sum(1 for p in poems if p.author and author_ids.get(p.author, 0) == 0)
+    lost = sum(1 for p in poems if p.author and not author_uids.get(p.author))
     if lost:
-        warn("%d 条记录有作者名却拿不到 author_id，会被误当成佚名" % lost)
+        warn("%d 条记录有作者名却拿不到 author_uid，关联作者时会显示为佚名" % lost)
 
     con.executemany(
-        "INSERT INTO poems(id,uid,author_id,title,rhythmic_id,src_id,body,tags,notes,"
-        "score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?,?)", rows)
+        "INSERT INTO poems(id,uid,author_uid,title,rhythmic_id,src_id,body,tags,"
+        "score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?)", rows)
 
-    n_by_author = collections.Counter(p.author for p in poems if p.author)
-    con.executemany("INSERT INTO authors VALUES(?,?,?,?,?)", [
-        (i + 1, a["name"], a["dynasty"], a["desc"], n_by_author.get(a["name"], 0))
+    # n_poems 按"指向本行的作品数"统计，而不是按姓名统计。
+    # why 按姓名会虚高：同名可跨朝代并存（实测 275 组，如唐宋各一个「严武」），
+    # 而 author_uids 是 {姓名: 最后一条} 的"后者覆盖"，所以唐朝那个「李煜」行
+    # 一条作品都不指向它，按姓名却会分到 111 条（那是南唐李煜的作品数）。
+    # 口径必须与 store.py 的运行期维护方式一致（那里就是按 authors.id 增减的），
+    # verify_db.py 有一条断言盯着"n_poems == 实际作品数"。
+    used = collections.Counter()
+    for p in poems:
+        u = author_uids.get(p.author, "")
+        if u:
+            used[u] += 1
+    con.executemany("INSERT INTO authors VALUES(?,?,?,?,?,?)", [
+        (i + 1, make_author_uid(a["name"], a["dynasty"]), a["name"], a["dynasty"],
+         a["desc"], used.get(make_author_uid(a["name"], a["dynasty"]), 0))
         for i, a in enumerate(authors)])
     con.executemany("INSERT INTO rhythmics VALUES(?,?)", [(v, k) for k, v in rhythmic_ids.items()])
     con.executemany("INSERT INTO sources VALUES(?,?)", [(v, k) for k, v in src_ids.items()])
@@ -413,10 +455,14 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # why 不直接拿它当 PRIMARY KEY：id 的 int32 高位编码 dynasty/kind 是查询
     # 与分片的基础（见 schema.make_id），uid 只是「对外稳定引用」，两者分工不同。
     con.execute("CREATE UNIQUE INDEX ix_poems_uid ON poems(uid)")
-    con.execute("CREATE INDEX ix_poems_author ON poems(author_id)")
+    # 作者只经 author_uid 关联（v3.4）：authors.uid 上有唯一索引，这个 JOIN
+    # 走的是 36 字符的文本索引而不是 int 索引，实测检索延迟无感差异，但省掉了
+    # 一列会随重建整体位移、每次都要重写与重建索引的副本。
+    con.execute("CREATE INDEX ix_poems_author_uid ON poems(author_uid)")
     con.execute("CREATE INDEX ix_poems_title ON poems(title)")
     con.execute("CREATE INDEX ix_poems_rhythmic ON poems(rhythmic_id)")
     con.execute("CREATE INDEX ix_poems_score ON poems(score DESC)")
+    con.execute("CREATE UNIQUE INDEX ix_authors_uid ON authors(uid)")
     con.execute("CREATE INDEX ix_authors_name ON authors(name)")
 
     # ---- 检索：默认只建普通索引，用 LIKE 查 body ----
@@ -444,10 +490,16 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         ("fts", "1" if with_fts else "0"),
         ("strains_pkg", "1" if with_strains else "0"),
         ("note", "全库简体归一、无空格。body 兼作检索列，查询词需先转简体。"
-                 "dynasty/kind 由 id 高位反解；author_id=0 表示佚名。"
+                 "dynasty/kind 由 id 高位反解；佚名的 author_uid=''。"
                  "平仄在独立可选包 poetry-strains.db，通过 id 关联。"
                  "uid 是内容派生的稳定 uuid：外部数据（extras）一律用 uid 关联，"
-                 "不要用 id —— id 含序号，会因 dedup/重排而整体位移。"),
+                 "不要用 id —— id 含序号，会因 dedup/重排而整体位移。"
+                 "作者关联只走 author_uid（authors.uid 的伴生列，由 姓名+朝代 派生，"
+                 "重建不变）：poems 表**没有 author_id 列**（v3.4 移除），"
+                 "写法是 LEFT JOIN authors a ON a.uid = p.author_uid。"
+                 "译文/注释/简介/背景/赏析/配图在 poem_extras 表（uid 关联）；"
+                 "poems 表**没有 notes 列** —— 注释的唯一存放处是 poem_extras.notes，"
+                 "构建期直接从源语料写入，不再经过主库中转。"),
     ])
     # ANALYZE 必须有：没有 sqlite_stat1 时，SQLite 会为了吃掉 ORDER BY score DESC
     # 而选 ix_poems_score 做全索引扫描，把 p.title = ? 这种高选择性查询拖到 900ms+。
@@ -455,8 +507,10 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     con.execute("ANALYZE")
     con.commit()
     con.execute("VACUUM")
+    size = os.path.getsize(out_db)
     con.close()
-    return os.path.getsize(out_db)
+    # 注释不落本库（poems 没有 notes 列），交给 main 第 5.5 步写进 poem_extras。
+    return size, notes_map
 
 
 # ============================================================ 5a. 用户数据保全
@@ -483,45 +537,99 @@ def snapshot_user_data(db_path: str):
         warn("现有库 schema 版本 %s 与当前 %s 不一致，跳过用户数据保全"
              "（请用 export / export-edits 另行备份）" % (row[0] if row else "未知", S.SCHEMA_VERSION))
         return None
+    # 注释的来源随版本变过：3.2 之前在主库 poems.notes 列，3.2 起搬到 poem_extras。
+    # 两处都探一下，否则"老库里那一列还在、新库里注释在另一张表"必然漏一种，
+    # 而漏掉的表现是"重建后用户自己写的注释没了"——静默、无报错。
+    has_notes_col = any(r[1] == "notes" for r in con.execute("PRAGMA table_info(poems)"))
+    has_ex = con.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' "
+                         "AND name='poem_extras'").fetchone()[0] > 0
+    # 作者关联列也随版本变过：v3.4 起 poems 只有 author_uid（author_id 已删）。
+    # 老库（≤3.3）两列都在，取 author_uid；再老（≤3.1）只有 author_id，退回它，
+    # 否则"用老库重建"会直接报 no such column。
+    has_au = any(r[1] == "author_uid" for r in con.execute("PRAGMA table_info(poems)"))
+    ajoin = "a.uid = p.author_uid" if has_au else "a.id = p.author_id"
+    notes_expr = "p.notes" if has_notes_col else "''"
+    if has_ex:
+        notes_expr = ("COALESCE(NULLIF(%s,''), "
+                      "(SELECT notes FROM poem_extras pe WHERE pe.uid=p.uid), '')"
+                      % notes_expr)
     rows = con.execute("""
-        SELECT p.id, p.author_id, p.title, p.rhythmic_id, p.src_id, p.body, p.tags,
-               p.notes, p.score, p.n_char, s.name AS src_name, a.name AS author_name,
-               a.dynasty AS author_dyn, r.name AS rhythmic_name
+        SELECT p.id, %s AS author_uid, p.title, p.rhythmic_id, p.src_id, p.body, p.tags,
+               %s AS notes, p.score, p.n_char, s.name AS src_name,
+               a.name AS author_name, a.dynasty AS author_dyn,
+               r.name AS rhythmic_name
         FROM poems p
         JOIN sources s ON s.id = p.src_id
-        LEFT JOIN authors a ON a.id = p.author_id
+        LEFT JOIN authors a ON %s
         LEFT JOIN rhythmics r ON r.id = p.rhythmic_id
         WHERE s.name IN ('user-added', 'user-edit')
-    """).fetchall()
+    """ % ("p.author_uid" if has_au else "''", notes_expr, ajoin)).fetchall()
     out = [dict(x) for x in rows]
     con.close()
     return out
 
 
-def restore_user_data(con, snapshot) -> int:
+def restore_user_data(con, snapshot) -> tuple:
     """
     把快照重放到新建的 con 上：保留原 id（修订 = 覆盖同 id 的构建期行；
-    自建 = custom 号段不冲突）。作者 / 词牌按名复用新库字典，找不到就新建。
+    自建 = custom 号段不冲突）。作者按 author_uid 复用新库那一行（v3.4 起作者关联
+    只有这一列；老库快照没有该列时退回按名对齐），词牌 / 来源按名复用，找不到就新建。
     最后用 GROUP BY 重算 authors.n_poems，保证计数一致。
+
+    返回 (恢复条数, {uid: 注释})。注释**不能**直接写回主库（v3.3 起没有那一列），
+    而是交回 main 与构建期注释合并后统一走 extras 落库那一步——否则用户自己写的
+    注释会在重建时丢掉。
     """
     if not snapshot:
-        return 0
+        return 0, {}
+    notes_map: Dict[str, str] = {}
     for src in ("user-added", "user-edit"):
         con.execute("INSERT OR IGNORE INTO sources(name) VALUES(?)", (src,))
-    authors = {r[0]: r[1] for r in con.execute("SELECT name, id FROM authors")}
+    # 作者表两张索引并行维护：
+    #   by_uid  —— 正常路径。快照里的 author_uid 原样沿用，标识不因重建而变。
+    #   by_name —— 老库（≤3.1）的 poems 没有 author_uid，只能按名对齐。
+    #              按 id 升序、**后面覆盖前面**，与 emit_sqlite 里
+    #              author_uids = {a["name"]: ...} 的"后者覆盖"语义严格一致，
+    #              否则同名跨朝代的作者在重建前后会指向不同的行、author_uid 跟着错位。
+    by_name, by_uid = {}, {}
+    for _name, _aid, _auid in con.execute("SELECT name, id, uid FROM authors ORDER BY id"):
+        by_name[_name] = (_aid, _auid)
+        if _auid:
+            by_uid[_auid] = (_aid, _auid)
     rhythmics = {r[0]: r[1] for r in con.execute("SELECT name, id FROM rhythmics")}
     src_ids = {r[0]: r[1] for r in con.execute("SELECT name, id FROM sources")}
     for p in snapshot:
         aname = p["author_name"]
+        auid = p["author_uid"] or ""
         aid = 0
-        if aname:
-            aid = authors.get(aname)
-            if aid is None:
+        if auid:
+            got = by_uid.get(auid)
+            if got is None:
+                # 快照带着 author_uid、新库里却没有这位作者（作者那一版一条诗都没被
+                # 构建期引用，或作者名/朝代被改过）——补一行，标识原样沿用，
+                # 否则这条诗的作者关联会静默断掉。
                 cur = con.execute(
-                    "INSERT INTO authors(name,dynasty,desc,n_poems) VALUES(?,?,?,0)",
-                    (aname, p["author_dyn"] or "", ""))
+                    "INSERT INTO authors(uid,name,dynasty,desc,n_poems) VALUES(?,?,?,?,0)",
+                    (auid, aname or "", p["author_dyn"] or "", ""))
                 aid = cur.lastrowid
-                authors[aname] = aid
+                by_uid[auid] = (aid, auid)
+                if aname:
+                    by_name[aname] = (aid, auid)
+            else:
+                aid = got[0]
+        elif aname:
+            # 老库快照（没有 author_uid）：按名对齐到构建期那一行。
+            got = by_name.get(aname)
+            if got is None:
+                auid = make_author_uid(aname, p["author_dyn"] or "")
+                cur = con.execute(
+                    "INSERT INTO authors(uid,name,dynasty,desc,n_poems) VALUES(?,?,?,?,0)",
+                    (auid, aname, p["author_dyn"] or "", ""))
+                aid = cur.lastrowid
+                by_name[aname] = (aid, auid)
+                by_uid[auid] = (aid, auid)
+            else:
+                aid, auid = got
         rid = 0
         rn = p["rhythmic_name"]
         if rn:
@@ -537,18 +645,27 @@ def restore_user_data(con, snapshot) -> int:
         # dynasty/kind 从 id 高位反解（主表不存这两列，见 schema.parse_id）；
         # 作者名用上面按名对齐后的 aname，保证与构建期同一首诗算出同一个 uid。
         _dyn, _kind, _seq = parse_id(p["id"])
+        # v3.3：poems 不再有 notes 列。注释由 notes_map 带出去——5.5 步会先把它
+        # 写回权威源 extras.jsonl、再随 JSONL 重放进 poem_extras，所以重建后它还在，
+        # 而且这份"在"是可复现的（不会像"只写表不写源"那样被下一次重放抹掉）。
+        uid = make_uid(_dyn, aname or "", p["title"], p["body"])
         con.execute(
-            "INSERT OR REPLACE INTO poems(id,uid,author_id,title,rhythmic_id,src_id,body,tags,notes,score,n_char) "
-            "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
-            (p["id"], make_uid(_dyn, aname or "", p["title"], p["body"]),
-             aid, p["title"], rid, sid, p["body"], p["tags"], p["notes"],
+            "INSERT OR REPLACE INTO poems(id,uid,author_uid,title,rhythmic_id,"
+            "src_id,body,tags,score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?)",
+            (p["id"], uid, auid, p["title"], rid, sid, p["body"], p["tags"],
              p["score"], p["n_char"]))
+        txt = (p["notes"] or "").replace("\x1f", "\n").strip()
+        if txt:
+            notes_map[uid] = txt
     con.execute("UPDATE authors SET n_poems=0")
+    # 计数按 author_uid 统计（v3.4 起主表没有 author_id 了）；author_uid='' 是
+    # 佚名，不指向任何作者行，直接排除。
     counts = con.execute(
-        "SELECT author_id, COUNT(*) c FROM poems WHERE author_id!=0 GROUP BY author_id").fetchall()
-    con.executemany("UPDATE authors SET n_poems=? WHERE id=?", [(c, a) for a, c in counts])
+        "SELECT author_uid, COUNT(*) c FROM poems WHERE author_uid<>'' "
+        "GROUP BY author_uid").fetchall()
+    con.executemany("UPDATE authors SET n_poems=? WHERE uid=?", [(c, u) for u, c in counts])
     con.commit()
-    return len(snapshot)
+    return len(snapshot), notes_map
 
 
 # ============================================================ 5b. 平仄可选包
@@ -769,6 +886,10 @@ def main():
     ap.add_argument("--strains-only", action="store_true", help="只出平仄可选包")
     ap.add_argument("--no-external", action="store_true",
                     help="忽略 external/ 目录下的外接数据（歌赋/清代诗词/毛选…）")
+    ap.add_argument("--no-extras", action="store_true",
+                    help="不把 dist/extras/extras.jsonl 落成 poem_extras 表"
+                         "（主库回到 ~150 MB）。注意：注释也只写在 JSONL 里了，"
+                         "这种库 poems 没有 notes 列、poem_extras 也是空的")
     ap.add_argument("--with-fts", action="store_true",
                     help="建 FTS5 trigram（实测体积 x4.2 且不支持 <3 字，默认关）")
     ap.add_argument("--zstd-level", type=int, default=12)
@@ -825,16 +946,60 @@ def main():
         print("\n=== 5. 产出 SQLite ===")
         db_path = os.path.join(args.out, "poetry.db")
         snap = snapshot_user_data(db_path)          # 重建前保全用户数据
-        size = emit_sqlite(poems, uniq, db_path, args.with_fts, want_strains)
+        size, notes_map = emit_sqlite(poems, uniq, db_path, args.with_fts, want_strains)
         print("  -> %s  %.1f MB" % (db_path, size / 1048576))
         if snap:
             c = sqlite3.connect(db_path)
             c.row_factory = sqlite3.Row
-            n = restore_user_data(c, snap)
+            n, snap_notes = restore_user_data(c, snap)
             c.execute("ANALYZE")
             c.commit()
             c.close()
-            print("  -> 已保全并恢复用户数据 %d 条（自建/修订），重跑 build 不丢" % n)
+            # 用户自建/修订条目上的注释并进同一批，由 5.5 步一起落 extras。
+            # 不并进来的话，重建会静默吃掉用户自己写的注释（poems 已无 notes 列）。
+            notes_map.update(snap_notes)
+            print("  -> 已保全并恢复用户数据 %d 条（自建/修订，其中带注释 %d 条），"
+                  "重跑 build 不丢" % (n, len(snap_notes)))
+
+        # ---- 5.5 extras 落库：extras.jsonl -> poem_extras，并承接源语料的注释
+        # why 必须放在用户数据恢复之后：恢复进来的条目同样可能带注释（用户在 GUI 里
+        # 写的），要跟构建期语料的注释合到同一批里一起落库，否则那批注释就丢了。
+        print("\n=== 5.5 extras 落库（poem_extras 表） ===")
+        c = sqlite3.connect(db_path)
+        try:
+            root_ex = os.path.join(args.out, "extras")
+            if args.no_extras:
+                # --no-extras：不把 extras.jsonl 重放进主库（那 9.7 万行大文本会把
+                # 主库从 144 MB 撑到 ~350 MB）。但注释照样要**写回权威源 JSONL**
+                # —— poems 已经没有 notes 列了，不写回就等于把这批注释删掉。
+                # 代价：这种库里 poem_extras 表是空的，读注释要直接读 JSONL。
+                r = XDB.export_notes(root_ex, notes_map=notes_map)
+                print("  --no-extras：跳过 JSONL 重放；注释写回 JSONL %d 条"
+                      "（并入已有 %d、跳过 %d）"
+                      % (r["written"], r["merged_rows"], r["skipped"]))
+                print("  注意：本库 poem_extras 为空，要读注释请走 extras.jsonl")
+            else:
+                r = XDB.sync(c, root_ex, notes_map=notes_map)
+                print("  重放 %d 行（JSONL %d 条）；注释写回 JSONL %d 条"
+                      "（并入已有 %d、跳过 %d）"
+                      % (r["rows"], r["from_jsonl"], r["notes_written"],
+                         r["notes_merged"], r["notes_skipped"]))
+                # 这里**不**做 VACUUM：emit_sqlite 刚压过一遍，紧接着的一次性插入
+                # 不会留下多少碎片（实测只省 0.7 MB，却要多花 25 秒）。
+                # 反复跑 extras_db.py sync 才需要压实，那里有 --vacuum 开关。
+                if r["orphans"]:
+                    print("  提示：%d 行 poem_extras 在 poems.uid 里找不到对应诗"
+                          "（外部数据先到 / 诗已不在库里，属正常，不影响关联检索）"
+                          % r["orphans"])
+            c.execute("ANALYZE")
+            c.commit()
+        except XDB.Rejected as e:
+            # extras 目录是纯累积数据：新拉一个只有源码的仓库时它不存在，
+            # 这不该让整次构建失败——主库其余部分照样可用，只是没有扩展资料。
+            warn("extras 未落库（主库其余部分不受影响）：%s" % e)
+        finally:
+            c.close()
+        print("  -> %s  %.1f MB" % (db_path, os.path.getsize(db_path) / 1048576))
 
     if not args.db_only and not args.strains_only:
         print("\n=== 6. 产出 bundle ===")
@@ -850,8 +1015,13 @@ def main():
 
     print("\n=== 8. 汇总 ===")
     src_bytes = 0
+    # 「源库」= SRC.ROOT 下除本工程自己以外的数据。本工程目录必须排除：dist/extras/_cache/
+    # 下的 JSON 是上游抓取缓存（目前已 27.9 MB），把它们算进"源库 JSON 总量"会让这个数字
+    # 随抓取进度变化，而它本来是用来说明"重构前有多少源数据"的。
+    own_dir = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
+    skip = {".venv", ".git", "__pycache__", ".pytest_cache", ".idea", ".github", "build", own_dir}
     for dirpath, dirnames, filenames in os.walk(SRC.ROOT):
-        dirnames[:] = [d for d in dirnames if d not in {".venv", ".git", "__pycache__", ".pytest_cache", ".idea", ".github", "build"}]
+        dirnames[:] = [d for d in dirnames if d not in skip]
         for fn in filenames:
             if fn.endswith(".json"):
                 src_bytes += os.path.getsize(os.path.join(dirpath, fn))

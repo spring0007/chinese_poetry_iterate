@@ -19,11 +19,16 @@
 流式追加、单条覆写。而且它同时就是交换格式——导入 / 导出用的同一个文件，
 不需要再有第三套格式。
 
-# 为什么图片只存相对地址
-存相对路径（如 images/3f2a….jpg）而不是二进制，也不是绝对地址：
+# 为什么图片只存**文件名**
+存纯文件名（如 395f0f006b486c2f.jpg）而不是二进制，也不是带目录的相对路径：
+  - 地址里不带目录前缀，消费方按固定约定（<extras 根>/images/）拼路径即可，
+    不必先判断"这个前缀到底是 images/ 还是别的、要不要再拼一层"；
   - 整个 extras/ 目录可以整体搬走 / 同步到 CDN，地址依然有效；
   - 图片变了不用重写 JSONL；
   - 多个来源引用同一张图只占一份磁盘（按 URL sha1 去重）。
+
+历史的 images/395f….jpg 写法在**读取侧仍然兼容**（image_abs 会认），
+但写入侧一律压平成纯文件名（image_name）——避免两套写法长期并存。
 """
 
 from __future__ import annotations
@@ -68,13 +73,102 @@ FIELD_LABELS = {
     "in": "introduction 作品简介",
     "bg": "background   创作背景",
     "ap": "appreciation 赏析",
-    "im": "images       配图地址数组（相对 extras 根目录，不含二进制）",
-    "src": "source       来源标识（见 KNOWN_SOURCES），本条内容的首个来源",
-    "asrc": "alt sources  追加来源列表（一条记录的内容常有多个贡献方）",
-    "lic": "license      许可协议",
-    "url": "原始出处 URL（用于回溯与署名）",
-    "u": "updated      最后更新时间",
+    "im": "images       配图文件名数组（**纯文件名**，如 395f….jpg；本体在 images/ 目录，不含二进制）",
+    "src": "source       来源标识（见 KNOWN_SOURCES），本条内容的首个来源；**不落库**，只留在 JSONL",
+    "asrc": "alt sources  追加来源列表（一条记录的内容常有多个贡献方）；**不落库**",
+    "lic": "license      许可协议；**不落库**",
+    "url": "原始出处 URL（用于回溯与署名）；**不落库**",
+    "u": "updated      最后更新时间（JSONL 里是本地时间 ISO，落库转成 Unix 整数秒）",
 }
+
+# ---------------- 落库列名（主库 poem_extras 表）----------------
+# 为什么库里不用短键：短键是**存储**优化——JSONL 每一行都要把键名重写一遍，
+# 九万多行乘下来不是零；而 SQLite 的列名是给人和给下游 SQL 看的，tr/nt/ap 这类
+# 缩写会让每个消费方都不得不回来查一次对照表。所以：JSONL 存短键，库里存全名。
+# 注意 bg 的库内列名是 creative_background（不是 background）——它表示"创作背景"，
+# 与 translation / appreciation 一样用完整语义名。
+#
+# 为什么 src / asrc / lic / url 这四列**不落库**（v3.3 起）：
+#   它们是**溯源元数据**，不是渲染内容——App 展示一首诗时用不到"这条赏析从哪个站
+#   抓的""许可是 MIT 还是 CC BY"。而它们的基数还特别高（url 几乎一行一个），
+#   留在库里既占地方又要单独维护索引。JSONL 是权威源，这四类信息在那儿一条不少，
+#   真要溯源/导出署名时读 JSONL 即可（extras.py attribution 就是干这个的）。
+# 只删列不删数据：JSONL 永远是完整的，库里只放消费侧真正要用的 7 列。
+DB_COLUMNS = {
+    "i": "uid",                    # 与主库 poems.uid 一一对应（字符串主键）
+    "tr": "translation",           # 现代汉语译文
+    "nt": "notes",                 # 注释
+    "in": "introduction",          # 作品简介
+    "bg": "creative_background",   # 创作背景
+    "ap": "appreciation",          # 赏析
+    "im": "images",                # 配图文件名数组（纯文件名，不带目录）
+    "u": "updated",                # 最后更新时间（**Unix 整数秒**，见 to_epoch）
+}
+
+# 数组字段落库时用 \x1f 连接，与 poems.tags 是同一套约定。
+# 不存 JSON 文本：库里混两种多值表示，下游每取一列都得先猜它是不是 JSON。
+DB_MULTI = ("images",)
+DB_SEP = "\x1f"
+
+# updated 列的两种形态：JSONL 里是人类可读的本地时间 ISO 串，库里是整数秒。
+# 生成端与解析端都用**本地时间**（time.strftime / time.mktime），两边一致，
+# 所以不牵涉时区换算——这是内部时间戳，只用来比大小和排新,不需要跨时区对齐。
+TS_FMT = "%Y-%m-%dT%H:%M:%S"
+
+
+def to_epoch(v) -> int:
+    """JSONL 的 `u`（本地时间 ISO，如 2026-09-29T16:31:26）-> Unix 秒（int）。
+
+    why 库里存整数而不是原样存文本：
+      - '2026-09-29T16:31:26' 是 19 字节，9.7 万行就是 ~1.1 MB 的纯字符串，换成
+        int 后只占 1~4 字节；
+      - 整数天然可比较、可做区间查询（`WHERE updated > ?`）。ISO 文本想比较就得
+        依赖"字典序恰好等价于时间序"——对定宽格式成立，可一旦有行写成不带前导零
+        或带时区后缀的形态，比较就会**静默**给出错误结果。
+    解析不了的行返回 0，不抛错：一行脏时间不该让整表同步不了；0 也天然可辨认
+    （1970-01-01 不会是真实的更新时间），排查时一眼能看出来。
+    """
+    if v is None or v == "":
+        return 0
+    if isinstance(v, (int, float)):
+        return int(v)
+    s = str(v).strip()
+    if s.isdigit():                     # 已经是秒（有人手写过，或者老的转换结果）
+        return int(s)
+    for fmt in (TS_FMT, "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+        try:
+            return int(time.mktime(time.strptime(s[:19], fmt)))
+        except ValueError:
+            continue
+    return 0
+
+
+def from_epoch(v) -> str:
+    """Unix 秒 -> 本地时间 ISO 串。读侧要给人看时间时用（库里存的是 int）。"""
+    n = int(v or 0)
+    return "" if n <= 0 else time.strftime(TS_FMT, time.localtime(n))
+
+
+def to_db_row(rec: dict) -> dict:
+    """JSONL 记录 -> poem_extras 行。列名一律用长名，缺失字段补空串。
+
+    why 缺失补空串而不是留 NULL：读侧统一 `WHERE translation<>''` 就能筛"有译文的"，
+    不用到处写 `IS NOT NULL AND <>''`——库里已经用空串表示"没有"，保持一致。
+    updated 例外：它补 0（整数列用 0 表示"没记录时间"，与空串同一语义）。
+    """
+    row = {}
+    for short, col in DB_COLUMNS.items():
+        if col == "updated":
+            continue                    # 单独处理成整数，见下
+        v = rec.get(short)
+        if isinstance(v, (list, tuple)):
+            if col in DB_MULTI:
+                v = [image_name(x) for x in v]      # 落库也保证是纯文件名
+            row[col] = DB_SEP.join(str(x).strip() for x in v if str(x).strip())
+        else:
+            row[col] = "" if v is None else str(v).strip()
+    row["updated"] = to_epoch(rec.get("u"))
+    return row
 
 # 已知来源登记表。why 单独登记而不是把许可串散落在每行里：
 #   CC BY 一类的协议要求「署名 + 指向许可全文」。集中登记才能在导出 / 展示时
@@ -158,6 +252,22 @@ def _guess_ext(url: str, content_type: str = "") -> str:
     path = urllib.parse.urlparse(url).path
     ext = os.path.splitext(path)[1].lower()
     return ext if ext and len(ext) <= 5 and ext.isascii() else ".jpg"
+
+
+def image_name(ref) -> str:
+    """
+    任意形态的图片引用 -> **纯文件名**（不含任何目录信息）。
+
+    `images/395f….jpg` / `images\\395f….jpg` / `395f….jpg` -> `395f….jpg`
+
+    why 收敛到一种写法：目录前缀留在数据里，每个消费方都要先判断"要不要拼
+    images/"、拼之前要不要去掉已有的前缀，判断错一次就是一张图显示不出来；
+    而一旦允许前缀，`../` 这类穿越式引用也会跟着被写进来。所以约定成：
+    **数据里只存文件名，目录由消费方按 IMAGE_DIR 补**。
+    读取侧（image_abs）仍兼容历史的 images/ 前缀，写入侧一律经这里压平。
+    """
+    s = str(ref or "").strip().replace("\\", "/")
+    return s.rsplit("/", 1)[-1].strip()
 
 
 def _short(payload: dict) -> str:
@@ -378,7 +488,9 @@ class ExtrasStore:
         for short, long_name in OUT_KEYS.items():
             out[long_name] = rec.get(short, "")
         imgs = rec.get("im") or []
-        out["images"] = imgs
+        # 对外输出也只给纯文件名：老数据里可能还留着 images/ 前缀（迁移前），
+        # 这里顺手压平，调用方拿到的 shapes 始终一致。
+        out["images"] = [n for n in (image_name(x) for x in imgs) if n]
         out["source"] = rec.get("src", "")
         out["alt_sources"] = rec.get("asrc") or []
         out["license"] = rec.get("lic", "")
@@ -428,7 +540,10 @@ class ExtrasStore:
         if isinstance(imgs, (list, tuple)):
             merged = list(rec.get("im") or [])
             for x in imgs:
-                x = str(x).strip().replace("\\", "/")
+                # 一律压平成纯文件名：调用方（GUI 输入框 / 外部导入）可能传
+                # `images/x.jpg` 甚至带路径的写法，存进 JSONL 之前收敛掉，
+                # 免得同一张图在库里出现两种写法。
+                x = image_name(x)
                 if x and x not in merged:
                     merged.append(x)
             if merged:
@@ -550,22 +665,30 @@ class ExtrasStore:
     # ---- 图片 ----------------------------------------------------
     def image_abs(self, rel: str) -> str:
         """
-        相对地址 -> 绝对路径，并做目录穿越防护。
+        图片引用 -> 绝对路径（永远落在 <root>/images/ 下），并做目录穿越防护。
 
-        why 必须校验：rel 来自 JSONL 或外部导入文件，一旦混入 "../../../Windows/..."
-        就会让「打开配图」这个动作变成任意文件读取。
+        **存储约定是纯文件名**（如 395f….jpg）；这里额外兼容历史的
+        `images/395f….jpg` 写法，让老数据不用先迁移也能正常显示。
+
+        why 只认 IMAGE_DIR 这一层前缀、别的目录一律拒：
+          - rel 来自 JSONL 或外部导入文件，放行任意相对路径就等于把
+            「打开配图」变成任意文件读取（`../../Windows/…`）；
+          - 绝对路径虽然在常见系统上跳不出去，却会让「目录可整体搬走 / 挂 CDN」
+            这个前提悄悄失效——配图一旦指向目录外的文件，搬走就全断。
         """
-        rel = str(rel).replace("\\", "/").strip()
-        if not rel:
+        raw = str(rel or "").replace("\\", "/").strip()
+        if not raw:
             raise Rejected("空图片地址")
-        # 绝对地址直接拒：extras 里只应有相对地址（整个目录要能整体搬走 / 挂 CDN），
-        # 放行绝对路径虽然在常见系统上跳不出去，却会让「可搬移」这个前提悄悄失效。
-        if rel.startswith("/") or (len(rel) > 1 and rel[1] == ":"):
-            raise Rejected("图片地址必须是相对路径（相对 extras 目录）：%s" % rel)
-        # 逐个路径段检查，'..' 即便被 normpath 消化掉也先拒一次（纵深防御）
-        if any(p in ("", ".", "..") for p in rel.split("/")):
-            raise Rejected("非法图片地址（含空段或 ..）：%s" % rel)
-        p = os.path.normpath(os.path.join(self.root, rel))
+        head, sep, tail = raw.rpartition("/")
+        if sep:
+            if head != IMAGE_DIR:
+                raise Rejected("非法图片地址（配图只应存文件名，不带目录）：%s" % raw)
+            raw = tail                      # 历史写法 images/x.jpg -> x.jpg
+        if not raw or raw in (".", ".."):
+            raise Rejected("非法图片地址：%s" % rel)
+        if raw.startswith("/") or (len(raw) > 1 and raw[1] == ":"):
+            raise Rejected("非法图片地址（不允许绝对路径）：%s" % rel)
+        p = os.path.normpath(os.path.join(self.root, IMAGE_DIR, raw))
         if os.path.commonpath([p, self.root]) != self.root:
             raise Rejected("非法图片地址（不允许跳出 extras 目录）：%s" % rel)
         return p
@@ -573,10 +696,12 @@ class ExtrasStore:
     def save_image(self, url: str, referer: str = "", timeout: float = 30,
                    max_bytes: int = 12 * 1024 * 1024):
         """
-        下载一张图到 <root>/images/，返回 (相对地址, 是否新下载)。
+        下载一张图到 <root>/images/，返回 (**纯文件名**, 是否新下载)。
 
         文件名 = URL 的 sha1 前 16 位 + 后缀：同一 URL 只会存一份，
         多个来源引用同一张图不占两份空间，重复跑脚本也不会累积副本。
+        返回的是文件名而不是 `images/xxx.jpg`——存进 JSONL 的值不带目录，
+        目录由读取侧按 IMAGE_DIR 补（见 image_name / image_abs）。
         """
         url = str(url).strip()
         if not url.lower().startswith(("http://", "https://")):
@@ -584,10 +709,10 @@ class ExtrasStore:
         os.makedirs(self.imgdir, exist_ok=True)
         ext = _guess_ext(url)
         key = hashlib.sha1(url.encode("utf-8")).hexdigest()[:16]
-        rel = "%s/%s%s" % (IMAGE_DIR, key, ext)
-        dest = os.path.join(self.root, rel)
+        name = "%s%s" % (key, ext)
+        dest = os.path.join(self.imgdir, name)
         if os.path.exists(dest) and os.path.getsize(dest) > 0:
-            return rel, False           # 已存在：命中本地缓存，不再联网
+            return name, False          # 已存在：命中本地缓存，不再联网
 
         req = urllib.request.Request(url, headers=dict(DEFAULT_IMAGE_HEADERS))
         if referer:
@@ -596,16 +721,16 @@ class ExtrasStore:
         # 拿到真实 Content-Type 后重判后缀：URL 里没有后缀、或者带 ?x-oss-process
         # 这类改写参数时，之前按 URL 猜的扩展名很可能是错的。
         ext = _guess_ext(url, ct)
-        rel = "%s/%s%s" % (IMAGE_DIR, key, ext)
-        dest = os.path.join(self.root, rel)
+        name = "%s%s" % (key, ext)
+        dest = os.path.join(self.imgdir, name)
         if os.path.exists(dest) and os.path.getsize(dest) > 0:
-            return rel, False
+            return name, False
         # 校验魔数：Content-Type 可能撒谎，扩展名也可能被写成 .jpg 实际是 HTML 错误页
         if not _looks_like_image(blob):
             raise Rejected("下载到的不是图片（可能是错误页面）：%s" % url)
         with open(dest, "wb") as f:
             f.write(blob)
-        return rel, True
+        return name, True
 
     # ---- 统计 / manifest -----------------------------------------
     def stats(self) -> dict:
@@ -681,7 +806,7 @@ def match_poem(con, title: str, author: str = "", first_line: str = ""):
     a = S.norm_author(author or "").strip()
     if a:
         row = con.execute(
-            "SELECT p.id FROM poems p JOIN authors au ON au.id=p.author_id "
+            "SELECT p.id FROM poems p JOIN authors au ON au.uid=p.author_uid "
             "WHERE p.title=? AND au.name=? ORDER BY p.id LIMIT 1", (t, a)).fetchone()
         if row:
             return row[0]
@@ -711,6 +836,73 @@ def attribution_lines(store: ExtrasStore) -> list:
     return out
 
 
+def normalize_image_names(root: str = None, dry_run: bool = False) -> dict:
+    """
+    把 extras.jsonl 里 `im` 的历史写法（`images/395f….jpg`）统一成**纯文件名**。
+
+    why 单独一个流式重写而不是走 ExtrasStore.put()：
+    put 只写"脏"记录，要迁移全表就得把 9.7 万条全标脏、全塞进 LRU 缓存，
+    内存直接爆；而这里只动每行的 im 字段，逐行读写的内存占用是常数级。
+
+    备份：真的有改动时先写 extras.jsonl.bak-<时间戳>，再原子替换。
+    幂等：已是纯文件名的行原样写出，重复跑第二遍 changed=0。
+    """
+    store = ExtrasStore(root)
+    src = store.jsonl
+    if not os.path.exists(src):
+        raise Rejected("找不到 %s" % src)
+    tmp = src + ".tmp"
+    n_lines = n_changed = n_refs = 0
+    with open(src, "r", encoding="utf-8") as fin, \
+            open(tmp, "w", encoding="utf-8") as fout:
+        for line in fin:
+            s = line.strip()
+            if not s:
+                continue
+            try:
+                rec = json.loads(s)
+            except json.JSONDecodeError:
+                fout.write(line if line.endswith("\n") else line + "\n")
+                continue                    # 坏行原样保留，不替用户做决定
+            n_lines += 1
+            imgs = rec.get("im")
+            if isinstance(imgs, list):
+                fixed = [n for n in (image_name(x) for x in imgs) if n]
+                # 去重但保序（同一张图可能因两种写法被记了两次）
+                seen, dedup = set(), []
+                for n in fixed:
+                    if n not in seen:
+                        seen.add(n)
+                        dedup.append(n)
+                n_refs += len(dedup)
+                if dedup != imgs:
+                    n_changed += 1
+                if dedup:
+                    rec["im"] = dedup
+                else:
+                    rec.pop("im", None)
+            fout.write(_short(rec) + "\n")
+    if n_changed == 0 and not dry_run:
+        os.remove(tmp)
+    return {"file": src, "lines": n_lines, "changed": n_changed,
+            "image_refs": n_refs, "tmp": tmp, "dry_run": dry_run}
+
+
+def apply_normalize_image_names(root: str = None) -> dict:
+    """normalize_image_names 的落盘版：备份 -> 原子替换 -> 重写 manifest。"""
+    import shutil
+    info = normalize_image_names(root, dry_run=True)
+    if info["changed"] == 0:
+        os.remove(info["tmp"])
+        return dict(info, backup="")
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    backup = "%s.bak-%s" % (info["file"], stamp)
+    shutil.copy2(info["file"], backup)
+    os.replace(info["tmp"], info["file"])
+    ExtrasStore(root).load(force=True).write_manifest()
+    return dict(info, backup=backup, dry_run=False)
+
+
 # ---------------------------------------------------------------- CLI
 def main():
     import argparse
@@ -732,7 +924,20 @@ def main():
 
     a = sub.add_parser("attribution", help="输出必须保留的署名清单")
 
+    n = sub.add_parser("normalize-images",
+                       help="把 im 里的 images/xxx.jpg 统一成纯文件名 xxx.jpg")
+    n.add_argument("--apply", action="store_true",
+                   help="真正写回（默认只演练，不落盘）")
+
     args = p.parse_args()
+    if args.cmd == "normalize-images":
+        info = (apply_normalize_image_names(args.root) if args.apply
+                else normalize_image_names(args.root, dry_run=True))
+        if not args.apply:
+            os.remove(info["tmp"])
+        print(json.dumps({k: v for k, v in info.items() if k != "tmp"},
+                         ensure_ascii=False, indent=2))
+        return
     st = ExtrasStore(args.root).load()
     if args.cmd == "stats":
         print(json.dumps(st.stats(), ensure_ascii=False, indent=2))

@@ -38,23 +38,38 @@ print("体积账  %s   %.1f MB   %d 条" % (os.path.abspath(DB), os.path.getsize
 print("=" * 72)
 
 # --- 1. 字典化 vs 直接存字符串
+# 注释从 v3.3 起不在 poems 里（那一列已删，内容住 poem_extras.notes），
+# 所以要单独数；老库没有这张表时按 0 处理。
+_has_ex = cur.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' "
+                      "AND name='poem_extras'").fetchone()[0] > 0
+_notes_sql = "(SELECT COALESCE(SUM(LENGTH(notes)),0) FROM poem_extras)" if _has_ex else "0"
 q = """
 SELECT
   SUM(LENGTH(a.name)) AS author_b,
+  SUM(LENGTH(p.author_uid)) AS author_uid_b,
   SUM(LENGTH(p.title)) AS title_b,
   SUM(LENGTH(r.name)) AS rhythmic_b,
   SUM(LENGTH(s.name)) AS src_b,
   SUM(LENGTH(p.body)) AS body_b,
   SUM(LENGTH(p.tags)) AS tags_b,
-  SUM(LENGTH(p.notes)) AS notes_b
+  %s AS notes_b
 FROM poems p
-LEFT JOIN authors a ON a.id = p.author_id
+LEFT JOIN authors a ON a.uid = p.author_uid
 LEFT JOIN rhythmics r ON r.id = p.rhythmic_id
 LEFT JOIN sources s ON s.id = p.src_id
-"""
+""" % _notes_sql
 r = cur.execute(q).fetchone()
 print("\n[1] 哪些列值得字典化（重复率 <2 的建字典表是净亏损）")
-for col, label, key in (("author_id", "作者", "author_b"), ("rhythmic_id", "词牌", "rhythmic_b"),
+# 作者列单独说，v3.4 起主表里存的是 36 字符的 author_uid（稳定标识），不是 int。
+# 它**不是**一次体积优化：存作者名只要 0.85 MB，存 uid 要 ~12.9 MB。多花的这部分
+# 买的是"重建不变"（见 README §3.1.2）。真正的体积收益来自"不再同时存
+# author_id + author_uid 两份"，以及删掉的那个整数索引。
+u_a = one("SELECT COUNT(DISTINCT author_uid) FROM poems")
+print("    %-4s 唯一值 %-7d 重复率 %8.1f 次/值   逐行存姓名需 %6.2f MB"
+      % ("作者", u_a, n / max(u_a, 1), (r["author_b"] or 0) / MB))
+print("         -> 实存 author_uid(36 字符稳定标识) %.2f MB：买的是重建不变，不是省空间"
+      % ((r["author_uid_b"] or 0) / MB))
+for col, label, key in (("rhythmic_id", "词牌", "rhythmic_b"),
                         ("src_id", "来源", "src_b")):
     u = one("SELECT COUNT(DISTINCT %s) FROM poems" % col)
     print("    %-4s 唯一值 %-7d 重复率 %8.1f 次/值   逐行存需 %6.2f MB   -> 字典化（存 int）"
@@ -81,8 +96,10 @@ print("    每行省约 %d 字节（'song'/'poem' 两列）-> %.2f MB，且无�
 
 # --- 4. 主表构成
 print("\n[4] 主表现状（每行平均字节，正文按 UTF-8 实占算）")
-print("    正文 %.1f 字节  标签+注释 %.1f 字节  其余(id + 3 个 int + score + n_char) 约 12 字节"
-      % (body_b / n, ((r["tags_b"] or 0) + (r["notes_b"] or 0)) / n))
+print("    正文 %.1f 字节  标签+注释 %.1f 字节  author_uid %.1f 字节  "
+      "其余(id + 2 个字典 int + score + n_char) 约 10 字节"
+      % (body_b / n, ((r["tags_b"] or 0) + (r["notes_b"] or 0)) / n,
+         (r["author_uid_b"] or 0) / n))
 print("    正文占主表 %.0f%%——主表已经几乎没有正文之外的冗余可压"
       % (100.0 * body_b / max(body_b + (r["tags_b"] or 0) + (r["notes_b"] or 0), 1)))
 
@@ -97,8 +114,8 @@ except sqlite3.OperationalError:
     print("    （本机构建的 SQLite 未启用 dbstat 虚拟表，跳过）")
 
 # --- 6. 可继续优化的方向
-dup = one("SELECT COUNT(*) FROM (SELECT author_id, body, COUNT(*) c FROM poems "
-          "GROUP BY author_id, body HAVING c > 1)")
+dup = one("SELECT COUNT(*) FROM (SELECT author_uid, body, COUNT(*) c FROM poems "
+          "GROUP BY author_uid, body HAVING c > 1)")
 print("\n[6] 还能再压的吗")
 print("    同作者+同正文 重复组 %d 组（已在构建期去重，这些是跨集合的正常重收）" % dup)
 print("    结论：正文之外已无可观冗余，再要缩小只能靠压缩算法或不打包平仄")

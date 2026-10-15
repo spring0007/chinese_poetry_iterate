@@ -2,7 +2,7 @@
 """
 源数据注册表与读取器。
 
-why 单独建这一层：源库有 16 个集合、正文字段名 4 种（paragraphs/content/para/spells）、
+why 单独建这一层：源库有 17 个集合、正文字段名 4 种（paragraphs/content/para/spells）、
 作者字段名 2 种、有无 id 不一致。若把兼容逻辑散进构建流程，每加一个集合就要改主流程。
 这里把所有"脏"收敛成一张表，主流程只消费统一记录。
 
@@ -136,6 +136,15 @@ COLLECTIONS: List[Collection] = [
     # 作为"异文版本"单独成包，默认不进主库，避免检索结果重复。
     Collection("yuding-tangshi", "tang", "poem", r"御定全唐詩\json\*.json",
                notes="notes", extra=["volume", "biography", "no#"], optional=True),
+    # 近现代诗词：2026-10 自 shicihui.com 近现代分类逐页（494 页）采集，
+    # 11848 首 / 101 位作者，分片命名与 全唐诗 同构（poet.jinxiandai.NNNN.json，
+    # 每片 1000 首），每条带 UUID 的 id，故 has_id=True，可直接复用全唐诗那条
+    # 「按 id 回溯源库」的路径。dynasty=modern 与 kind=poem 都已是 schema 里的既有枚举
+    # （modern=9 就是为该集预留的），不需要改编码表。
+    # why 追加在列表**末尾**而不是插进同事之间：poems.id 的低 24 位是集合内序号，
+    # 插到中间会让其后每个集合的 seq 整体位移、id 全变；追加则一个既有 id 都不动。
+    Collection("jinxiandai", "modern", "poem", r"近现代\poet.jinxiandai.*.json",
+               has_id=True),
 ]
 
 # ---------------------------------------------------------------- 外接集合
@@ -239,7 +248,7 @@ AUTHOR_SOURCES: List[AuthorSource] = [
     AuthorSource("authors.song", "song", r"全唐诗\authors.song.json"),
     AuthorSource("songci.authors", "song", r"宋词\author.song.json", desc_key="description"),
     AuthorSource("nantang.authors", "wudai", r"五代诗词\nantang\authors.json"),
-    # 元曲此前完全没有作者文件，正文里的元曲作者只能退化为佚名（author_id=0）。
+    # 元曲此前完全没有作者文件，正文里的元曲作者只能退化为佚名（author_uid=''）。
     # 字段结构与 全唐诗\authors.tang.json 一致（desc/name/id）。
     AuthorSource("yuanqu.authors", "yuan", r"元曲\authors.json"),
     # 阶段 2 新建：这四个语料此前同样没有作者文件，其作者全部退化为佚名。
@@ -252,6 +261,10 @@ AUTHOR_SOURCES: List[AuthorSource] = [
     # 御定全唐詩（清康熙年奉敕编纂，900 卷）同样无作者文件，
     # 正文在 json\ 子目录下分卷存放。字段结构同上。
     AuthorSource("yuding.authors", "tang", r"御定全唐詩\authors.json"),
+    # 近现代作者小传：与上面的 jinxiandai 一集同源（shicihui.com 采集，101 位）。
+    # 字段结构与 全唐诗\authors.tang.json 一致（desc/name/id），dynasty 必须与集合
+    # 的 modern 完全相同，否则 load_authors() 出来的名字挂不到那批作品上。
+    AuthorSource("jinxiandai.authors", "modern", r"近现代\authors.jinxiandai.json"),
 ]
 
 # ---------------------------------------------------------------- 关联数据
@@ -341,7 +354,7 @@ def pick_title(rec: dict, coll: "Collection", body: List[str]) -> str:
 
 
 def load_authors() -> List[dict]:
-    """作者库。名字同样做简体归一，佚名类直接丢掉——主库里 author_id=0 即佚名，
+    """作者库。名字同样做简体归一，佚名类直接丢掉——主库里 author_uid='' 即佚名，
     不需要为"无名氏/無名氏/不详"这些占位名建条目。"""
     import schema as S
     out = []
