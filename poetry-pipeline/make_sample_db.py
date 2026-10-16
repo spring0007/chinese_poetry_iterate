@@ -12,8 +12,13 @@
   why 不直接取 id 最小的 100 条：那会让每组几乎全是同一本书、同一个作者的连续条目，
   UI 上一眼就能看出是造出来的数据；而优先取带资料的，是为了让译文 / 赏析 / 配图
   这几个面板在测试库上真的有内容可渲染（否则一打开全是空面板，等于没测）。
+- 另外**强制保留全局 score 最高的 --top-score 首**（默认 100），不论落在哪组。
+  why 要单列这条：上面那步是"每组都有"，抽签性质，高分榜头部全是唐诗/宋诗，
+  随机抽样很可能整榜缺席 —— 于是"按热度排序 / 热门推荐"这类 UI 在测试库上没法验。
+  这 N 首是**额外叠加**在分组配额之上的（若已被某组抽中就只去重，不占额外名额）。
 - 固定 seed 保证**可复现**：同一条命令跑两次得到一模一样的库，"第 37 条显示不对"
-  这种描述才有意义，否则每次重建数据都换一批，问题无法复现。
+  这种描述才有意义，否则每次重建数据都换一批，问题无法复现。高分榜有 id 兜底排序，
+  同样可复现（score 并列时按 id 升序取，不会因 SQLite 内部顺序不同而漂移）。
 
 # 为什么沿用主库的 id / uid，不重新编号
 主库的平仄包 poetry-strains.db 是按 **id** 关联的。子集化之后 id 保持原值，
@@ -46,13 +51,14 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf8"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 
-def pick_ids(src: str, per_group: int, seed: int):
-    """挑出要保留的 poems.id，返回 (id 列表, {组名: 实际条数})。
+def pick_ids(src: str, per_group: int, seed: int, top_n: int = 100):
+    """挑出要保留的 poems.id，返回 (id 列表, {组名: 实际条数}, 高分榜统计)。
 
     why 在 Python 里分组、而不是写一段窗口函数 SQL：这里要的是"带资料的优先 +
     组内随机洗牌 + 报告每组实际取到多少条"三段逻辑，SQL 能写，但会变成一段没人
     愿意维护的嵌套子查询；而这点数据量（几十万行）在内存里过一遍只要几秒。
     """
+    top_n = max(0, top_n)
     con = sqlite3.connect(src)
     try:
         has_ex = con.execute(
@@ -65,6 +71,15 @@ def pick_ids(src: str, per_group: int, seed: int):
         for pid, uid in con.execute("SELECT id, uid FROM poems"):
             key = (pid >> (S.KIND_BITS + S.SEQ_BITS), (pid >> S.SEQ_BITS) & 0x7)
             buckets.setdefault(key, []).append((pid, uid in rich_uids))
+        # 全局高分榜：score 最高的 top_n 首，不论落在哪组都保进来。
+        # why 走 WHERE score>0：score 是 heat_score.py 产出的 0-255 量化热度，0 表示
+        # 没有热度数据（诗经/元曲/近现代等未评估的集合全是 0），把它们算进"高分榜"
+        # 只会用 score=0 的条目填满尾部，失去意义——库小到不够 top_n 条时就少取。
+        # id 兜底排序：score 并列（100 分就有成百上千首）时按 id 升序，保证两次构建
+        # 抽到的是同一批，可复现性不被 SQLite 的内部行序左右。
+        top = [r[0] for r in con.execute(
+            "SELECT id FROM poems WHERE score > 0 ORDER BY score DESC, id ASC LIMIT ?",
+            (top_n,))] if top_n else []
     finally:
         con.close()
 
@@ -82,11 +97,19 @@ def pick_ids(src: str, per_group: int, seed: int):
         picked.extend(got)
         dyn, kind = S.DYNASTY_NAME.get(key[0], "?%d" % key[0]), S.KIND_NAME.get(key[1], "?%d" % key[1])
         detail["%s/%s" % (dyn, kind)] = len(got)
-    return picked, detail
+
+    # 高分榜叠加到分组配额之上：已被某组抽中的只去重、不占额外的"每组几条"。
+    picked_set = set(picked)
+    added = [i for i in top if i not in picked_set]
+    if added:
+        picked.extend(added)
+        picked.sort()                   # 同样回主库顺序
+    return picked, detail, {"n": top_n, "kept": len(top), "added": len(added)}
 
 
-def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42) -> dict:
-    ids, detail = pick_ids(src, per_group, seed)
+def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42,
+                 top_n: int = 100) -> dict:
+    ids, detail, top = pick_ids(src, per_group, seed, top_n)
     if not ids:
         raise SystemExit("没抽到任何诗——源库可能是空的：%s" % src)
 
@@ -157,6 +180,10 @@ def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42) -> di
             ("sample_parent_rows", parent[0] if parent else "?"),
             ("sample_per_group", str(per_group)),
             ("sample_seed", str(seed)),
+            # 高分榜口径也要落库：它同样影响"库里有哪些诗"，只写 per_group/seed
+            # 不足以复现这份库。
+            ("sample_top_score", str(top["n"])),
+            ("sample_top_added", str(top["added"])),
             ("sample_groups", json.dumps(detail, ensure_ascii=False, sort_keys=True)),
             ("sample_built_at", time.strftime("%Y-%m-%dT%H:%M:%S")),
             # 简化库不建 FTS5：几百到几千行上用 LIKE 已经足够快，而 FTS 的体积放大
@@ -182,35 +209,43 @@ def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42) -> di
     con.execute("VACUUM")
     size = os.path.getsize(out)
     con.close()
-    return {"stats": stats, "detail": detail, "size": size, "out": out, "ids": len(ids)}
+    return {"stats": stats, "detail": detail, "size": size, "out": out,
+            "ids": len(ids), "top": top}
 
 
 def main():
     ap = argparse.ArgumentParser(
-        description="生成简化版测试库：每个「朝代 × 类型」抽 N 首")
+        description="生成简化版测试库：每个「朝代 × 类型」抽 N 首，并保底收全局高分榜")
     ap.add_argument("--db", default=os.path.join(HERE, "dist", "poetry.db"),
                     help="源主库，默认 ./dist/poetry.db")
     ap.add_argument("--out", default=os.path.join(HERE, "dist", "poetry-sample.db"),
                     help="输出库，默认 ./dist/poetry-sample.db")
     ap.add_argument("--per-group", type=int, default=100,
                     help="每个 (朝代,类型) 最多抽几首；0 = 不限（默认 100）")
+    ap.add_argument("--top-score", type=int, default=100,
+                    help="额外强制保留全局 score 最高的几首；0 = 不要（默认 100）")
     ap.add_argument("--seed", type=int, default=42, help="随机种子，固定值保证可复现")
     ap.add_argument("--dry-run", action="store_true", help="只报告抽取口径，不写文件")
     args = ap.parse_args()
 
     t0 = time.time()
     if args.dry_run:
-        ids, detail = pick_ids(args.db, args.per_group, args.seed)
+        ids, detail, top = pick_ids(args.db, args.per_group, args.seed, args.top_score)
         for k, v in sorted(detail.items()):
             print("  %-14s %4d 首" % (k, v))
+        print("  %-14s %4d 首（其中 %d 首是组外新增）"
+              % ("[score 高分榜]", top["kept"], top["added"]))
         print("共 %d 组 / %d 首（未写文件）" % (len(detail), len(ids)))
         return
 
     print("源库 %s" % args.db)
-    r = build_sample(args.db, args.out, args.per_group, args.seed)
+    r = build_sample(args.db, args.out, args.per_group, args.seed, args.top_score)
     print("\n抽取结果（%d 组 / %d 首）：" % (len(r["detail"]), r["ids"]))
     for k, v in sorted(r["detail"].items()):
         print("  %-14s %4d 首" % (k, v))
+    t = r["top"]
+    print("  %-14s %4d 首（其中 %d 首是组外新增）"
+          % ("[score 高分榜]", t["kept"], t["added"]))
     s = r["stats"]
     print("\n产物 %s" % r["out"])
     print("  %.1f MB   poems %d / authors %d / rhythmics %d / sources %d / poem_extras %d"

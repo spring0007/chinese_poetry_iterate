@@ -154,6 +154,46 @@ def attach_strains(poems: List[Poem], colls: List[SRC.Collection]):
 
 
 # ============================================================ 3. 热度挂接
+# 热度评估的权威产物：rank/heat-scores.json（扁平 {uid: 综合分 1-100}，2026-10-16 起重评）。
+# 评分规则/权重/星级阈值见 rank/heat-meta.json；富明细归档于 poetry-pipeline/dist/backups/。
+# 旧五引擎原始快照（rank/poet、rank/ci 分片）已过期，仅在没有该文件时兜底。
+HEAT_FILE = os.path.join(os.path.dirname(HERE), "rank", "heat-scores.json")
+
+
+def _attach_heat_json(poems: List[Poem]) -> int:
+    """主路径：heat-scores.json 按 uid 精确挂接。
+
+    why uid 而不是 (author,title)：rank 原始快照既没有 id 也没有正文，旧构建只能拿
+    (作者, 题名/词牌) 字符串关联——同作者同题名的多首作品共享一个值，还可能挂错。
+    heat-scores.json 是重评产物，直接以 poems.uid 为键，关联精确且随内容稳定。
+
+    文件格式（2026-10-16 起）：扁平 {uid: 综合分(1-100)}，uid 字典序每行一条；
+    兼容旧嵌套 {meta, scores:{uid:{...,"c":分}}}（取 c）。规则见 rank/heat-meta.json。
+
+    调用时机硬约束：必须在 normalize_all + dedup **之后**。make_uid 用的是归一
+    （简体/去空格）后的作者、标题、正文，提前算出来的 uid 与落库值不一致，会全部
+    挂空。旧实现挂在第 2 步（归一前）正是只能用字符串键的原因之一。
+    """
+    with open(HEAT_FILE, encoding="utf-8") as f:
+        data = json.load(f)
+    if isinstance(data, dict) and "scores" in data:
+        heat = {uid: rec["c"] for uid, rec in data["scores"].items()}  # 旧嵌套格式
+    else:
+        heat = data                                             # 扁平 {uid: score}
+    hit = 0
+    for p in poems:
+        score = heat.get(make_uid(p.dynasty, p.author, p.title, p.body))
+        if score is not None:
+            p.score = int(score)
+            hit += 1
+    print("  热度挂接 %-20s 命中=%-7d / %d (%.1f%%)  [键=uid]"
+          % ("heat-scores.json", hit, len(poems), 100.0 * hit / max(1, len(poems))))
+    if hit == 0:
+        warn("heat-scores.json 未命中任何记录：uid 与当前构建不一致？"
+             "（该文件应为同一套语料上重评的产物）")
+    return hit
+
+
 def _rank_key(rec: dict, kind: str) -> tuple:
     """rank/poet 用 (author,title)；rank/ci 只有 (author,rhythmic)。"""
     if kind == "ci":
@@ -161,12 +201,13 @@ def _rank_key(rec: dict, kind: str) -> tuple:
     return (rec.get("author", ""), rec.get("title", ""))
 
 
-def attach_rank(poems: List[Poem], colls: List[SRC.Collection]):
-    """
+def _attach_rank_shards(poems: List[Poem], colls: List[SRC.Collection]):
+    """旧路径（兼容）：没有 heat-scores.json 时，退回五引擎原始快照的字符串关联。
+
     rank/ 没有 id。曾经试过按分片序号位置对齐，实测只能命中 3.5%——
     rank 是按旧快照抓的，与当前库顺序早就对不上。
-    因此只用内容键连接：(author,title) 对诗，(author,rhythmic) 对词，
-    覆盖率 99%+。键冲突（同一作者同名词作）取最大值，并在覆盖率不足时告警。
+    因此只用内容键连接：(author,title) 对诗，(author,rhythmic) 对词。
+    键冲突（同一作者同名词作）取最大值，并在覆盖率不足时告警。
     不静默挂错——热度挂到错误的诗上，比没有热度更糟。
     """
     by_src = collections.defaultdict(list)
@@ -204,6 +245,15 @@ def attach_rank(poems: List[Poem], colls: List[SRC.Collection]):
         elif hit < total * 0.9:
             warn("%s 热度覆盖率仅 %.1f%%，排序结果可能不完整"
                  % (coll.name, 100.0 * hit / max(1, total)))
+
+
+def attach_heat(poems: List[Poem], colls: List[SRC.Collection]):
+    """热度挂接入口：优先 heat-scores.json（uid 精确关联），缺失才退回旧快照。"""
+    if os.path.exists(HEAT_FILE):
+        _attach_heat_json(poems)
+    else:
+        warn("未找到 %s；退回原始 rank 快照关联（快照已过期，仅作兼容）" % HEAT_FILE)
+        _attach_rank_shards(poems, colls)
 
 
 def merge_poem_authors(authors: List[dict], poems: List[Poem]) -> List[dict]:
@@ -922,11 +972,13 @@ def main():
         attach_strains(poems, colls)
     else:
         print("  平仄：未启用（--with-strains 才出包），跳过 strains/ 读取")
-    attach_rank(poems, colls)
+    # 热度不在这里挂：它按 uid 关联（heat-scores.json），必须等第 3 步归一+去重之后
 
-    print("\n=== 3. 归一（简体 / 去空格 / 佚名置空）· 去重 · 标签增强 ===")
+    print("\n=== 3. 归一（简体 / 去空格 / 佚名置空）· 去重 · 热度挂接 · 标签增强 ===")
     normalize_all(poems)
     poems = dedup(poems)
+    # 热度必须在归一+去重之后挂：make_uid 用归一后的字段，去重会丢重复行
+    attach_heat(poems, colls)
     enrich_tags(poems)
 
     print("\n=== 4. 作者库 ===")

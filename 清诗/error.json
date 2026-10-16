@@ -1,0 +1,97 @@
+[
+ {
+  "title": "蝶恋花·辛苦最怜天上月",
+  "author": "纳兰性德",
+  "dynasty": "清",
+  "field": "content",
+  "status": "diff_content",
+  "note": "与仓库既有数据集正文不一致(相似度 0.95)",
+  "similarity": 0.95,
+  "guwendao": {
+   "title": "蝶恋花·辛苦最怜天上月",
+   "author": "纳兰性德",
+   "dynasty": "清",
+   "paragraphs": [
+    "辛苦最怜天上月，一昔如环，昔昔都成玦。若似月轮终皎洁，不辞冰雪为卿热。(都成 一作：长如；若似 一作：但似)",
+    "无那尘缘容易绝，燕子依然，软踏帘钩说。唱罢秋坟愁未歇，春丛认取双栖蝶。(无那尘缘 一作：无奈钟情)"
+   ],
+   "url": "https://www.guwendao.net/shiwenv_26b87875bd77.aspx"
+  },
+  "other_site": {
+   "site": "仓库既有数据集",
+   "source": "纳兰性德",
+   "norm_text": "辛苦最怜天上月一夕如环夕夕都成玦若似月轮终皎洁不辞冰雪为卿热无那尘缘容易绝燕子依然软踏帘钩说唱罢秋坟愁未歇春丛认取双栖蝶"
+  }
+ },
+ {
+  "title": "如梦令·黄叶青苔归路",
+  "author": "纳兰性德",
+  "dynasty": "清",
+  "field": "content",
+  "status": "diff_content",
+  "note": "与仓库既有数据集正文不一致(相似度 0.61)",
+  "similarity": 0.61,
+  "guwendao": {
+   "title": "如梦令·黄叶青苔归路",
+   "author": "纳兰性德",
+   "dynasty": "清",
+   "paragraphs": [
+    "黄叶青苔归路，屧粉衣香何处。雨息竟沉沉，今夜相思几许。秋雨，秋雨，一半因风吹去。(版本一)",
+    "消叶纷纷归路，残月晓风何处。雨息半浮沈，今夜相思几许。秋雨，秋雨，一半因风吹去。(版本二)"
+   ],
+   "url": "https://www.guwendao.net/shiwenv_01166948db44.aspx"
+  },
+  "other_site": {
+   "site": "仓库既有数据集",
+   "source": "纳兰性德",
+   "norm_text": "黄叶青苔归路屧粉衣香何处消息竟沉沉今夜相思几许秋雨秋雨一半因风吹去"
+  }
+ },
+ {
+  "title": "渔父·收却纶竿落照红",
+  "author": "纳兰性德",
+  "dynasty": "清",
+  "field": "content",
+  "status": "diff_content",
+  "note": "与仓库既有数据集正文不一致(相似度 0.96)",
+  "similarity": 0.963,
+  "guwendao": {
+   "title": "渔父·收却纶竿落照红",
+   "author": "纳兰性德",
+   "dynasty": "清",
+   "paragraphs": [
+    "收却纶竿落照红，秋风宁为剪芙蓉。人淡淡，水蒙蒙，吹入芦花短笛中。"
+   ],
+   "url": "https://www.guwendao.net/shiwenv_c08949a148c4.aspx"
+  },
+  "other_site": {
+   "site": "仓库既有数据集",
+   "source": "纳兰性德",
+   "norm_text": "收却纶竿落照红秋风宁为翦芙蓉人淡淡水蒙蒙吹入芦花短笛中"
+  }
+ },
+ {
+  "title": "采桑子·彤霞久绝飞琼字",
+  "author": "纳兰性德",
+  "dynasty": "清",
+  "field": "content",
+  "status": "diff_content",
+  "note": "与仓库既有数据集正文不一致(相似度 0.95)",
+  "similarity": 0.955,
+  "guwendao": {
+   "title": "采桑子·彤霞久绝飞琼字",
+   "author": "纳兰性德",
+   "dynasty": "清",
+   "paragraphs": [
+    "彤霞久绝飞琼字，人被谁边？人被谁边，今夜玉清眠不眠。",
+    "香销被冷残灯灭，静数秋天，静数秋天，又误心期到下弦。"
+   ],
+   "url": "https://www.guwendao.net/shiwenv_8fca3b44aa3b.aspx"
+  },
+  "other_site": {
+   "site": "仓库既有数据集",
+   "source": "纳兰性德",
+   "norm_text": "彤霞久绝飞琼字人在谁边人在谁边今夜玉清眠不眠香销被冷残灯灭静数秋天静数秋天又误心期到下弦"
+  }
+ }
+]

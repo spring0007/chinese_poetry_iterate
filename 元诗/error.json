@@ -1,0 +1,52 @@
+[
+ {
+  "title": "临平泊舟",
+  "author": "黄庚",
+  "dynasty": "元",
+  "field": "content",
+  "status": "diff_content",
+  "note": "与仓库既有数据集正文不一致(相似度 0.93)",
+  "similarity": 0.929,
+  "guwendao": {
+   "title": "临平泊舟",
+   "author": "黄庚",
+   "dynasty": "元",
+   "paragraphs": [
+    "客舟系缆柳阴旁，湖影侵篷夜气凉。",
+    "万顷波光摇月碎，一天风露藕花香。"
+   ],
+   "url": "https://www.guwendao.net/shiwenv_625122d98389.aspx"
+  },
+  "other_site": {
+   "site": "仓库既有数据集",
+   "source": "全唐诗",
+   "norm_text": "客舟系缆柳阴傍湖影侵蓬夜气凉万顷波光摇月碎一天风露藕花香"
+  }
+ },
+ {
+  "title": "余杭四月",
+  "author": "白珽",
+  "dynasty": "元",
+  "field": "content",
+  "status": "diff_content",
+  "note": "与仓库既有数据集正文不一致(相似度 0.95)",
+  "similarity": 0.95,
+  "guwendao": {
+   "title": "余杭四月",
+   "author": "白珽",
+   "dynasty": "元",
+   "paragraphs": [
+    "四月馀杭道，一晴生意繁。",
+    "朱樱青豆酒，绿草白鹅村。",
+    "水满船头滑，风轻袖影翻。",
+    "几家蚕事动，寂寂昼门关。"
+   ],
+   "url": "https://www.guwendao.net/shiwenv_1cdd722018af.aspx"
+  },
+  "other_site": {
+   "site": "仓库既有数据集",
+   "source": "全唐诗",
+   "norm_text": "四月余杭道一晴生意繁朱樱青豆酒绿草白鹅村水满船头滑风轻袖影翻几家蚕事动寂寂昼关门"
+  }
+ }
+]

@@ -145,6 +145,19 @@ COLLECTIONS: List[Collection] = [
     # 插到中间会让其后每个集合的 seq 整体位移、id 全变；追加则一个既有 id 都不动。
     Collection("jinxiandai", "modern", "poem", r"近现代\poet.jinxiandai.*.json",
                has_id=True),
+    # 2026-10 补全的缺失朝代（古文岛分站采集，stage1/2/3 产出）。
+    # 命名 <code>-new 以区别于既有集合；追加在列表**末尾**，避免 poems.id 的
+    # 集合内 seq 位移（见上方 jinxiandai 注释）。复用 poet.<code>.0.json
+    # （body=paragraphs / title / author / id 均为既有命名约定），has_id=True
+    # 以便按 id 回溯源库。朝代编码 weijin/nanbeichao/sui/jin 已在 schema.py 新增。
+    Collection("han-new", "han", "poem", r"汉\poet.han.*.json", has_id=True),
+    Collection("weijin-new", "weijin", "poem", r"魏晋\poet.weijin.*.json", has_id=True),
+    Collection("nanbeichao-new", "nanbeichao", "poem", r"南北朝\poet.nanbeichao.*.json", has_id=True),
+    Collection("sui-new", "sui", "poem", r"隋\poet.sui.*.json", has_id=True),
+    Collection("jin-new", "jin", "poem", r"金\poet.jin.*.json", has_id=True),
+    Collection("yuan-new", "yuan", "poem", r"元诗\poet.yuanshi.*.json", has_id=True),
+    Collection("ming-new", "ming", "poem", r"明\poet.ming.*.json", has_id=True),
+    Collection("qing-new", "qing", "poem", r"清诗\poet.qingshi.*.json", has_id=True),
 ]
 
 # ---------------------------------------------------------------- 外接集合

@@ -1,0 +1,42 @@
+{
+ "name": "heat-meta",
+ "rubric_version": "1.0",
+ "generated_at": "2026-10-16T17:34:50",
+ "key": "诗词 uid（schema.make_uid 内容派生，重建不变）",
+ "source": "rank/ 五引擎搜索结果快照（百度/必应中国/必应国际/360/谷歌），抓取于历史快照、已过期，仅作热度证据",
+ "online_query": false,
+ "credibility": "未联网实时查询。评分由既有搜索引擎快照与库内结构化证据（译文/注释/赏析/简介/配图）按四维模型规则化估算，可复现；不编造精确指数，历史快照数字可能与当前实际有出入。",
+ "dims": {
+  "b": "传播广度",
+  "s": "时间跨度",
+  "p": "接受深度",
+  "n": "当代热度"
+ },
+ "weights": {
+  "breadth": 0.3,
+  "span": 0.2,
+  "depth": 0.25,
+  "now": 0.25
+ },
+ "tiers": "五引擎 log10(1+命中) 均值分档：>=5.0->5, >=4.4->4.5, >=3.6->4.0, >=3.1->3.0, >=2.65->2.0, 其余 1.5；当代热度用 0.6*log(百度)+0.4*log(360)",
+ "span_rule": "朝代先验：preqin=5.0; tang=4.5; song=4.5; han=4.0; wudai=4.0; weijin=4.0; nanbeichao=4.0; sui=4.0; jin=3.5; yuan=3.5; ming=3.0; qing=3.0; modern=2.0; unknown=2.5; custom=2.5；带译文且带赏析 +0.5（选本/教材证据，封顶 5）",
+ "depth_rule": "1.5 + 0.75*译文 + 0.75*注释 + 1.0*赏析 + 0.5*(简介|背景) + 0.5*配图，封顶 5",
+ "star_thresholds": {
+  "5": 90,
+  "4": 75,
+  "3": 55,
+  "2": 35,
+  "1": 0
+ },
+ "composite": "20 * (0.30*广度 + 0.20*跨度 + 0.25*深度 + 0.25*当代)，1-100",
+ "limitations": [
+  "同作者同题名/词牌的多首作品共享热度估值（rank 无正文，无法逐首区分，与旧构建同口径）",
+  "仅评估有 rank 快照的 tang-poem/song-poem/song-ci 三个集合；其余集合 score=0",
+  "搜索引擎快照为历史数据，反映的是抓取时点的热度结构"
+ ],
+ "n_scored": 329202,
+ "scores_file": "heat-scores.json",
+ "format": "扁平 JSON：{uid: 综合热度分(1-100 整数)}，uid 字典序、每行一条，便于按 uid O(1) 读写；四维分/星级/评语/引擎证据见归档 details 文件",
+ "flattened_at": "2026-10-16T18:08:25",
+ "details_archive": "poetry-pipeline/dist/backups/heat-scores-details-20261016-180824.json"
+}
