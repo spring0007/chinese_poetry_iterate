@@ -1,0 +1,78 @@
+{
+  "schema": "1.0",
+  "compat_schema": "3.4",
+  "generated_at": "2026-10-17T20:27:22",
+  "root": "extras",
+  "fields": {
+    "i": "诗的稳定 uid，与主库 poems.uid 一一对应（内容派生，重建不变；早于 schema 3.1 的老数据这里是数字 poems.id）",
+    "tr": "translation  现代汉语译文",
+    "nt": "notes        注释",
+    "in": "introduction 作品简介",
+    "bg": "background   创作背景",
+    "ap": "appreciation 赏析",
+    "im": "images       配图文件名数组（**纯文件名**，如 395f….jpg；本体在 images/ 目录，不含二进制）",
+    "src": "source       来源标识（见 KNOWN_SOURCES），本条内容的首个来源；**不落库**，只留在 JSONL",
+    "asrc": "alt sources  追加来源列表（一条记录的内容常有多个贡献方）；**不落库**",
+    "lic": "license      许可协议；**不落库**",
+    "url": "原始出处 URL（用于回溯与署名）；**不落库**",
+    "u": "updated      最后更新时间（JSONL 里是本地时间 ISO，落库转成 Unix 整数秒）"
+  },
+  "image_dir": "images",
+  "count": 99518,
+  "field_counts": {
+    "tr": 86804,
+    "nt": 5280,
+    "in": 990,
+    "bg": 3197,
+    "ap": 91956
+  },
+  "sources": [
+    {
+      "name": "chagushici",
+      "license": "未声明开放许可",
+      "home": "https://www.chagushici.com/",
+      "attribution": "译文/注释/赏析/创作背景来源：查古诗词 chagushici.com。该站未声明开放许可，仅建议自用或内部研究，对外分发前请先取得授权",
+      "records": 89310
+    },
+    {
+      "name": "poetry-collection",
+      "license": "MIT",
+      "home": "https://github.com/open-chinese/poetry-collection",
+      "attribution": "AI-generated appreciation from open-chinese/poetry-collection (MIT)",
+      "records": 15044
+    },
+    {
+      "name": "guwendao",
+      "license": "unknown",
+      "home": "",
+      "attribution": "",
+      "records": 2243
+    },
+    {
+      "name": "llm",
+      "license": "AI-generated",
+      "home": "",
+      "attribution": "内容由本地大模型生成，未经人工校勘，仅供参考",
+      "records": 990
+    },
+    {
+      "name": "poem-notes",
+      "license": "unknown",
+      "home": "",
+      "attribution": "",
+      "records": 781
+    },
+    {
+      "name": "shuge",
+      "license": "CC BY 4.0",
+      "home": "https://www.shuge.org/",
+      "attribution": "图片来源：书格 shuge.org，公有领域古籍数字化资源，CC BY 4.0",
+      "records": 1
+    }
+  ],
+  "images": {
+    "refs": 41181,
+    "files": 450,
+    "bytes": 2681792
+  }
+}
