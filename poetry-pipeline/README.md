@@ -438,7 +438,7 @@ python app.py --db ./dist/poetry.db --strains-db ./dist/poetry-strains.db
   > 写入层会往 stderr 打一行 `poems_uid_stale` 提示，需要按内容重新映射外部引用。改名属破坏性操作，  
   > 尽量只改简介。
 - **扩展资料（译文 / 注释 / 作品简介 / 创作背景 / 赏析 / 配图）**：点「扩展资料」或右键同名菜单，  
-  弹出六合一编辑窗。这些内容存在**独立目录** `dist/extras/`（`extras.jsonl` + `images/`），  
+  弹出六合一编辑窗。这些内容存在**独立目录** `extras/`（`extras-*.jsonl` 分片 + `images/`），  
   图片本体下载到本地而 JSONL 里只存地址——详见 §5.5。
   > **v3.2 起**：同一份内容还会被 `build.py` **重放**进主库的 `poem_extras` 表（见 §5.6），  
   > 以便和诗词一起 JOIN 查询。JSONL 仍是权威源，**写路径不变**——窗口写的是 extras，  
@@ -530,7 +530,7 @@ python store.py --db ./dist/poetry.db import ./my-poems.jsonl   # 仅在自动�
 ### 5.5 扩展属性层 extras.py（译文 / 注释 / 简介 / 背景 / 赏析 / 配图）
 
 主库只存「原文 + 最小元数据」。下面这六项是**稀疏、大块、持续累积**的补充内容，  
-走一套完全独立的存储：`extras.py` + `dist/extras/` 目录。
+走一套完全独立的存储：`extras.py` + `extras/` 目录。
 
 | 字段   | 含义                 | 存储短键 |
 | ---- | ------------------ | ---- |
@@ -548,7 +548,7 @@ python store.py --db ./dist/poetry.db import ./my-poems.jsonl   # 仅在自动�
    重跑构建完全免疫。
 2. **仍然稀疏**——35.7 万首里 9.7 万首有扩展资料（27%），剩下 73% 一行都没有，  
    塞进 `poems` 主表等于让每行都背上 6 个空字段。
-3. **便于分发**——整个 `dist/extras/` 可直接挂 CDN，消费方不必理解 sqlite  
+3. **便于分发**——整个 `extras/` 可直接挂 CDN，消费方不必理解 sqlite  
    结构，也不用为了读两条赏析 ATTACH 一个上百 MB 的库。
 
 > **v3.2 / v3.3 补一句**：上面三条仍然成立（JSONL 依旧是权威源，也是分发的形态），  
@@ -561,9 +561,13 @@ python store.py --db ./dist/poetry.db import ./my-poems.jsonl   # 仅在自动�
 **目录结构与消费方式：**
 
 ```
-dist/extras/
+extras/                       # 注意：不在 dist/ 下——dist/ 被 .gitignore 整目录忽略，
+│                             # 而 extras 是采集成果、重建不出来，必须有版本保护
 ├── manifest.json     元信息：条数、字段表、来源登记、许可、图片统计
-├── extras.jsonl      每行一首（JSON Lines，稀疏字段）
+├── extras-0001.jsonl 每行一首（JSON Lines，稀疏字段）
+├── extras-0002.jsonl …按 60MB 一片自动切分
+├── extras-0003.jsonl why 分片：GitHub 单文件硬限 100MB，整份早过百 MB，
+│                     不分片就永远提交不上去（flush() 每次重写都会重新切片）
 ├── _cache/           外部原始文件的下载缓存（27.8 MB，避免重复下载）
 └── images/           图片本体，文件名 = URL 的 sha1 前 16 位
 ```
@@ -632,7 +636,7 @@ GitHub raw 支持 Range，返回 206）、**坏缓存自删**（半份 JSON 若�
 所以 v3.2 起 `build.py` 会把 `extras.jsonl` **重放**成主库里的 `poem_extras` 表：
 
 ```
-分工：dist/extras/extras.jsonl 是**权威源**，poem_extras 是由它重放出来的只读镜像。
+分工：extras/extras-*.jsonl 分片是**权威源**，poem_extras 是由它重放出来的只读镜像。
       写路径仍然只走 extras.py（ExtrasStore.put / remove_field），不要在库里直接改
       poem_extras —— 那样改出来的内容下次同步就没了。
 ```
@@ -885,7 +889,7 @@ poetry-pipeline/
 ├── store.py        写入层：add / edit / update_author / rm / list / stats / export / import（GUI+HTTP+CLI 共用）
 ├── app.py          桌面窗口：检索页 + 编辑弹窗 + 添加页（Tkinter，零依赖）
 ├── extras.py       扩展属性层：译文/注释/简介/背景/赏析/配图
-│                   dist/extras/ 独立 sidecar（JSONL + images/），重建主库不受影响
+│                   extras/ 独立 sidecar（JSONL 分片 + images/），重建主库不受影响
 ├── extras_db.py    extras 落库层（v3.2 起，v3.3 精简为 8 列）：JSONL -> 主库 poem_extras
 │                   sync / import-notes / stats / check
 ├── make_sample_db.py 简化测试库生成器（v3.3）：每（朝代 × 类型）抽 N 首 -> poetry-sample.db
@@ -1056,7 +1060,7 @@ bundle-strains/      4.3 MB  （79 个分片，可选）
 > （迁移早已完成、源库与 extras 已就地转换完毕）。下面的方法与实测结论保留备查。
 
 需求：源库 JSON 里的繁体字改成简体，**并且保持原来的格式**。  
-现在源库（`sources.py` 登记的全部集合 + `rank` + `strains` + `dist/extras`）已就地转换完成，  
+现在源库（`sources.py` 登记的全部集合 + `rank` + `strains` + `extras`）已就地转换完成，  
 `--retry-verify` 复查「0 处残留」。
 
 ```bash

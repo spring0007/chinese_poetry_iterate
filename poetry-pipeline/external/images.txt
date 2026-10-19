@@ -3,8 +3,8 @@
 # 用法：
 #   python fetch_extras.py images ./external/images.txt --referer https://www.shuge.org/
 #
-# 行为：图片下载到 dist/extras/images/<url的sha1>.jpg，
-#       dist/extras/extras.jsonl 里只登记 "images/xxxx.jpg" 这样的相对地址。
+# 行为：图片下载到 extras/images/<url的sha1>.jpg，
+#       extras/extras-*.jsonl 分片里只登记 "images/xxxx.jpg" 这样的相对地址。
 #       同一个 URL 只下一份，重复跑不会累积副本。
 #
 # 许可：下面的示例来自书格（shuge.org），CC BY 4.0，须保留署名：

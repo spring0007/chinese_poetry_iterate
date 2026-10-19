@@ -32,7 +32,7 @@ except ImportError:
 #        判断方法：主库 meta.schema_version >= 3.0 即代表平仄需从 poetry-strains.db 取
 #   3.1  poems 表新增 uid 列：内容派生的稳定 uuid，供 extras 等外部数据关联
 #   3.2  authors 表新增 uid 列、poems 表新增 author_uid 列（作者稳定标识，与
-#        author_id 同步）；新增 poem_extras 表（dist/extras/extras.jsonl 的落库
+#        author_id 同步）；新增 poem_extras 表（extras/extras-*.jsonl 分片的落库
 #        镜像，以 uid 为唯一 id），poems.notes 的内容迁入该表并清空
 #   3.3  poems 表**移除 notes 列**（注释的唯一存放处是 poem_extras.notes，
 #        构建期从源语料直接写进去，不再"先落主库再搬一次"）；poem_extras 精简

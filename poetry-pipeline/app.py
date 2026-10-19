@@ -421,7 +421,9 @@ class App:
         # 且大量依赖外部来源，和"从源码重建出来的原文"生命周期完全不同，
         # 绝不能被 build.py 冲掉。目录不存在时也照样构造——load() 遇到空目录
         # 只会得到空索引，界面正常起来，等用户跑 fetch_extras.py 填充。
-        self.extras_root = _default(os.path.join("dist", "extras"))
+        # why 不在 dist/ 下：dist/ 被 .gitignore 整目录忽略，extras 是采集成果、
+        # 重建不出来，放那儿等于没有版本保护。
+        self.extras_root = _default("extras")
         self.extras = X.ExtrasStore(self.extras_root).load()
 
         nb = ttk.Notebook(root)

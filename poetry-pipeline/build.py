@@ -37,6 +37,8 @@ import schema as S
 from schema import Poem, make_id, make_uid, make_author_uid, parse_id, pack_strains, quantize_score
 import sources as SRC
 import extras_db as XDB
+import author_heat
+import poet_tiers
 
 # 产物默认落在工程目录下的 dist/，按脚本位置解析而非工作目录
 # （PyCharm 里工作目录可能与工程根不一致，写 "./dist" 会建到意想不到的地方）。
@@ -390,10 +392,14 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # 存成 int 后主表每行只剩正文这一个"长字段"，索引也从字符串索引变整数索引。
     # authors.uid 是**稳定标识**：id 是导入顺序的序号（源库多一个作者，后面全体位移），
     # uid 由 (姓名, 朝代) 内容派生，重建不变。挂在作者上的外部引用一律用 uid。
+    # score = 作者网络热度综合分（热门作者，rubric 见 rank/author-heat-scores.json）：
+    # 其有效评分诗词 poems.score 的算术平均；0 = 名下没有带热度分的诗。
+    # 与 poems.score 语义一致（越高越热），单独一列而不是塞进 desc/n_poems。
     con.execute("CREATE TABLE authors("
                 "id INTEGER PRIMARY KEY, uid TEXT NOT NULL DEFAULT '', "
                 "name TEXT NOT NULL, dynasty TEXT NOT NULL DEFAULT '',"
-                "desc TEXT NOT NULL DEFAULT '', n_poems INTEGER NOT NULL DEFAULT 0)")
+                "desc TEXT NOT NULL DEFAULT '', n_poems INTEGER NOT NULL DEFAULT 0, "
+                "score INTEGER NOT NULL DEFAULT 0)")
     con.execute("CREATE TABLE rhythmics(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
     con.execute("CREATE TABLE sources(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
 
@@ -490,10 +496,39 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         u = author_uids.get(p.author, "")
         if u:
             used[u] += 1
-    con.executemany("INSERT INTO authors VALUES(?,?,?,?,?,?)", [
-        (i + 1, make_author_uid(a["name"], a["dynasty"]), a["name"], a["dynasty"],
-         a["desc"], used.get(make_author_uid(a["name"], a["dynasty"]), 0))
-        for i, a in enumerate(authors)])
+    # 作者热度分（热门作者）：调 author_heat.aggregate_author_scores —— 公式全仓
+    # 只有一份实现，author_heat.py（读主库写 JSON/DB）与这里（重建时内存聚合）
+    # 不会各算各的、慢慢漂移。poems.score 在第 3 步 attach_heat 之后就是最终值；
+    # 佚名（author_uid 折成空串）与未获热度分的诗不参与聚合。
+    # 算分失败不阻断建库：诗才是主产物，作者分是衍生展示，置 0 后可由
+    # author_heat.py --apply 事后补（它从落库后的 poems.score 重新聚合）。
+    try:
+        aheat = {u: v["score"] for u, v in author_heat.aggregate_author_scores(
+            (author_uids.get(p.author, ""), p.score) for p in poems).items()}
+    except Exception as e:
+        warn("作者热度分计算失败：%s（authors.score 置 0，可事后跑 author_heat.py --apply 修复）" % e)
+        aheat = {}
+    # 诗人分级覆盖层（poet_tiers）：34 位人工分级诗人按档位改分（五档分类与
+    # 分数一一对应：第一档100 / 第二档98 / 第三档96 / 第四档94 / 第五档92），
+    # 覆盖热度聚合值。库中无作者行的 12 位自动跳过（它们只在 rank/poet-tiers.json，
+    # 不建作者行）。覆盖失败不阻断建库：诗才是主产物，保留热度聚合分，
+    # 可重跑 poet_tiers.py --apply 补齐。
+    try:
+        n_tier = poet_tiers.apply_overrides(aheat, author_uids)
+        if n_tier:
+            print("  诗人分级覆盖 %d 位作者分（档位分见 rank/poet-tiers.json）" % n_tier)
+    except Exception as e:
+        warn("诗人分级覆盖失败：%s（保留热度聚合分，可重跑 poet_tiers.py --apply）" % e)
+    author_rows = []
+    for i, a in enumerate(authors):
+        uid = make_author_uid(a["name"], a["dynasty"])
+        author_rows.append((i + 1, uid, a["name"], a["dynasty"], a["desc"],
+                            used.get(uid, 0), aheat.get(uid, 0)))
+    # 具名列而不是 VALUES(?...) 位置参数：authors 表加过 score 列，位置写法会在
+    # 列数变化时静默错位或直接报错；具名列加列只影响愿意传的调用方。
+    con.executemany(
+        "INSERT INTO authors(id,uid,name,dynasty,desc,n_poems,score) VALUES(?,?,?,?,?,?,?)",
+        author_rows)
     con.executemany("INSERT INTO rhythmics VALUES(?,?)", [(v, k) for k, v in rhythmic_ids.items()])
     con.executemany("INSERT INTO sources VALUES(?,?)", [(v, k) for k, v in src_ids.items()])
     print("  poems %d 行 / authors %d / rhythmics %d"
@@ -514,6 +549,10 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     con.execute("CREATE INDEX ix_poems_score ON poems(score DESC)")
     con.execute("CREATE UNIQUE INDEX ix_authors_uid ON authors(uid)")
     con.execute("CREATE INDEX ix_authors_name ON authors(name)")
+    # 作者热度榜（热门作者）与诗词热度榜对称：ORDER BY a.score DESC 走它，
+    # 不建就会为了吃掉排序而全表扫 1.4 万行——数据量小、扫描也快，但榜单是
+    # 高频入口，没理由每次全扫。 poems 侧的 ix_poems_score 同理。
+    con.execute("CREATE INDEX ix_authors_score ON authors(score DESC)")
 
     # ---- 检索：默认只建普通索引，用 LIKE 查 body ----
     # 实测（345,390 条全量）：
@@ -937,7 +976,7 @@ def main():
     ap.add_argument("--no-external", action="store_true",
                     help="忽略 external/ 目录下的外接数据（歌赋/清代诗词/毛选…）")
     ap.add_argument("--no-extras", action="store_true",
-                    help="不把 dist/extras/extras.jsonl 落成 poem_extras 表"
+                    help="不把 extras/extras-*.jsonl 分片落成 poem_extras 表"
                          "（主库回到 ~150 MB）。注意：注释也只写在 JSONL 里了，"
                          "这种库 poems 没有 notes 列、poem_extras 也是空的")
     ap.add_argument("--with-fts", action="store_true",
@@ -1067,7 +1106,7 @@ def main():
 
     print("\n=== 8. 汇总 ===")
     src_bytes = 0
-    # 「源库」= SRC.ROOT 下除本工程自己以外的数据。本工程目录必须排除：dist/extras/_cache/
+    # 「源库」= SRC.ROOT 下除本工程自己以外的数据。本工程目录必须排除：extras/_cache/
     # 下的 JSON 是上游抓取缓存（目前已 27.9 MB），把它们算进"源库 JSON 总量"会让这个数字
     # 随抓取进度变化，而它本来是用来说明"重构前有多少源数据"的。
     own_dir = os.path.basename(os.path.dirname(os.path.abspath(__file__)))

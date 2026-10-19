@@ -7,10 +7,10 @@
 # 为什么是独立 JSON sidecar 而不是往 poetry.db 里加一张表
 1. 生命周期不同：主库是从源码重建出来的（跑一次 build.py 全量覆盖），
    extras 是不断累积的外部抓取 + 人工订正。独立目录天然免疫重建
-   —— build.py 从不写 dist/extras/，放进去的东西永远不会被冲掉。
+   —— build.py 从不写 extras/，放进去的东西永远不会被冲掉。
 2. 极度稀疏：34 万首里目前只有几百首有赏析。塞进 poems 主表等于让每行
    背上 6 个空字段；独立存储只写非空的部分。
-3. 便于分发：整个 dist/extras/ 目录可直接挂 CDN / 对象存储，消费方不用理解
+3. 便于分发：整个 extras/ 目录可直接挂 CDN / 对象存储，消费方不用理解
    sqlite 结构，也不用为了读两条赏析去 ATTACH 一个 110 MB 的库。
 4. 可审阅：JSONL 逐行可读，diff 友好，人工订正一行不会动到全表。
 
@@ -48,9 +48,29 @@ import schema as S
 
 # ---------------------------------------------------------------- 常量
 EXTRAS_VERSION = "1.0"
-JSONL = "extras.jsonl"
+JSONL = "extras.jsonl"              # 历史单文件名（仍可读取，但新写一律走分片）
+JSONL_PART_GLOB = "extras-*.jsonl"  # 分片命名：extras-0001.jsonl / extras-0002.jsonl …
+# 单片上限 60MB。why 分片：GitHub 单文件硬限 100MB，整份 extras 早就过百 MB，
+# 不分片就永远进不了仓库（2026-10-19 把 extras 从被忽略的 dist/ 移出后仍提交不上，
+# 才切成片）。留 40MB 余量，数据再涨一段也不用重新切。
+JSONL_PART_MAX = 60 * 1024 * 1024
 MANIFEST = "manifest.json"
 IMAGE_DIR = "images"
+
+
+def jsonl_parts(root: str) -> list:
+    """
+    返回该 extras 根下的 JSONL 分片路径（按名字升序）。
+
+    why 兼容单文件：老目录里是 `extras.jsonl` 一个整文件，新目录是
+    `extras-0001.jsonl` …。两边都要能读——否则历史数据一打开就变空库。
+    单文件优先（它才是"一整份"），没有再退回分片。
+    """
+    single = os.path.join(root, JSONL)
+    if os.path.exists(single):
+        return [single]
+    import glob as _glob
+    return sorted(_glob.glob(os.path.join(root, JSONL_PART_GLOB)))
 
 # 内容字段（短键）。存储用短键省字节，对外输出用长键（见 OUT_KEYS）。
 FIELD_KEYS = ("tr", "nt", "in", "bg", "ap")
@@ -240,8 +260,12 @@ class Rejected(Exception):
 
 
 def _default_root() -> str:
-    """默认目录按脚本位置解析，不依赖当前工作目录。"""
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "dist", "extras")
+    """默认目录按脚本位置解析，不依赖当前工作目录。
+
+    why 不在 dist/ 下：dist/ 整个被 .gitignore 忽略，extras 是采集成果、
+    重建不出来，放在那儿等于没有版本保护（2026-10-17 清 dist 时差点永久丢失）。
+    """
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "extras")
 
 
 def _guess_ext(url: str, content_type: str = "") -> str:
@@ -342,11 +366,12 @@ class ExtrasStore:
 
     def __init__(self, root: str = None, cache_max: int = 2000):
         self.root = os.path.abspath(root or _default_root())
-        self.jsonl = os.path.join(self.root, JSONL)
+        self.jsonl = os.path.join(self.root, JSONL)   # 仅用于"是否存在"判断与兼容提示
+        self.jsonl_parts = jsonl_parts(self.root)     # 实际读写的分片（可能就 1 个）
         self.imgdir = os.path.join(self.root, IMAGE_DIR)
         self.manifest_path = os.path.join(self.root, MANIFEST)
 
-        self._index = {}                    # pid -> 文件字节偏移
+        self._index = {}                    # pid -> (分片下标, 文件字节偏移)
         self._cache = OrderedDict()         # pid -> dict（LRU，读多写少）
         self._dirty = set()                 # 改过但还没落盘的 pid
         self._deleted = set()               # 删了但还没落盘的 pid
@@ -360,16 +385,19 @@ class ExtrasStore:
 
     @property
     def exists(self) -> bool:
-        return os.path.exists(self.jsonl)
+        return bool(self.jsonl_parts) or os.path.exists(self.jsonl)
 
     def load(self, force: bool = False):
         """
-        建立 {pid: offset} 索引。
+        建立 {pid: (分片下标, offset)} 索引。
 
         why 用 offset 而不是把整份 JSONL 读成 dict：三十万条的赏析文本能到几百 MB，
         全量驻留会直接把 GUI 变成内存杀手；而偏移索引只有 {pid: offset}，很轻
         （3.1 起 pid 是 uid 字符串，旧数据是 int，索引两种都收），
         真正的文本按需 seek 一行读出来。
+
+        why 索引要带分片下标：整份数据切成多个 JSONL 之后，光有 offset 不知道
+        该去哪个文件 seek，seek 到别的分片上就会读出一条张冠李戴的记录。
         """
         if self._loaded and not force:
             return self
@@ -377,8 +405,9 @@ class ExtrasStore:
         self._cache.clear()
         self._dirty.clear()
         self._deleted.clear()
-        if os.path.exists(self.jsonl):
-            with open(self.jsonl, "r", encoding="utf-8") as f:
+        self.jsonl_parts = jsonl_parts(self.root)
+        for pi, part in enumerate(self.jsonl_parts):
+            with open(part, "r", encoding="utf-8") as f:
                 while True:
                     off = f.tell()          # TextIOWrapper.tell() 返回 cookie，可安全回喂 seek()
                     line = f.readline()
@@ -396,7 +425,7 @@ class ExtrasStore:
                     # 旧数据是 int。两种都收 —— 只认 int 的话，换成 uid 之后索引会
                     # 整个建不出来，所有查询静默返回 None，是最难查的一类问题。
                     if isinstance(pid, int) or (isinstance(pid, str) and pid):
-                        self._index[pid] = off
+                        self._index[pid] = (pi, off)    # (分片下标, 片内偏移)
         self._loaded = True
         return self
 
@@ -432,10 +461,11 @@ class ExtrasStore:
         if pid in self._cache:
             self._cache.move_to_end(pid)
             return self._cache[pid]
-        off = self._index.get(pid)
-        if off is None:
+        loc = self._index.get(pid)
+        if loc is None:
             return None
-        with open(self.jsonl, "r", encoding="utf-8") as f:
+        pi, off = loc
+        with open(self.jsonl_parts[pi], "r", encoding="utf-8") as f:
             f.seek(off)
             line = f.readline()
         if not line.strip():
@@ -465,12 +495,15 @@ class ExtrasStore:
             elif p in self._index:
                 miss.append(p)
         if miss:
-            with open(self.jsonl, "r", encoding="utf-8") as f:
-                for p in sorted(miss, key=lambda x: self._index[x]):
-                    f.seek(self._index[p])
+            # 按 (分片, 片内偏移) 排序：同一片内顺序 seek，换片才重新开一次文件。
+            # 不分片时这里就是原来那套"按偏移顺序扫一遍"的行为。
+            for p in sorted(miss, key=lambda x: self._index[x]):
+                pi, off = self._index[p]
+                with open(self.jsonl_parts[pi], "r", encoding="utf-8") as f:
+                    f.seek(off)
                     rec = json.loads(f.readline())
-                    self._touch(p, rec)
-                    out[p] = rec
+                self._touch(p, rec)
+                out[p] = rec
         return out
 
     def decorated(self, rec, resolve_images: bool = True):
@@ -617,13 +650,13 @@ class ExtrasStore:
         # 1) 磁盘上「没被删、且缓存里的版本不是最新」的行，原样搬到内存
         keep = sorted(set(self._index) - self._deleted - self._dirty,
                       key=lambda p: self._index[p])
-        if os.path.exists(self.jsonl):
-            with open(self.jsonl, "r", encoding="utf-8") as f:
-                for p in keep:
-                    f.seek(self._index[p])
-                    line = f.readline().strip()
-                    if line:
-                        rows[p] = json.loads(line)
+        for p in keep:
+            pi, off = self._index[p]
+            with open(self.jsonl_parts[pi], "r", encoding="utf-8") as f:
+                f.seek(off)
+                line = f.readline().strip()
+            if line:
+                rows[p] = json.loads(line)
         # 2) 缓存里的最新版本盖上去了
         for p in list(self._dirty):
             if p in self._deleted or p not in self._cache:
@@ -631,16 +664,41 @@ class ExtrasStore:
             rows[p] = self._cache[p]
 
         os.makedirs(self.root, exist_ok=True)
-        tmp = self.jsonl + ".tmp"
+        # 3) 按大小切片重写。why 不写单个大文件：GitHub 单文件 100MB 硬限，
+        #    超了就提交不上去；每次 flush 都重新切，数据量涨了也不会悄悄超限。
+        #    旧的整文件 extras.jsonl 与多余分片在写完后清掉，避免新旧混读。
         new_index = {}
-        with open(tmp, "w", encoding="utf-8") as f:
-            # key=str：uid 是字符串、旧数据是 int，混在一起时 sorted 会抛 TypeError。
-            for p in sorted(rows, key=str):
-                new_index[p] = f.tell()
-                f.write(_short(rows[p]) + "\n")
-        os.replace(tmp, self.jsonl)
+        tmp_names = []
+        f = None
+        pi = -1
+        cur_bytes = 0
+        for p in sorted(rows, key=str):     # key=str：uid/int 混排时 sorted 会抛 TypeError
+            line = _short(rows[p]) + "\n"
+            b = len(line.encode("utf-8"))
+            if f is None or (cur_bytes + b > JSONL_PART_MAX and cur_bytes > 0):
+                if f is not None:
+                    f.close()
+                pi += 1
+                name = "extras-%04d.jsonl" % (pi + 1)
+                tmp = os.path.join(self.root, name + ".tmp")
+                tmp_names.append((tmp, name))
+                f = open(tmp, "w", encoding="utf-8")
+                cur_bytes = 0
+            new_index[p] = (pi, f.tell())
+            f.write(line)
+            cur_bytes += b
+        if f is not None:
+            f.close()
+        for tmp, name in tmp_names:
+            os.replace(tmp, os.path.join(self.root, name))
+        # 清掉不再属于当前分片集合的旧文件（含历史的整份 extras.jsonl）
+        keep_names = {name for _, name in tmp_names}
+        for old in jsonl_parts(self.root):
+            if os.path.basename(old) not in keep_names:
+                os.remove(old)
 
         self._index = new_index
+        self.jsonl_parts = [os.path.join(self.root, n) for _, n in tmp_names]
         self._dirty.clear()
         self._deleted.clear()
         return len(self._index)
@@ -654,13 +712,12 @@ class ExtrasStore:
         """顺序遍历全部记录（用于导出 / 统计）。不进 LRU 缓存，避免冲掉热点数据。"""
         if not self._loaded:
             self.load()
-        if not os.path.exists(self.jsonl):
-            return
-        with open(self.jsonl, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line:
-                    yield json.loads(line)
+        for part in self.jsonl_parts:
+            with open(part, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        yield json.loads(line)
 
     # ---- 图片 ----------------------------------------------------
     def image_abs(self, rel: str) -> str:
@@ -907,7 +964,7 @@ def apply_normalize_image_names(root: str = None) -> dict:
 def main():
     import argparse
     p = argparse.ArgumentParser(description="extras 扩展属性层")
-    p.add_argument("--root", default=None, help="extras 目录，默认 ./dist/extras")
+    p.add_argument("--root", default=None, help="extras 目录，默认 ./extras")
     sub = p.add_subparsers(dest="cmd")
 
     sub.add_parser("stats", help="查看统计")

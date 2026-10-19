@@ -13,7 +13,7 @@ Key facts (verified):
     headers Referer=shiwenv_<hash>.aspx, X-Requested-With: XMLHttpRequest
   - 创作背景 lives only in static HTML <h2>创作背景</h2> ... next <p>.
 
-Writes into dist/extras/extras.jsonl via ExtrasStore (uid-keyed), source='guwendao'.
+Writes into extras/extras-*.jsonl via ExtrasStore (uid-keyed), source='guwendao'.
 Resumable: progress file tracks per-uid per-field success; only missing fields are fetched.
 """
 import json, os, sys, re, time, argparse, random
@@ -26,7 +26,7 @@ import schema as S
 from extras import ExtrasStore
 
 DETAILS = os.path.join(ROOT, "_scrape/details.json")
-EXTRAS_ROOT = os.path.join(PP, "dist", "extras")
+EXTRAS_ROOT = os.path.join(PP, "extras")    # why 不在 dist/ 下：dist/ 被 .gitignore 整目录忽略
 PROGRESS = os.path.join(ROOT, "_scrape", "enrich_progress.json")
 
 FILES = [  # (relpath, code, label)

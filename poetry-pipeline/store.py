@@ -320,7 +320,7 @@ def update_poem(con, pid: int, *, title: str = "", author: str = "",
       - uid 由 (朝代, 作者, 标题, 正文) 派生，改了这几项就必须重算——不重算
         库里会留下一个和内容对不上的 uid，下次重建立刻变成另一个值。
         重算时 poem_extras 里那一行会一起搬到新 uid 上（译文/赏析不脱钩），
-        但 dist/extras/extras.jsonl 的键不会变（它是权威源），返回值里的
+        但 extras/extras-*.jsonl 分片的键不会变（它是权威源），返回值里的
         `uid_changed=True` 就是提示这件事：需要一次按内容重映射，否则重跑
         build.py 时那条扩展资料会变成孤儿行。
       - notes 传 None = 不动注释；传空列表 = 显式清空。
@@ -406,7 +406,7 @@ def update_poem(con, pid: int, *, title: str = "", author: str = "",
     if new_uid != old_uid:
         # 不静默：这次修订让 uid 变了，extras.jsonl 里那条扩展资料还挂旧键上，
         # 重跑 build.py 会变成孤儿行。调用方（GUI / CLI）可据此提示用户。
-        print("提示：id=%d 内容已变，uid %s -> %s；dist/extras/extras.jsonl 里"
+        print("提示：id=%d 内容已变，uid %s -> %s；extras/extras-*.jsonl 分片里"
               "对应的键需要按内容重映射一次" % (pid, old_uid, new_uid), file=sys.stderr)
     return {"id": pid, "uid": new_uid, "uid_changed": new_uid != old_uid,
             "author_id": aid, "author_uid": auid,

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""extras 落库层：把 dist/extras/extras.jsonl 镜像成主库里的 poem_extras 表。
+"""extras 落库层：把 extras/ 下的 JSONL 分片镜像成主库里的 poem_extras 表。
 
 # 为什么 JSONL 之外还要在库里存一份
 extras.py 那套 sidecar（JSONL + images/）解决的是**采集与累积**的问题：流式追加、
@@ -72,8 +72,12 @@ class Rejected(Exception):
 
 
 def default_root() -> str:
-    """默认 extras 目录按脚本位置解析，不依赖当前工作目录。"""
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "dist", "extras")
+    """默认 extras 目录按脚本位置解析，不依赖当前工作目录。
+
+    why 不在 dist/ 下：dist/ 整个被 .gitignore 忽略，而 extras 是采集成果、
+    重建不出来，放那儿等于没有版本保护（2026-10-17 清 dist 时差点永久丢失）。
+    """
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "extras")
 
 
 def has_table(con, table: str = TABLE) -> bool:
@@ -106,6 +110,13 @@ def _read_jsonl(path: str):
                 bad += 1
     if bad:
         print("  [WARN] %s 有 %d 行不是合法 JSON，已跳过" % (os.path.basename(path), bad))
+
+
+def _read_all_jsonl(parts: list):
+    """按分片顺序产出全部记录（why 分片见 extras.JSONL_PART_MAX 的说明）。"""
+    for p in parts:
+        for rec in _read_jsonl(p):
+            yield rec
 
 
 def read_notes_from_db(db_path: str) -> dict:
@@ -205,10 +216,11 @@ def sync(con, root: str = None, notes_map: dict = None, from_db: str = None,
     会被整个漏掉。两个都不传 = 纯重放，不改 JSONL。
     """
     root = os.path.abspath(root or default_root())
-    jsonl = os.path.join(root, X.JSONL)
-    if not os.path.exists(jsonl):
-        raise Rejected("extras.jsonl 不存在：%s（该目录是纯累积数据，"
-                       "重建主库不会生成它，需先跑采集脚本）" % jsonl)
+    parts = X.jsonl_parts(root)
+    if not parts:
+        raise Rejected("extras 数据不存在：%s 下既没有 %s 也没有 %s 分片"
+                       "（该目录是纯累积数据，重建主库不会生成它，需先跑采集脚本）"
+                       % (root, X.JSONL, X.JSONL_PART_GLOB))
 
     create_table(con)
     # meta 可能在（正常构建）；也可能不在（有人拿本函数给裸库补表），兜一手。
@@ -229,7 +241,7 @@ def sync(con, root: str = None, notes_map: dict = None, from_db: str = None,
             con.executemany(INSERT_SQL, buf)
             buf.clear()
 
-    for rec in _read_jsonl(jsonl):
+    for rec in _read_all_jsonl(parts):
         row = X.to_db_row(rec)
         if not row["uid"]:
             continue                      # 没有 uid 的记录无法与主库关联，丢弃并计入
@@ -247,7 +259,7 @@ def sync(con, root: str = None, notes_map: dict = None, from_db: str = None,
     meta_rows = [
         ("extras_table", TABLE),
         ("extras_rows", str(n_rows)),
-        ("extras_source", os.path.basename(jsonl)),
+        ("extras_source", ",".join(os.path.basename(p) for p in parts)),
         ("extras_synced_at", time.strftime(X.TS_FMT)),
         ("extras_orphans", str(n_orphan)),
     ]
@@ -393,7 +405,7 @@ def main():
     ap = argparse.ArgumentParser(description="extras 落库：JSONL -> 主库 poem_extras 表")
     ap.add_argument("--db", default=os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "dist", "poetry.db"))
-    ap.add_argument("--root", default=None, help="extras 目录，默认 ./dist/extras")
+    ap.add_argument("--root", default=None, help="extras 目录，默认 ./extras")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("sync", help="用 extras.jsonl 重放整表")
     p.add_argument("--vacuum", action="store_true",

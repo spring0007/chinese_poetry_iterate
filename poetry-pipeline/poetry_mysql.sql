@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `poems` (
 -- -----------------------------------------------------------------------------
 -- 5. `poem_extras` 扩展资料表（97,230 行）
 --
---    权威源是 dist/extras/extras.jsonl，本表是它重放出来的**只读镜像**
+--    权威源是 extras/extras-*.jsonl 分片，本表是它重放出来的**只读镜像**
 --    （JSONL 里用短键 tr/nt/in/bg/ap/im，落库一律换成下列全名）。
 --    写路径请走 extras.py（ExtrasStore.put / remove_field），
 --    不要直接 UPDATE 本表 —— 下次 sync 会被覆盖回去。
