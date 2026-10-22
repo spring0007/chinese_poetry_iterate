@@ -8,7 +8,8 @@
   "title": "咏荔枝",
   "id": "51fdf196-d12d-4a21-bc59-2d87b424ec52",
   "dynasty": "明",
-  "authorId": "6af07e36-3536-45ee-8da9-7d8a861f0898"
+  "authorId": "6af07e36-3536-45ee-8da9-7d8a861f0898",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -19,7 +20,8 @@
   "title": "上太行山",
   "id": "ed6a4aeb-ed2d-4f48-99c5-f6b85834ccc9",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -30,7 +32,8 @@
   "title": "入京",
   "id": "0c4d0067-8ce4-4033-a20a-cd91513860bc",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -44,7 +47,8 @@
   "title": "北风吹",
   "id": "07047809-99bc-4410-be12-d29e8835fd31",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -57,7 +61,8 @@
   "title": "咏煤炭",
   "id": "9c062175-f5ab-4758-9a0b-bb7d4a5541d5",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -70,7 +75,8 @@
   "title": "岳忠武王祠",
   "id": "502fe986-e68f-4c29-a9e0-f273204d4399",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -83,7 +89,8 @@
   "title": "春日客怀",
   "id": "0e6ddd32-6aa0-4bce-9cca-a9cfcf5e83ff",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -94,7 +101,8 @@
   "title": "石灰吟",
   "id": "1af592c8-2f9c-4a86-9372-7fcac591dcc3",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -107,7 +115,8 @@
   "title": "立春日感怀",
   "id": "a731e88a-5b47-49af-9cc0-6b94c38e78b2",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -120,7 +129,8 @@
   "title": "荒村",
   "id": "f7c2bedc-e53d-43cd-9bd8-36c9d063a0a1",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -133,7 +143,8 @@
   "title": "观书",
   "id": "54bcd995-93a9-4ee8-a5c4-47d38543e80f",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -144,7 +155,8 @@
   "title": "过菊江亭",
   "id": "35e043f7-cb5c-4f83-a5e0-9e1246b8937a",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -157,7 +169,8 @@
   "title": "除夕",
   "id": "3d633f2f-8ce2-4b02-ad42-4d0fc496cde5",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "于谦",
@@ -168,7 +181,8 @@
   "title": "除夜太原寒甚",
   "id": "501962f5-35b0-43f6-a2b4-5413e647a02f",
   "dynasty": "明",
-  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af"
+  "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
+  "genreId": 1
  },
  {
   "author": "何景明",
@@ -179,7 +193,8 @@
   "title": "竹枝词",
   "id": "d8dd7c0d-d87c-47b0-9b1e-c40c56ee3700",
   "dynasty": "明",
-  "authorId": "a1c3e0fa-b9ef-4870-9978-3662d0031b7f"
+  "authorId": "a1c3e0fa-b9ef-4870-9978-3662d0031b7f",
+  "genreId": 1
  },
  {
   "author": "何景明",
@@ -192,7 +207,8 @@
   "title": "鲥鱼",
   "id": "0e8714aa-7f6f-471b-94ff-ab345d24cba9",
   "dynasty": "明",
-  "authorId": "a1c3e0fa-b9ef-4870-9978-3662d0031b7f"
+  "authorId": "a1c3e0fa-b9ef-4870-9978-3662d0031b7f",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -203,7 +219,8 @@
   "title": "我爱秋香",
   "id": "6f31903f-f1e5-400b-9b4c-47888f60d2d0",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -216,7 +233,8 @@
   "title": "武侯庙",
   "id": "dc3e8f3f-d719-4627-8643-1e680439a75b",
   "dynasty": "明",
-  "authorId": "3495eae9-ba64-4ca5-a3ab-6bbc88ec86b7"
+  "authorId": "3495eae9-ba64-4ca5-a3ab-6bbc88ec86b7",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -227,7 +245,8 @@
   "title": "题江阴城墙",
   "id": "8fff1d38-21f7-4f22-b179-bda8f12cbc9e",
   "dynasty": "明",
-  "authorId": "3495eae9-ba64-4ca5-a3ab-6bbc88ec86b7"
+  "authorId": "3495eae9-ba64-4ca5-a3ab-6bbc88ec86b7",
+  "genreId": 1
  },
  {
   "author": "俞彦",
@@ -238,7 +257,8 @@
   "title": "长相思·折花枝",
   "id": "1405b621-996b-4cc5-b58c-f456a774d3ec",
   "dynasty": "明",
-  "authorId": "c155ccb6-b95f-47b9-b1dc-b6f181dc403a"
+  "authorId": "c155ccb6-b95f-47b9-b1dc-b6f181dc403a",
+  "genreId": 2
  },
  {
   "author": "元鹏",
@@ -255,7 +275,8 @@
   "title": "山中四咏",
   "id": "21155dc5-d5f6-4287-b73b-dfc01630badd",
   "dynasty": "明",
-  "authorId": "d00ede55-e82e-4dfe-bd61-e1ab6b7b8486"
+  "authorId": "d00ede55-e82e-4dfe-bd61-e1ab6b7b8486",
+  "genreId": 1
  },
  {
   "author": "冯小青",
@@ -266,7 +287,8 @@
   "title": "怨",
   "id": "028591d2-9daa-46a9-ade1-a1d5f73a0249",
   "dynasty": "明",
-  "authorId": "47b65930-d4ea-4f9c-a605-b6db01cb4bc5"
+  "authorId": "47b65930-d4ea-4f9c-a605-b6db01cb4bc5",
+  "genreId": 1
  },
  {
   "author": "冯小青",
@@ -277,7 +299,8 @@
   "title": "无题",
   "id": "c1d57b62-a826-49ad-b443-4099e4fd81b6",
   "dynasty": "明",
-  "authorId": "47b65930-d4ea-4f9c-a605-b6db01cb4bc5"
+  "authorId": "47b65930-d4ea-4f9c-a605-b6db01cb4bc5",
+  "genreId": 1
  },
  {
   "author": "冯梦龙",
@@ -288,7 +311,8 @@
   "title": "醒世恒言",
   "id": "9ec613a4-80ea-432f-b301-b7f048edc292",
   "dynasty": "明",
-  "authorId": "f7a85f68-b8e6-4a49-9183-8a3e985cd2a1"
+  "authorId": "f7a85f68-b8e6-4a49-9183-8a3e985cd2a1",
+  "genreId": 1
  },
  {
   "author": "刘基",
@@ -299,7 +323,8 @@
   "title": "五月十九日大雨",
   "id": "b66003e5-bd5d-4d0d-bec2-023d7971fe1a",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 1
  },
  {
   "author": "刘基",
@@ -310,7 +335,8 @@
   "title": "北风行",
   "id": "89aab04c-a7f4-4244-8baa-d4519a250d20",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 1
  },
  {
   "author": "刘基",
@@ -321,7 +347,8 @@
   "title": "千秋岁·淡烟平楚",
   "id": "5b14130a-2098-4c62-83a9-4cdc6362b565",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 2
  },
  {
   "author": "刘基",
@@ -335,7 +362,8 @@
   "title": "卖柑者言",
   "id": "8eff92e1-29f2-4bad-8914-bd5b85f90aad",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 6
  },
  {
   "author": "刘基",
@@ -348,7 +376,8 @@
   "title": "古戍",
   "id": "d12d8301-1ac3-45aa-b4d9-b7deff20cbbc",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 1
  },
  {
   "author": "刘基",
@@ -360,7 +389,8 @@
   "title": "司马季主论卜",
   "id": "a1a044d7-0a72-42eb-9cdc-596d42f3e0b8",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 6
  },
  {
   "author": "刘基",
@@ -370,7 +400,8 @@
   "title": "如梦令·一抹斜阳沙觜",
   "id": "2df90ca9-28b2-48f5-8c4e-70c641ad92ce",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 2
  },
  {
   "author": "刘基",
@@ -382,7 +413,8 @@
   "title": "工之侨献琴",
   "id": "54e14e39-2349-4125-9796-d40059c8fc65",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 6
  },
  {
   "author": "刘基",
@@ -401,7 +433,8 @@
   "title": "松风阁记",
   "id": "7890cb7d-6731-4f2b-a58c-5be427cb68d6",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 6
  },
  {
   "author": "刘基",
@@ -423,7 +456,8 @@
   "title": "梁甫吟",
   "id": "a405ac64-d29f-4da2-b930-d1321966840a",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 1
  },
  {
   "author": "刘基",
@@ -436,7 +470,8 @@
   "title": "楚人养狙",
   "id": "2d87d01b-5c11-4e0e-8f2c-626647b96eac",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 6
  },
  {
   "author": "刘基",
@@ -447,7 +482,8 @@
   "title": "水龙吟·鸡鸣风雨潇潇",
   "id": "dd9f9250-92e6-4b49-acea-49009ad48201",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 2
  },
  {
   "author": "刘基",
@@ -458,7 +494,8 @@
   "title": "眼儿媚·萋萋芳草小楼西",
   "id": "d86ef83d-6d9e-4579-aa50-b3913df11e2a",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 2
  },
  {
   "author": "刘基",
@@ -469,7 +506,8 @@
   "title": "绝句·人生无百岁",
   "id": "0f822691-2a14-48b4-a3e3-4fdb1fd0ee6f",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 1
  },
  {
   "author": "刘基",
@@ -483,7 +521,8 @@
   "title": "苦斋记",
   "id": "eda52974-1daa-451f-8750-b1ea3105b254",
   "dynasty": "明",
-  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22"
+  "authorId": "ae960d44-a4e6-4597-a65d-a42a547dae22",
+  "genreId": 6
  },
  {
   "author": "刘溥",
@@ -494,7 +533,8 @@
   "title": "沟水诗",
   "id": "33033229-0e65-4506-937b-fafdb3c9dd9c",
   "dynasty": "明",
-  "authorId": "1a559628-2af5-40bb-9a09-3e73b74e3750"
+  "authorId": "1a559628-2af5-40bb-9a09-3e73b74e3750",
+  "genreId": 1
  },
  {
   "author": "史鉴",
@@ -505,7 +545,8 @@
   "title": "解连环·送别",
   "id": "0b4ca832-f1d5-486d-ab35-b0569df4e0fc",
   "dynasty": "明",
-  "authorId": "1fadb9db-4232-4c8e-a92f-559ca80c63c0"
+  "authorId": "1fadb9db-4232-4c8e-a92f-559ca80c63c0",
+  "genreId": 2
  },
  {
   "author": "叶小鸾",
@@ -516,7 +557,8 @@
   "title": "虞美人·看花",
   "id": "e9b6b47d-a6ef-417e-8a42-fbaa9b0935a3",
   "dynasty": "明",
-  "authorId": "6d7efc64-b6b7-42bd-9067-d8fab6c1dfbe"
+  "authorId": "6d7efc64-b6b7-42bd-9067-d8fab6c1dfbe",
+  "genreId": 2
  },
  {
   "author": "吴伟业",
@@ -527,7 +569,8 @@
   "title": "临江仙·落拓江湖常载酒",
   "id": "caa2873e-1da4-4b70-922a-8f495af375c5",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 2
  },
  {
   "author": "吴伟业",
@@ -538,7 +581,8 @@
   "title": "古意",
   "id": "2894679e-9a5e-4584-8cc6-a4c0feff1511",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 1
  },
  {
   "author": "吴伟业",
@@ -586,7 +630,8 @@
   "title": "圆圆曲",
   "id": "5b590a7e-d89d-4169-bf45-ef53b318acc1",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 1
  },
  {
   "author": "吴伟业",
@@ -608,7 +653,8 @@
   "title": "悲歌赠吴季子",
   "id": "b6467ca7-123e-4e55-bd6d-67936da097cc",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 1
  },
  {
   "author": "吴伟业",
@@ -619,7 +665,8 @@
   "title": "沁园春·观潮",
   "id": "e0ac054b-5e39-4b85-ace0-ae500f03afe1",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 2
  },
  {
   "author": "吴伟业",
@@ -630,7 +677,8 @@
   "title": "满江红·蒜山怀古",
   "id": "976cc5f9-74a7-4421-857a-1580785595a4",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 2
  },
  {
   "author": "吴伟业",
@@ -641,7 +689,8 @@
   "title": "生查子·旅思",
   "id": "1c8d5ee7-9b97-4a0d-bb9d-d9c74d432b23",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 2
  },
  {
   "author": "吴伟业",
@@ -654,7 +703,8 @@
   "title": "过淮阴有感·其二",
   "id": "ea35169c-f26c-45f7-9d1d-566976e14450",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 1
  },
  {
   "author": "吴伟业",
@@ -667,7 +717,8 @@
   "title": "过淮阴有感二首·其一",
   "id": "89719f9b-3274-48af-8aff-a56ec4010863",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 1
  },
  {
   "author": "吴伟业",
@@ -680,7 +731,8 @@
   "title": "遇旧友",
   "id": "55787aae-11ca-49b3-9ab1-7bc4bb3b0559",
   "dynasty": "明",
-  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845"
+  "authorId": "187694c6-3f4e-40a2-a80e-ed467f322845",
+  "genreId": 1
  },
  {
   "author": "吴承恩",
@@ -693,7 +745,8 @@
   "title": "一轮明月满乾坤",
   "id": "f35dd181-d993-474f-a34b-40bf3b315154",
   "dynasty": "明",
-  "authorId": "d0516fdb-ea93-4cd7-b078-4b23b5835b4a"
+  "authorId": "d0516fdb-ea93-4cd7-b078-4b23b5835b4a",
+  "genreId": 1
  },
  {
   "author": "吴承恩",
@@ -707,7 +760,8 @@
   "title": "苏武慢·试问禅关",
   "id": "9a0a6488-c32f-4da2-a532-664c5d3dd0f3",
   "dynasty": "明",
-  "authorId": "d0516fdb-ea93-4cd7-b078-4b23b5835b4a"
+  "authorId": "d0516fdb-ea93-4cd7-b078-4b23b5835b4a",
+  "genreId": 2
  },
  {
   "author": "吴承恩",
@@ -718,7 +772,8 @@
   "title": "西江月·红蓼花繁映月",
   "id": "5fdb1224-cc6e-4e8f-9821-d9e85e0a0a98",
   "dynasty": "明",
-  "authorId": "d0516fdb-ea93-4cd7-b078-4b23b5835b4a"
+  "authorId": "d0516fdb-ea93-4cd7-b078-4b23b5835b4a",
+  "genreId": 2
  },
  {
   "author": "唐寅",
@@ -735,7 +790,8 @@
   "title": "一世歌",
   "id": "5fc7cc37-d745-458e-861a-47c9a96ad8f0",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -746,7 +802,8 @@
   "title": "一剪梅·红满苔阶绿满枝",
   "id": "03f37ff9-300c-439f-8d8a-66d055f8aa64",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 2
  },
  {
   "author": "唐寅",
@@ -757,7 +814,8 @@
   "title": "一剪梅·雨打梨花深闭门",
   "id": "32765ea6-12f0-4c6b-b8e7-af86669f6af4",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 2
  },
  {
   "author": "唐寅",
@@ -768,7 +826,8 @@
   "title": "临终诗",
   "id": "a584fabe-9492-480a-a67e-44dc6484e6a1",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -781,7 +840,8 @@
   "title": "元宵",
   "id": "4337da09-c83f-4cdc-abcd-a628ff57aafe",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -794,7 +854,8 @@
   "title": "叹世之一",
   "id": "048fc229-7079-4876-ab99-285d98dc436e",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -807,7 +868,8 @@
   "title": "夜读",
   "id": "c2b1338e-68a6-4048-9995-6246dd5d71ba",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -818,7 +880,8 @@
   "title": "女人",
   "id": "3e949b9f-548e-4dbc-a8b0-c7fbb7a786db",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -831,7 +894,8 @@
   "title": "感怀",
   "id": "4974464e-00cf-45a0-846b-4784b51f967e",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -848,7 +912,8 @@
   "title": "把酒对月歌",
   "id": "b58570bb-4cc1-4d54-a192-9d3e9436cb77",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -859,7 +924,8 @@
   "title": "无题",
   "id": "a7c85cbc-eafc-48c2-bc32-9ead785448b5",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -898,7 +964,8 @@
   "title": "桃花庵歌",
   "id": "a28db04e-f349-4b47-8f50-568d4bedd6b0",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -917,7 +984,8 @@
   "title": "桃花庵遇仙记",
   "id": "19171f41-5622-4b08-9b50-61f4d97df9b5",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -929,7 +997,8 @@
   "title": "流水诗",
   "id": "66246993-80af-4b6a-92a8-7f20ba42921f",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -940,7 +1009,8 @@
   "title": "海棠美人图",
   "id": "70c61a38-e433-4797-9038-b75c26d6a45b",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -951,7 +1021,8 @@
   "title": "画鸡",
   "id": "b650f3ff-0bd3-4c8d-b81e-d89ccd12f249",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -962,7 +1033,8 @@
   "title": "美人对月",
   "id": "64323dbe-ff8c-4c77-8805-0adf0ce49250",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -981,7 +1053,8 @@
   "title": "花下酌酒歌",
   "id": "02bd4afd-ecff-434f-84d0-629cbdb37960",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -992,7 +1065,8 @@
   "title": "菊花",
   "id": "593e2de5-0200-4fab-bfce-c7d464150f7b",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -1121,7 +1195,8 @@
   "title": "落花诗",
   "id": "325fa678-a306-43ec-b501-d91308b0e6d4",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -1132,7 +1207,8 @@
   "title": "言志",
   "id": "8e62f96f-66c9-4406-a872-20b3d0658ce6",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -1145,7 +1221,8 @@
   "title": "警世",
   "id": "6a093195-a394-4852-aa74-0db6128466a6",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -1156,7 +1233,8 @@
   "title": "除夕口占",
   "id": "9c59268d-bed5-47e8-a7e4-a5280d915651",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "唐寅",
@@ -1170,7 +1248,8 @@
   "title": "题拈花微笑图",
   "id": "0a7b2bfd-ad56-494e-923f-091cb8996a11",
   "dynasty": "明",
-  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273"
+  "authorId": "3ff1345e-8644-4a20-9054-6a30af708273",
+  "genreId": 1
  },
  {
   "author": "夏完淳",
@@ -1181,7 +1260,8 @@
   "title": "一剪梅·咏柳",
   "id": "cecd27f5-44a2-4ec6-9252-822961c49d20",
   "dynasty": "明",
-  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c"
+  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c",
+  "genreId": 2
  },
  {
   "author": "夏完淳",
@@ -1194,7 +1274,8 @@
   "title": "别云间",
   "id": "cd6d370b-df22-4697-812f-6edf8a9297bc",
   "dynasty": "明",
-  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c"
+  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c",
+  "genreId": 1
  },
  {
   "author": "夏完淳",
@@ -1205,7 +1286,8 @@
   "title": "卜算子·秋色到空闺",
   "id": "d1901fc9-2acf-4271-af30-0da51226c4ef",
   "dynasty": "明",
-  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c"
+  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c",
+  "genreId": 2
  },
  {
   "author": "夏完淳",
@@ -1226,7 +1308,8 @@
   "title": "即事三首",
   "id": "aaa75896-527f-44b8-ab1b-dedcb0c7a98f",
   "dynasty": "明",
-  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c"
+  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c",
+  "genreId": 1
  },
  {
   "author": "夏完淳",
@@ -1237,7 +1320,8 @@
   "title": "烛影摇红·寓怨",
   "id": "cc7cc897-4d68-4915-a4dc-af78b907cfe6",
   "dynasty": "明",
-  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c"
+  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c",
+  "genreId": 2
  },
  {
   "author": "夏完淳",
@@ -1251,7 +1335,8 @@
   "title": "狱中上母书",
   "id": "4eb29fe1-debd-4963-99d4-b68dddb6d67e",
   "dynasty": "明",
-  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c"
+  "authorId": "04feb068-b535-4458-805a-18cd89c8aa2c",
+  "genreId": 6
  },
  {
   "author": "夏言",
@@ -1262,7 +1347,8 @@
   "title": "浣溪沙·庭院沉沉白日斜",
   "id": "c03a9912-e150-4691-93d2-a6d0e2b8334c",
   "dynasty": "明",
-  "authorId": "ed8196a0-45f0-4c59-81c0-4df274c48997"
+  "authorId": "ed8196a0-45f0-4c59-81c0-4df274c48997",
+  "genreId": 2
  },
  {
   "author": "孙承宗",
@@ -1273,7 +1359,8 @@
   "title": "渔家",
   "id": "784d5b6b-31a3-42bf-9597-755f9f4158a1",
   "dynasty": "明",
-  "authorId": "b2b46c82-2885-478e-8587-cf21b519e7d1"
+  "authorId": "b2b46c82-2885-478e-8587-cf21b519e7d1",
+  "genreId": 1
  },
  {
   "author": "孙蕡",
@@ -1286,7 +1373,8 @@
   "title": "朝云集句诗七言律诗·其十",
   "id": "4ee038aa-79a8-4eab-b778-a64d642bb8f4",
   "dynasty": "明",
-  "authorId": "a370fb1d-6fee-4b2c-908f-db90489e83a9"
+  "authorId": "a370fb1d-6fee-4b2c-908f-db90489e83a9",
+  "genreId": 1
  },
  {
   "author": "宋濂",
@@ -1297,7 +1385,8 @@
   "title": "王冕好学",
   "id": "bf0910d8-3c8d-4f66-9d25-20be738169f1",
   "dynasty": "明",
-  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf"
+  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf",
+  "genreId": 1
  },
  {
   "author": "宋濂",
@@ -1310,7 +1399,8 @@
   "title": "送东阳马生序",
   "id": "f06c8fa3-8a0d-4966-8f0b-c796b730c139",
   "dynasty": "明",
-  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf"
+  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf",
+  "genreId": 6
  },
  {
   "author": "宋濂",
@@ -1321,7 +1411,8 @@
   "title": "送东阳马生序(节选)",
   "id": "46feb5aa-676f-418f-b745-b0319e4cf97e",
   "dynasty": "明",
-  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf"
+  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf",
+  "genreId": 6
  },
  {
   "author": "宋濂",
@@ -1334,7 +1425,8 @@
   "title": "送天台陈庭学序",
   "id": "5a9f5919-8455-4f04-af53-38e6dcdf02c6",
   "dynasty": "明",
-  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf"
+  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf",
+  "genreId": 6
  },
  {
   "author": "宋濂",
@@ -1347,7 +1439,8 @@
   "title": "阅江楼记",
   "id": "fecf5384-d3e5-4083-a7cd-107bc05a81d4",
   "dynasty": "明",
-  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf"
+  "authorId": "6c7b24b2-fc2a-4a2f-a8b5-d4b9e76c43cf",
+  "genreId": 6
  },
  {
   "author": "宗臣",
@@ -1361,7 +1454,8 @@
   "title": "报刘一丈书",
   "id": "889f4f8f-9e82-4d42-bb9e-fcf4f7dc6a8d",
   "dynasty": "明",
-  "authorId": "05ac7f97-e3fe-4487-81a1-3bab3e1ed303"
+  "authorId": "05ac7f97-e3fe-4487-81a1-3bab3e1ed303",
+  "genreId": 6
  },
  {
   "author": "宸濠翠妃",
@@ -1372,7 +1466,8 @@
   "title": "梅花",
   "id": "d84a1d4c-b167-41ec-94fb-78b98407490d",
   "dynasty": "明",
-  "authorId": "005567fe-2313-4052-b033-64c1022099b7"
+  "authorId": "005567fe-2313-4052-b033-64c1022099b7",
+  "genreId": 1
  },
  {
   "author": "屈大均",
@@ -1385,7 +1480,8 @@
   "title": "壬戌清明作",
   "id": "a56ad675-f861-496a-b5bf-f94d55a293c8",
   "dynasty": "明",
-  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02"
+  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02",
+  "genreId": 1
  },
  {
   "author": "屈大均",
@@ -1395,7 +1491,8 @@
   "title": "梦江南·红茉莉",
   "id": "1bf92be6-c245-43bc-ac26-af36837fa07e",
   "dynasty": "明",
-  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02"
+  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02",
+  "genreId": 2
  },
  {
   "author": "屈大均",
@@ -1408,7 +1505,8 @@
   "title": "秣陵",
   "id": "5b6880d9-1dc1-4611-835e-1071c6238a82",
   "dynasty": "明",
-  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02"
+  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02",
+  "genreId": 1
  },
  {
   "author": "屈大均",
@@ -1427,7 +1525,8 @@
   "title": "菜人哀",
   "id": "73965635-6247-4f2e-a0f0-e3be1627470d",
   "dynasty": "明",
-  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02"
+  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02",
+  "genreId": 1
  },
  {
   "author": "屈大均",
@@ -1440,7 +1539,8 @@
   "title": "读陈胜传",
   "id": "289d62c3-9371-4ec9-ae4c-3d46e6de5d56",
   "dynasty": "明",
-  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02"
+  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02",
+  "genreId": 1
  },
  {
   "author": "屈大均",
@@ -1453,7 +1553,8 @@
   "title": "鲁连台",
   "id": "9ae303a3-95f0-4597-be3c-da9a6a260522",
   "dynasty": "明",
-  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02"
+  "authorId": "f01b3785-1375-4639-a19f-db9fcf778c02",
+  "genreId": 1
  },
  {
   "author": "常慧",
@@ -1466,7 +1567,8 @@
   "title": "云居山咏二首",
   "id": "0fe25317-479d-4899-9d84-78eee5261cc4",
   "dynasty": "明",
-  "authorId": "5c66532e-c119-4432-bc0b-137354c5591c"
+  "authorId": "5c66532e-c119-4432-bc0b-137354c5591c",
+  "genreId": 1
  },
  {
   "author": "康海",
@@ -1476,7 +1578,8 @@
   "title": "雁儿落带得胜令·饮中闲咏",
   "id": "5abb4095-1a81-4103-af25-b37a596e7058",
   "dynasty": "明",
-  "authorId": "03eba087-9cc7-4778-91c1-8078f016fbcf"
+  "authorId": "03eba087-9cc7-4778-91c1-8078f016fbcf",
+  "genreId": 3
  },
  {
   "author": "张三丰",
@@ -1581,7 +1684,8 @@
   "title": "无根树",
   "id": "b864666d-a2a8-452b-8a48-bb4d2c7395b3",
   "dynasty": "明",
-  "authorId": "c24b4964-d685-498f-aa15-18703ac663d7"
+  "authorId": "c24b4964-d685-498f-aa15-18703ac663d7",
+  "genreId": 1
  },
  {
   "author": "张岱",
@@ -1594,7 +1698,8 @@
   "title": "夜航船序",
   "id": "4526d9b0-9eeb-42a2-a34e-5e868616fe3f",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 6
  },
  {
   "author": "张岱",
@@ -1604,7 +1709,8 @@
   "title": "柳敬亭说书",
   "id": "61c6b73c-4279-4c5c-9ff1-d1c39d9883eb",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 6
  },
  {
   "author": "张岱",
@@ -1615,7 +1721,8 @@
   "title": "湖心亭看雪",
   "id": "616b7def-6499-4507-8429-b2cba398b7f3",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 6
  },
  {
   "author": "张岱",
@@ -1628,7 +1735,8 @@
   "title": "自为墓志铭",
   "id": "866c3813-993d-4545-a3de-c1ef437df8b0",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 6
  },
  {
   "author": "张岱",
@@ -1640,7 +1748,8 @@
   "title": "西湖七月半",
   "id": "e8730591-445b-4ce4-917a-148265dbe3b8",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 6
  },
  {
   "author": "张岱",
@@ -1650,7 +1759,8 @@
   "title": "金山夜戏",
   "id": "60f9f053-e841-43aa-8808-f7bbbd4d2804",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 1
  },
  {
   "author": "张岱",
@@ -1664,7 +1774,8 @@
   "title": "陶庵梦忆序",
   "id": "19561d4f-dd83-44a6-b5a0-41bd49c2dd39",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 6
  },
  {
   "author": "张岱",
@@ -1674,7 +1785,8 @@
   "title": "龙山雪",
   "id": "b78559de-0f0e-4e74-8bea-c2dec4bbca13",
   "dynasty": "明",
-  "authorId": "13581a54-668f-4d6d-962f-394b05978909"
+  "authorId": "13581a54-668f-4d6d-962f-394b05978909",
+  "genreId": 1
  },
  {
   "author": "张弼",
@@ -1687,7 +1799,8 @@
   "title": "渡江",
   "id": "16f4903b-2d42-4523-92a6-4f33379970bf",
   "dynasty": "明",
-  "authorId": "c58f1003-d0eb-46e4-99b7-722ce932dce2"
+  "authorId": "c58f1003-d0eb-46e4-99b7-722ce932dce2",
+  "genreId": 1
  },
  {
   "author": "张溥",
@@ -1703,7 +1816,8 @@
   "title": "五人墓碑记",
   "id": "b5384107-0926-47fb-95bd-396c033ae5ba",
   "dynasty": "明",
-  "authorId": "333cd4ac-58b4-453a-9d40-b35e8b083105"
+  "authorId": "333cd4ac-58b4-453a-9d40-b35e8b083105",
+  "genreId": 6
  },
  {
   "author": "张煌言",
@@ -1714,7 +1828,8 @@
   "title": "柳梢青·锦样江山",
   "id": "f77d73a9-9d22-45fc-a237-4e64094cc668",
   "dynasty": "明",
-  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42"
+  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42",
+  "genreId": 2
  },
  {
   "author": "张煌言",
@@ -1725,7 +1840,8 @@
   "title": "满江红·屈指兴亡",
   "id": "d23dbc8d-fd2d-4ab1-acfa-4ade658df2f8",
   "dynasty": "明",
-  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42"
+  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42",
+  "genreId": 2
  },
  {
   "author": "张煌言",
@@ -1738,7 +1854,8 @@
   "title": "甲辰八月辞故里",
   "id": "bb140082-a680-49d4-be06-af1c0d1d9cbb",
   "dynasty": "明",
-  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42"
+  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42",
+  "genreId": 1
  },
  {
   "author": "张煌言",
@@ -1749,7 +1866,8 @@
   "title": "野人饷菊有感",
   "id": "72559bda-c2f4-4021-84e4-5e6a79c28d0a",
   "dynasty": "明",
-  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42"
+  "authorId": "ccb55b92-4fc2-42ab-b9fd-73b7c3684a42",
+  "genreId": 1
  },
  {
   "author": "张羽",
@@ -1760,7 +1878,8 @@
   "title": "兰室五咏·其五",
   "id": "a62f39e2-9546-460e-a14a-748295b07310",
   "dynasty": "明",
-  "authorId": "5b7fb2db-4c84-4258-ad30-c03e56388504"
+  "authorId": "5b7fb2db-4c84-4258-ad30-c03e56388504",
+  "genreId": 1
  },
  {
   "author": "归有光",
@@ -1775,7 +1894,8 @@
   "title": "先妣事略",
   "id": "41fab42c-6509-465f-88c9-8f7b3386077a",
   "dynasty": "明",
-  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d"
+  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d",
+  "genreId": 6
  },
  {
   "author": "归有光",
@@ -1787,7 +1907,8 @@
   "title": "寒花葬志",
   "id": "85799b32-ff75-447e-834b-f1e573bdead4",
   "dynasty": "明",
-  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d"
+  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d",
+  "genreId": 6
  },
  {
   "author": "归有光",
@@ -1800,7 +1921,8 @@
   "title": "沧浪亭记",
   "id": "dd04ce19-d138-4a7c-80ba-a5d2867dcab1",
   "dynasty": "明",
-  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d"
+  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d",
+  "genreId": 6
  },
  {
   "author": "归有光",
@@ -1814,7 +1936,8 @@
   "title": "项脊轩志",
   "id": "00ca734d-ea07-4943-9698-667eb65edc79",
   "dynasty": "明",
-  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d"
+  "authorId": "38c89ad3-a418-44ee-8629-a0e265d4169d",
+  "genreId": 6
  },
  {
   "author": "徐有贞",
@@ -1825,7 +1948,8 @@
   "title": "中秋月·中秋月",
   "id": "7a77efec-def9-477c-91de-e2f433ddda76",
   "dynasty": "明",
-  "authorId": "8644abc9-02fe-4bf2-8d6a-71cdd2ac2316"
+  "authorId": "8644abc9-02fe-4bf2-8d6a-71cdd2ac2316",
+  "genreId": 1
  },
  {
   "author": "徐渭",
@@ -1836,7 +1960,8 @@
   "title": "王元章倒枝梅画",
   "id": "a3329c2a-1c60-46f7-81bf-930fa19d7c6d",
   "dynasty": "明",
-  "authorId": "dbd92860-7f9f-45ea-a1ba-44dabb6ab6b1"
+  "authorId": "dbd92860-7f9f-45ea-a1ba-44dabb6ab6b1",
+  "genreId": 1
  },
  {
   "author": "徐渭",
@@ -1847,7 +1972,8 @@
   "title": "题葡萄图",
   "id": "677fcf11-c83d-446b-ac9e-f20da6b60caf",
   "dynasty": "明",
-  "authorId": "dbd92860-7f9f-45ea-a1ba-44dabb6ab6b1"
+  "authorId": "dbd92860-7f9f-45ea-a1ba-44dabb6ab6b1",
+  "genreId": 1
  },
  {
   "author": "徐渭",
@@ -1858,7 +1984,8 @@
   "title": "风鸢图诗",
   "id": "2bce2447-7611-4a79-8a20-833597c97981",
   "dynasty": "明",
-  "authorId": "dbd92860-7f9f-45ea-a1ba-44dabb6ab6b1"
+  "authorId": "dbd92860-7f9f-45ea-a1ba-44dabb6ab6b1",
+  "genreId": 1
  },
  {
   "author": "徐熥",
@@ -1869,7 +1996,8 @@
   "title": "寄弟",
   "id": "8628a827-969a-4bf5-bbfd-a68ef05ec6f7",
   "dynasty": "明",
-  "authorId": "5127def4-9466-41b7-960a-62059a1e950f"
+  "authorId": "5127def4-9466-41b7-960a-62059a1e950f",
+  "genreId": 1
  },
  {
   "author": "徐熥",
@@ -1880,7 +2008,8 @@
   "title": "酒店逢李大",
   "id": "43c5d741-e508-461e-90b9-ca7aa6bf6b9c",
   "dynasty": "明",
-  "authorId": "5127def4-9466-41b7-960a-62059a1e950f"
+  "authorId": "5127def4-9466-41b7-960a-62059a1e950f",
+  "genreId": 1
  },
  {
   "author": "徐祯卿",
@@ -1893,7 +2022,8 @@
   "title": "在武昌作",
   "id": "c0cde377-84d9-44ef-9730-0e6f1b4e55e6",
   "dynasty": "明",
-  "authorId": "89054409-ea53-45c9-89f7-113fdee0c7b5"
+  "authorId": "89054409-ea53-45c9-89f7-113fdee0c7b5",
+  "genreId": 1
  },
  {
   "author": "憨山德清",
@@ -1922,7 +2052,8 @@
   "title": "醒世歌",
   "id": "2deaef6a-550b-437b-97b4-c632e550296b",
   "dynasty": "明",
-  "authorId": "abb9010c-6351-4ad9-a52c-f3fd56cca7a4"
+  "authorId": "abb9010c-6351-4ad9-a52c-f3fd56cca7a4",
+  "genreId": 1
  },
  {
   "author": "戚继光",
@@ -1933,7 +2064,8 @@
   "title": "望阙台",
   "id": "984a1587-610b-42df-b585-829a1796b639",
   "dynasty": "明",
-  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0"
+  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0",
+  "genreId": 1
  },
  {
   "author": "戚继光",
@@ -1946,7 +2078,8 @@
   "title": "登盘山绝顶",
   "id": "78b8d9c0-acf4-4a04-97c3-ce4a0267a992",
   "dynasty": "明",
-  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0"
+  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0",
+  "genreId": 1
  },
  {
   "author": "戚继光",
@@ -1959,7 +2092,8 @@
   "title": "过文登营",
   "id": "a4336665-3475-4fc9-8894-d2b275c608e3",
   "dynasty": "明",
-  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0"
+  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0",
+  "genreId": 1
  },
  {
   "author": "戚继光",
@@ -1972,7 +2106,8 @@
   "title": "韬钤深处",
   "id": "92ceb6c3-bc20-4295-a188-5f9affe9d00f",
   "dynasty": "明",
-  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0"
+  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0",
+  "genreId": 1
  },
  {
   "author": "戚继光",
@@ -1983,7 +2118,8 @@
   "title": "马上作",
   "id": "d69025d9-ad16-4ce3-bfde-8ae4ec607ec1",
   "dynasty": "明",
-  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0"
+  "authorId": "a610e2df-b571-482a-86e0-cb2cf36ae2e0",
+  "genreId": 1
  },
  {
   "author": "文嘉",
@@ -1997,7 +2133,8 @@
   "title": "今日歌",
   "id": "87b4216e-202a-48cd-ae42-a05fdff170fc",
   "dynasty": "明",
-  "authorId": "cec454a3-40be-4000-820a-482b1d66b681"
+  "authorId": "cec454a3-40be-4000-820a-482b1d66b681",
+  "genreId": 1
  },
  {
   "author": "文征明",
@@ -2008,7 +2145,8 @@
   "title": "念奴娇·中秋对月",
   "id": "b1bbe9f0-439b-4358-a710-5ac09b0d6123",
   "dynasty": "明",
-  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e"
+  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e",
+  "genreId": 2
  },
  {
   "author": "文征明",
@@ -2021,7 +2159,8 @@
   "title": "感怀",
   "id": "0c881fa1-9242-42b9-9fd3-052e3c64158d",
   "dynasty": "明",
-  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e"
+  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e",
+  "genreId": 1
  },
  {
   "author": "文征明",
@@ -2032,7 +2171,8 @@
   "title": "拜年",
   "id": "1b36b654-c1e0-466f-8570-7d4f8864d4b7",
   "dynasty": "明",
-  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e"
+  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e",
+  "genreId": 1
  },
  {
   "author": "文征明",
@@ -2043,7 +2183,8 @@
   "title": "满江红·拂拭残碑",
   "id": "bc08278d-045d-424a-b333-1d02eb7b787e",
   "dynasty": "明",
-  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e"
+  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e",
+  "genreId": 2
  },
  {
   "author": "文征明",
@@ -2054,7 +2195,8 @@
   "title": "青玉案·庭下石榴花乱吐",
   "id": "288e41bc-bed0-4b9e-b835-94abb8da2634",
   "dynasty": "明",
-  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e"
+  "authorId": "9a9ab9e2-bc4b-4142-84eb-ae7fc9f9281e",
+  "genreId": 2
  },
  {
   "author": "方以智",
@@ -2065,7 +2207,8 @@
   "title": "忆秦娥·花似雪",
   "id": "4e41dad0-bfe6-47d6-abd8-6b16c159858a",
   "dynasty": "明",
-  "authorId": "439d9e17-634c-4ed2-af9c-2aa4a9fec177"
+  "authorId": "439d9e17-634c-4ed2-af9c-2aa4a9fec177",
+  "genreId": 2
  },
  {
   "author": "方孝孺",
@@ -2077,7 +2220,8 @@
   "title": "深虑论",
   "id": "e4756e36-3d84-4e14-838d-ff4ea0912f65",
   "dynasty": "明",
-  "authorId": "999a02c9-27fd-41d7-94b4-facbc6b57755"
+  "authorId": "999a02c9-27fd-41d7-94b4-facbc6b57755",
+  "genreId": 6
  },
  {
   "author": "方孝孺",
@@ -2090,7 +2234,8 @@
   "title": "蚊对",
   "id": "b3448e8f-1dc4-4640-b41a-aeb8531068aa",
   "dynasty": "明",
-  "authorId": "999a02c9-27fd-41d7-94b4-facbc6b57755"
+  "authorId": "999a02c9-27fd-41d7-94b4-facbc6b57755",
+  "genreId": 6
  },
  {
   "author": "方孝孺",
@@ -2104,7 +2249,8 @@
   "title": "豫让论",
   "id": "8f603725-527a-47b6-a849-568ea27dd7e0",
   "dynasty": "明",
-  "authorId": "999a02c9-27fd-41d7-94b4-facbc6b57755"
+  "authorId": "999a02c9-27fd-41d7-94b4-facbc6b57755",
+  "genreId": 6
  },
  {
   "author": "施耐庵",
@@ -2115,7 +2261,8 @@
   "title": "念奴娇·天南地北",
   "id": "7f83c218-41d7-4bab-9aaf-d98064b8af9f",
   "dynasty": "明",
-  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a"
+  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a",
+  "genreId": 2
  },
  {
   "author": "施耐庵",
@@ -2126,7 +2273,8 @@
   "title": "无题",
   "id": "8241dcf2-9c7c-44ff-a930-0fb24edd81dd",
   "dynasty": "明",
-  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a"
+  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a",
+  "genreId": 1
  },
  {
   "author": "施耐庵",
@@ -2137,7 +2285,8 @@
   "title": "蝶恋花·一别家山音信杳",
   "id": "61befa9f-8f63-4170-9cf5-b000fdbb223b",
   "dynasty": "明",
-  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a"
+  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a",
+  "genreId": 2
  },
  {
   "author": "施耐庵",
@@ -2148,7 +2297,8 @@
   "title": "西江月·自幼曾攻经史",
   "id": "5cef3c80-ecfe-4485-9a89-be07325a63c1",
   "dynasty": "明",
-  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a"
+  "authorId": "c1d3eafe-5200-490a-849c-f7a93238189a",
+  "genreId": 2
  },
  {
   "author": "曾棨",
@@ -2161,7 +2311,8 @@
   "title": "维扬怀古",
   "id": "6089799e-73b6-4e8f-8673-19a9cc1368c3",
   "dynasty": "明",
-  "authorId": "d04e91f4-b323-4b08-9f39-f5f31ef1dae9"
+  "authorId": "d04e91f4-b323-4b08-9f39-f5f31ef1dae9",
+  "genreId": 1
  },
  {
   "author": "朱元璋",
@@ -2172,7 +2323,8 @@
   "title": "不惹庵示僧",
   "id": "2551a809-54f6-475c-9803-fb96fd85f60b",
   "dynasty": "明",
-  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19"
+  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19",
+  "genreId": 1
  },
  {
   "author": "朱元璋",
@@ -2183,7 +2335,8 @@
   "title": "咏竹",
   "id": "c44db585-6b52-407a-9ec6-0bc4ad43ed84",
   "dynasty": "明",
-  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19"
+  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19",
+  "genreId": 1
  },
  {
   "author": "朱元璋",
@@ -2194,7 +2347,8 @@
   "title": "咏菊",
   "id": "24e4f154-5fd5-4579-9e1a-398bf8c354b3",
   "dynasty": "明",
-  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19"
+  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19",
+  "genreId": 1
  },
  {
   "author": "朱元璋",
@@ -2207,7 +2361,8 @@
   "title": "庐山诗",
   "id": "cea8d8b0-4a54-4c7a-b8d1-25c0c904d0e2",
   "dynasty": "明",
-  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19"
+  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19",
+  "genreId": 1
  },
  {
   "author": "朱元璋",
@@ -2218,7 +2373,8 @@
   "title": "无题",
   "id": "c897e44a-761e-40c5-8eed-06de61b71859",
   "dynasty": "明",
-  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19"
+  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19",
+  "genreId": 1
  },
  {
   "author": "朱元璋",
@@ -2229,7 +2385,8 @@
   "title": "金鸡报晓",
   "id": "4db25171-02f3-46f9-af73-7d2689e0137d",
   "dynasty": "明",
-  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19"
+  "authorId": "bf1fe86b-36af-4972-b97e-de4bc17a5c19",
+  "genreId": 1
  },
  {
   "author": "朱厚熜",
@@ -2242,7 +2399,8 @@
   "title": "送毛伯温",
   "id": "bc76568e-bc89-47ab-a163-925e5c4124ed",
   "dynasty": "明",
-  "authorId": "40203809-0ece-4ded-9eb6-ec83bcbdd253"
+  "authorId": "40203809-0ece-4ded-9eb6-ec83bcbdd253",
+  "genreId": 1
  },
  {
   "author": "李东阳",
@@ -2255,7 +2413,8 @@
   "title": "寄彭民望",
   "id": "6b2220e2-3132-4642-8b63-439ab2df4430",
   "dynasty": "明",
-  "authorId": "c3c070c7-d7ca-40a5-9a3b-85d9a40efa99"
+  "authorId": "c3c070c7-d7ca-40a5-9a3b-85d9a40efa99",
+  "genreId": 1
  },
  {
   "author": "李东阳",
@@ -2266,7 +2425,8 @@
   "title": "柯敬仲墨竹",
   "id": "eaecdefb-0b53-47b7-9571-250276da99d9",
   "dynasty": "明",
-  "authorId": "c3c070c7-d7ca-40a5-9a3b-85d9a40efa99"
+  "authorId": "c3c070c7-d7ca-40a5-9a3b-85d9a40efa99",
+  "genreId": 1
  },
  {
   "author": "李开先",
@@ -2279,7 +2439,8 @@
   "title": "夜奔",
   "id": "12ad2661-7c39-4667-8956-0cccc2021582",
   "dynasty": "明",
-  "authorId": "cdbda26a-fe62-49bd-889b-00c1ee90e0c9"
+  "authorId": "cdbda26a-fe62-49bd-889b-00c1ee90e0c9",
+  "genreId": 1
  },
  {
   "author": "李攀龙",
@@ -2290,7 +2451,8 @@
   "title": "于郡城送明卿之江西",
   "id": "2d5f0c7e-3cdc-4314-b9ba-fdf9e4791341",
   "dynasty": "明",
-  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7"
+  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7",
+  "genreId": 1
  },
  {
   "author": "李攀龙",
@@ -2301,7 +2463,8 @@
   "title": "和聂仪部明妃曲",
   "id": "c795e77a-808a-4418-a2dd-31f0a3ef2eff",
   "dynasty": "明",
-  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7"
+  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7",
+  "genreId": 1
  },
  {
   "author": "李攀龙",
@@ -2312,7 +2475,8 @@
   "title": "塞上曲送元美",
   "id": "2ef3b433-3c88-42cb-9b87-67b5eed5694f",
   "dynasty": "明",
-  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7"
+  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7",
+  "genreId": 1
  },
  {
   "author": "李攀龙",
@@ -2323,7 +2487,8 @@
   "title": "长相思·秋风清",
   "id": "f574217c-20fc-447a-bf3a-d33c0fb738a3",
   "dynasty": "明",
-  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7"
+  "authorId": "8217f82a-9bc4-41c0-82a1-3f4208f505d7",
+  "genreId": 2
  },
  {
   "author": "李昌祺",
@@ -2334,7 +2499,8 @@
   "title": "乡人至夜话",
   "id": "9bbbb61e-790f-4374-9a06-cf467a4bb2e4",
   "dynasty": "明",
-  "authorId": "d2352980-cd18-4276-89cb-3679580af66d"
+  "authorId": "d2352980-cd18-4276-89cb-3679580af66d",
+  "genreId": 1
  },
  {
   "author": "李梦阳",
@@ -2347,7 +2513,8 @@
   "title": "秋望",
   "id": "9a847418-e95e-4162-bf80-98341bba0de6",
   "dynasty": "明",
-  "authorId": "039d6a0f-a7df-4fce-bde0-72ab7a66fb1c"
+  "authorId": "039d6a0f-a7df-4fce-bde0-72ab7a66fb1c",
+  "genreId": 1
  },
  {
   "author": "李流芳",
@@ -2360,7 +2527,8 @@
   "title": "黄河夜泊",
   "id": "71d89c5c-63c3-47c1-93dc-78b6b8ee8349",
   "dynasty": "明",
-  "authorId": "7a400ab8-5a7c-4d1a-9b2b-83d08e056a45"
+  "authorId": "7a400ab8-5a7c-4d1a-9b2b-83d08e056a45",
+  "genreId": 1
  },
  {
   "author": "李贽",
@@ -2373,7 +2541,8 @@
   "title": "独坐",
   "id": "218ee0ad-b3f1-4d88-ad00-b5e658829700",
   "dynasty": "明",
-  "authorId": "980793e4-a0c1-4d02-9917-d8cb750b8e49"
+  "authorId": "980793e4-a0c1-4d02-9917-d8cb750b8e49",
+  "genreId": 1
  },
  {
   "author": "李贽",
@@ -2386,7 +2555,8 @@
   "title": "童心说",
   "id": "1ca8db47-d6d3-4daf-8d60-8ea6ec9b26bb",
   "dynasty": "明",
-  "authorId": "980793e4-a0c1-4d02-9917-d8cb750b8e49"
+  "authorId": "980793e4-a0c1-4d02-9917-d8cb750b8e49",
+  "genreId": 6
  },
  {
   "author": "李贽",
@@ -2396,7 +2566,8 @@
   "title": "邴原泣学",
   "id": "cb093a7b-238d-4d3b-886b-f3c87ca28a7c",
   "dynasty": "明",
-  "authorId": "980793e4-a0c1-4d02-9917-d8cb750b8e49"
+  "authorId": "980793e4-a0c1-4d02-9917-d8cb750b8e49",
+  "genreId": 6
  },
  {
   "author": "杨基",
@@ -2407,7 +2578,8 @@
   "title": "天平山中",
   "id": "c22db29e-fb63-43da-9332-8be72c3ab7ca",
   "dynasty": "明",
-  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8"
+  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8",
+  "genreId": 1
  },
  {
   "author": "杨基",
@@ -2420,7 +2592,8 @@
   "title": "春草",
   "id": "d3a91c40-4fe0-45b9-959f-4d388a5c7666",
   "dynasty": "明",
-  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8"
+  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8",
+  "genreId": 1
  },
  {
   "author": "杨基",
@@ -2431,7 +2604,8 @@
   "title": "浣溪沙·上巳",
   "id": "8408e374-3c38-49c7-87eb-f6ae239901ca",
   "dynasty": "明",
-  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8"
+  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8",
+  "genreId": 2
  },
  {
   "author": "杨基",
@@ -2444,7 +2618,8 @@
   "title": "登岳阳楼望君山",
   "id": "421159bd-db31-4c4f-8223-4fd6d164c811",
   "dynasty": "明",
-  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8"
+  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8",
+  "genreId": 1
  },
  {
   "author": "杨基",
@@ -2457,7 +2632,8 @@
   "title": "菩萨蛮·水晶帘外娟娟月",
   "id": "adb5edbe-e518-4a79-b99b-754d6f899cc9",
   "dynasty": "明",
-  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8"
+  "authorId": "8fbf8669-a29e-4a66-9578-408feb6267d8",
+  "genreId": 2
  },
  {
   "author": "杨士奇",
@@ -2468,7 +2644,8 @@
   "title": "发淮安",
   "id": "92236082-7a83-4e5e-8a20-61d27afe820e",
   "dynasty": "明",
-  "authorId": "30b1ca3d-09ed-4c70-91d2-dce9f412e26a"
+  "authorId": "30b1ca3d-09ed-4c70-91d2-dce9f412e26a",
+  "genreId": 1
  },
  {
   "author": "杨慎",
@@ -2479,7 +2656,8 @@
   "title": "一剪梅·戏简西峃宿杏花楼",
   "id": "6339b00d-38bd-4ae9-91dd-b75bd60cfcd1",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2491,7 +2669,8 @@
   "title": "三岔驿",
   "id": "63a31770-5abd-4d13-827f-dfa440491455",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 1
  },
  {
   "author": "杨慎",
@@ -2502,7 +2681,8 @@
   "title": "临江仙·滚滚长江东逝水",
   "id": "12b8f9cf-0b64-4c58-a539-ffe1e35690dd",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2513,7 +2693,8 @@
   "title": "出郊",
   "id": "5f3bbbf8-0435-4ff7-b1b4-2958fd08c321",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 1
  },
  {
   "author": "杨慎",
@@ -2526,7 +2707,8 @@
   "title": "敦煌乐",
   "id": "3cf6ff6e-77bb-4a3b-8f50-a8e04d505536",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 1
  },
  {
   "author": "杨慎",
@@ -2537,7 +2719,8 @@
   "title": "点绛唇·廿一史弹词第六段说十六国开场词",
   "id": "ff276589-b25f-4ff5-84fb-2451d86a643f",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2553,7 +2736,8 @@
   "title": "舟中阅唐诗纪事王起李绅张籍令狐楚于白乐天",
   "id": "f6aa7c83-411d-4ee2-8f0a-6bf675fc1a28",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 1
  },
  {
   "author": "杨慎",
@@ -2564,7 +2748,8 @@
   "title": "西江月·廿一史弹词第一段总说开场下场词二首·其一",
   "id": "ab5273e8-b5b9-4cda-b6c7-d1c9c244a65f",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2575,7 +2760,8 @@
   "title": "西江月·廿一史弹词第八段说五代十国下场词",
   "id": "02c969e6-b02b-4ee0-8be4-e666c7f05f85",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2586,7 +2772,8 @@
   "title": "西江月·道德三皇五帝",
   "id": "990ee26b-8b27-46c2-b05d-42e9c754f613",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2597,7 +2784,8 @@
   "title": "西江月其一廿一史弹词第三段说秦汉下场词",
   "id": "fcd2ac87-1659-40e0-b27b-42b5a7087dff",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨慎",
@@ -2608,7 +2796,8 @@
   "title": "鹧鸪天·元宵后独酌",
   "id": "3363a08d-e2ca-4c2c-a8a2-8b57977caea3",
   "dynasty": "明",
-  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780"
+  "authorId": "abf96f1b-35ad-4c48-8e92-cbde36bc3780",
+  "genreId": 2
  },
  {
   "author": "杨涟",
@@ -2621,7 +2810,8 @@
   "title": "狱中血书",
   "id": "36621a09-93a6-4377-a9e0-2b4d4bcb6ea3",
   "dynasty": "明",
-  "authorId": "80c6752c-0a9f-4f7b-a0ba-fb02792f870d"
+  "authorId": "80c6752c-0a9f-4f7b-a0ba-fb02792f870d",
+  "genreId": 6
  },
  {
   "author": "杨继盛",
@@ -2632,7 +2822,8 @@
   "title": "就义诗",
   "id": "70d3ee00-ba60-4a62-b7f8-1f8e7ca21601",
   "dynasty": "明",
-  "authorId": "9729df68-3358-4efa-9d88-a4e173ff94d0"
+  "authorId": "9729df68-3358-4efa-9d88-a4e173ff94d0",
+  "genreId": 1
  },
  {
   "author": "柳如是",
@@ -2687,7 +2878,8 @@
   "title": "男洛神赋",
   "id": "cfa1f734-249b-4f31-8929-638c73ec5341",
   "dynasty": "明",
-  "authorId": "361d2ed2-3c45-4fb7-a9f9-6b82aa4daaee"
+  "authorId": "361d2ed2-3c45-4fb7-a9f9-6b82aa4daaee",
+  "genreId": 4
  },
  {
   "author": "柳如是",
@@ -2698,7 +2890,8 @@
   "title": "金明池·咏寒柳",
   "id": "5edde357-9311-4e48-a24f-a02dd18020c1",
   "dynasty": "明",
-  "authorId": "361d2ed2-3c45-4fb7-a9f9-6b82aa4daaee"
+  "authorId": "361d2ed2-3c45-4fb7-a9f9-6b82aa4daaee",
+  "genreId": 2
  },
  {
   "author": "毛铉",
@@ -2709,7 +2902,8 @@
   "title": "幼女词",
   "id": "c45a1168-d589-46ad-b97b-e512bab712dd",
   "dynasty": "明",
-  "authorId": "27be423f-a54b-461d-a675-25a35c3eba32"
+  "authorId": "27be423f-a54b-461d-a675-25a35c3eba32",
+  "genreId": 1
  },
  {
   "author": "江盈科",
@@ -2720,7 +2914,8 @@
   "title": "北人食菱",
   "id": "d6a78f10-2be9-4afb-ab0b-3468e0365997",
   "dynasty": "明",
-  "authorId": "80a818a7-4298-457b-8d77-e521324cf0dc"
+  "authorId": "80a818a7-4298-457b-8d77-e521324cf0dc",
+  "genreId": 6
  },
  {
   "author": "江盈科",
@@ -2730,7 +2925,8 @@
   "title": "外科医生",
   "id": "9b351346-8763-452f-b7fb-1f802a605d92",
   "dynasty": "明",
-  "authorId": "80a818a7-4298-457b-8d77-e521324cf0dc"
+  "authorId": "80a818a7-4298-457b-8d77-e521324cf0dc",
+  "genreId": 6
  },
  {
   "author": "江盈科",
@@ -2740,7 +2936,8 @@
   "title": "庸医治驼",
   "id": "19537e03-4cfd-4662-b1b1-9645792a1fbb",
   "dynasty": "明",
-  "authorId": "80a818a7-4298-457b-8d77-e521324cf0dc"
+  "authorId": "80a818a7-4298-457b-8d77-e521324cf0dc",
+  "genreId": 6
  },
  {
   "author": "汤显祖",
@@ -2751,7 +2948,8 @@
   "title": "午日处州禁竞渡",
   "id": "74cac9c3-f803-41a6-94c2-6c432e1e2863",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 1
  },
  {
   "author": "汤显祖",
@@ -2762,7 +2960,8 @@
   "title": "有友人怜予乏劝为黄山白岳之游",
   "id": "e42ccb3e-2426-4751-82d1-2cf5188c39c6",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 1
  },
  {
   "author": "汤显祖",
@@ -2773,7 +2972,8 @@
   "title": "江宿",
   "id": "c26aee11-2418-47ec-b81e-457aa8beed57",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 1
  },
  {
   "author": "汤显祖",
@@ -2810,7 +3010,8 @@
   "title": "牡丹亭·惊梦",
   "id": "dc1cf564-5750-42c0-94f8-219bf08570a6",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 3
  },
  {
   "author": "汤显祖",
@@ -2820,7 +3021,8 @@
   "title": "牡丹亭·惊梦·皂罗袍",
   "id": "7380000b-9285-4754-a2dc-a5d26bf7f7c8",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 3
  },
  {
   "author": "汤显祖",
@@ -2832,7 +3034,8 @@
   "title": "牡丹亭记题词",
   "id": "efb0806b-8c1d-4ea9-aa79-ca8ef9a0e2b2",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 6
  },
  {
   "author": "汤显祖",
@@ -2842,7 +3045,8 @@
   "title": "皂罗袍·原来姹紫嫣红开遍",
   "id": "c6246f5c-914d-4158-b5ea-c6907239a57c",
   "dynasty": "明",
-  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb"
+  "authorId": "e008ba29-16f4-4c6b-92fe-9e2bc5c0dcbb",
+  "genreId": 3
  },
  {
   "author": "沈周",
@@ -2852,7 +3056,8 @@
   "title": "听蕉记",
   "id": "a9aa2410-bdb5-469e-8dff-2b9312377a8a",
   "dynasty": "明",
-  "authorId": "221b9f91-1e92-4b8a-b1de-73451535e6fc"
+  "authorId": "221b9f91-1e92-4b8a-b1de-73451535e6fc",
+  "genreId": 6
  },
  {
   "author": "沈周",
@@ -2865,7 +3070,8 @@
   "title": "记雪月之观",
   "id": "ca8a3e92-178f-4580-90ff-2071dc69e756",
   "dynasty": "明",
-  "authorId": "221b9f91-1e92-4b8a-b1de-73451535e6fc"
+  "authorId": "221b9f91-1e92-4b8a-b1de-73451535e6fc",
+  "genreId": 6
  },
  {
   "author": "沈周",
@@ -2876,7 +3082,8 @@
   "title": "题画",
   "id": "1f679f89-2853-4fa8-b31b-ad6a8857bb3d",
   "dynasty": "明",
-  "authorId": "221b9f91-1e92-4b8a-b1de-73451535e6fc"
+  "authorId": "221b9f91-1e92-4b8a-b1de-73451535e6fc",
+  "genreId": 1
  },
  {
   "author": "沈宜修",
@@ -2886,7 +3093,8 @@
   "title": "忆王孙·天涯随梦草青青",
   "id": "bdce9634-6b8c-4115-9ea1-e70d23da6d3f",
   "dynasty": "明",
-  "authorId": "f80ada53-3e6a-4c41-b2dc-0a33b70bf426"
+  "authorId": "f80ada53-3e6a-4c41-b2dc-0a33b70bf426",
+  "genreId": 2
  },
  {
   "author": "沈自晋",
@@ -2896,7 +3104,8 @@
   "title": "玉芙蓉·雨窗小咏",
   "id": "6058321c-73f9-41c7-9b2b-7c2e007fde33",
   "dynasty": "明",
-  "authorId": "8ba4e640-d605-4b00-8ed1-c9523a669a7a"
+  "authorId": "8ba4e640-d605-4b00-8ed1-c9523a669a7a",
+  "genreId": 3
  },
  {
   "author": "海瑞",
@@ -2921,7 +3130,8 @@
   "title": "治安疏",
   "id": "f9f52138-904a-4d61-a299-a84ca32df046",
   "dynasty": "明",
-  "authorId": "a88c24cc-1a09-45ea-8c2c-17855585c12b"
+  "authorId": "a88c24cc-1a09-45ea-8c2c-17855585c12b",
+  "genreId": 6
  },
  {
   "author": "王世贞",
@@ -2931,7 +3141,8 @@
   "title": "忆江南·歌起处",
   "id": "a8617dda-c023-4748-882e-c8bf110a9445",
   "dynasty": "明",
-  "authorId": "b4383e6b-0b1e-4379-aa01-6f1c507d5935"
+  "authorId": "b4383e6b-0b1e-4379-aa01-6f1c507d5935",
+  "genreId": 2
  },
  {
   "author": "王世贞",
@@ -2944,7 +3155,8 @@
   "title": "登太白楼",
   "id": "d755f153-fe5e-425b-9502-c6e805af9cc3",
   "dynasty": "明",
-  "authorId": "b4383e6b-0b1e-4379-aa01-6f1c507d5935"
+  "authorId": "b4383e6b-0b1e-4379-aa01-6f1c507d5935",
+  "genreId": 1
  },
  {
   "author": "王世贞",
@@ -2958,7 +3170,8 @@
   "title": "蔺相如完璧归赵论",
   "id": "9bd357e7-3e3c-4a7d-9727-fe828f20e48f",
   "dynasty": "明",
-  "authorId": "b4383e6b-0b1e-4379-aa01-6f1c507d5935"
+  "authorId": "b4383e6b-0b1e-4379-aa01-6f1c507d5935",
+  "genreId": 6
  },
  {
   "author": "王夫之",
@@ -2969,7 +3182,8 @@
   "title": "更漏子·本意",
   "id": "103fc2a4-21a8-436e-bbcb-5061dc9ed11a",
   "dynasty": "明",
-  "authorId": "e6ede7d0-4cf3-4b2c-9513-6bc473cbe40a"
+  "authorId": "e6ede7d0-4cf3-4b2c-9513-6bc473cbe40a",
+  "genreId": 2
  },
  {
   "author": "王夫之",
@@ -2984,7 +3198,8 @@
   "title": "杂诗",
   "id": "a5d36133-c12e-4005-881d-f9508cabe3e7",
   "dynasty": "明",
-  "authorId": "e6ede7d0-4cf3-4b2c-9513-6bc473cbe40a"
+  "authorId": "e6ede7d0-4cf3-4b2c-9513-6bc473cbe40a",
+  "genreId": 1
  },
  {
   "author": "王夫之",
@@ -2997,7 +3212,8 @@
   "title": "雨余小步",
   "id": "b9c75573-f47d-4847-9a47-aeabf4c47d41",
   "dynasty": "明",
-  "authorId": "e6ede7d0-4cf3-4b2c-9513-6bc473cbe40a"
+  "authorId": "e6ede7d0-4cf3-4b2c-9513-6bc473cbe40a",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3010,7 +3226,8 @@
   "title": "中秋",
   "id": "e864af56-c728-4d03-ae93-6592b313aff2",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3027,7 +3244,8 @@
   "title": "元夕二首",
   "id": "7f973436-010f-4d05-a701-f3b974d1b9a4",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3040,7 +3258,8 @@
   "title": "因雨和杜韵",
   "id": "b8efff0e-bec3-494e-989c-5cf2e32eedf3",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3061,7 +3280,8 @@
   "title": "大学问",
   "id": "cc72f176-e624-44a8-ab17-06a357b97c1e",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 6
  },
  {
   "author": "王守仁",
@@ -3079,7 +3299,8 @@
   "title": "教条示龙场诸生",
   "id": "35f71f59-70f4-4f7c-9b35-1e2af95fa8d3",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 6
  },
  {
   "author": "王守仁",
@@ -3092,7 +3313,8 @@
   "title": "春晴",
   "id": "c4d9a090-1eb3-4e79-9284-7b6258125994",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3105,7 +3327,8 @@
   "title": "次韵陆佥宪元日春晴",
   "id": "40006aae-431f-4603-af1b-505857dc08e4",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3116,7 +3339,8 @@
   "title": "泛海",
   "id": "228effed-d726-482c-8744-153b008d7066",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3133,7 +3357,8 @@
   "title": "瘗旅文",
   "id": "3764ea80-2a36-49ae-905d-a27610d831c7",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 6
  },
  {
   "author": "王守仁",
@@ -3144,7 +3369,8 @@
   "title": "答人问道",
   "id": "4a383409-35e2-4166-9497-07e105fdde57",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3155,7 +3381,8 @@
   "title": "蔽月山房",
   "id": "82b82bc0-9e5c-4313-a348-47e3af00232f",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王守仁",
@@ -3167,7 +3394,8 @@
   "title": "观德亭记",
   "id": "53353173-be06-4238-8a05-72c9e85988ad",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 6
  },
  {
   "author": "王守仁",
@@ -3180,7 +3408,8 @@
   "title": "龙潭夜坐",
   "id": "8fde03b7-32e0-433b-9b8d-4b803be6b7a7",
   "dynasty": "明",
-  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf"
+  "authorId": "dff9b95a-9cf7-43d0-8d06-137c59f132bf",
+  "genreId": 1
  },
  {
   "author": "王恭",
@@ -3191,7 +3420,8 @@
   "title": "春雁",
   "id": "f879eb3a-2eb7-4d1b-8c5b-0a69459fded9",
   "dynasty": "明",
-  "authorId": "21ac364b-9fb1-46f3-a0e5-25be4611c116"
+  "authorId": "21ac364b-9fb1-46f3-a0e5-25be4611c116",
+  "genreId": 1
  },
  {
   "author": "王猷定",
@@ -3204,7 +3434,8 @@
   "title": "螺川早发",
   "id": "8d696be7-55d7-4bd9-9bb0-f454b0e62ceb",
   "dynasty": "明",
-  "authorId": "d6876186-2a33-416b-bb68-245d4f4a6f4b"
+  "authorId": "d6876186-2a33-416b-bb68-245d4f4a6f4b",
+  "genreId": 1
  },
  {
   "author": "王磐",
@@ -3214,7 +3445,8 @@
   "title": "古蟾宫·元宵",
   "id": "183e4da9-18a7-4c1a-abcc-c9848252bd1d",
   "dynasty": "明",
-  "authorId": "0fb74499-f16b-45c0-9a69-0d783396e614"
+  "authorId": "0fb74499-f16b-45c0-9a69-0d783396e614",
+  "genreId": 3
  },
  {
   "author": "王磐",
@@ -3226,7 +3458,8 @@
   "title": "朝天子·咏喇叭",
   "id": "6d3b24cc-f057-4bbe-b121-6be49c41b05b",
   "dynasty": "明",
-  "authorId": "0fb74499-f16b-45c0-9a69-0d783396e614"
+  "authorId": "0fb74499-f16b-45c0-9a69-0d783396e614",
+  "genreId": 3
  },
  {
   "author": "王磐",
@@ -3236,7 +3469,8 @@
   "title": "满庭芳·失鸡",
   "id": "ad8ff983-2cde-45b3-bb2e-1711e74de9b3",
   "dynasty": "明",
-  "authorId": "0fb74499-f16b-45c0-9a69-0d783396e614"
+  "authorId": "0fb74499-f16b-45c0-9a69-0d783396e614",
+  "genreId": 2
  },
  {
   "author": "祝允明",
@@ -3247,7 +3481,8 @@
   "title": "首夏山中行吟",
   "id": "3acf9f7c-9eab-4240-b870-d431f3748a50",
   "dynasty": "明",
-  "authorId": "072aa5a7-31b8-4bec-a5b2-b1f3f885767a"
+  "authorId": "072aa5a7-31b8-4bec-a5b2-b1f3f885767a",
+  "genreId": 1
  },
  {
   "author": "罗贯中",
@@ -3264,7 +3499,8 @@
   "title": "三顾茅庐",
   "id": "a65a26e6-cb5c-43f7-8ab2-55f66a7f04f0",
   "dynasty": "明",
-  "authorId": "8c06cbd0-8b78-46e3-bfce-26082483245d"
+  "authorId": "8c06cbd0-8b78-46e3-bfce-26082483245d",
+  "genreId": 6
  },
  {
   "author": "罗贯中",
@@ -3275,7 +3511,8 @@
   "title": "大梦谁先觉",
   "id": "8bdadffd-bbcc-4cdd-83f1-52bb2f528001",
   "dynasty": "明",
-  "authorId": "8c06cbd0-8b78-46e3-bfce-26082483245d"
+  "authorId": "8c06cbd0-8b78-46e3-bfce-26082483245d",
+  "genreId": 1
  },
  {
   "author": "茅坤",
@@ -3288,7 +3525,8 @@
   "title": "夜泊钱塘",
   "id": "e6b0cba9-3d10-497c-b386-2505db4bfa36",
   "dynasty": "明",
-  "authorId": "29ac202a-eba1-4c4a-8bff-ccc76a57c4ab"
+  "authorId": "29ac202a-eba1-4c4a-8bff-ccc76a57c4ab",
+  "genreId": 1
  },
  {
   "author": "蓝仁",
@@ -3301,7 +3539,8 @@
   "title": "暮归山中",
   "id": "3a48c02b-5970-4cf7-a8a1-95f19f4f42bc",
   "dynasty": "明",
-  "authorId": "929d1b04-1fb8-4954-a902-d0b7170222ef"
+  "authorId": "929d1b04-1fb8-4954-a902-d0b7170222ef",
+  "genreId": 1
  },
  {
   "author": "袁中道",
@@ -3312,7 +3551,8 @@
   "title": "夜泉",
   "id": "0eaf6ed5-b984-488f-97ac-66700eced1c0",
   "dynasty": "明",
-  "authorId": "ae71a1b2-413a-4809-a1c7-9a1af8f74ada"
+  "authorId": "ae71a1b2-413a-4809-a1c7-9a1af8f74ada",
+  "genreId": 1
  },
  {
   "author": "袁凯",
@@ -3323,7 +3563,8 @@
   "title": "京师得家书",
   "id": "c0df1e17-db41-43fb-8bb4-4f881df212bb",
   "dynasty": "明",
-  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461"
+  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461",
+  "genreId": 1
  },
  {
   "author": "袁凯",
@@ -3334,7 +3575,8 @@
   "title": "客中夜坐",
   "id": "f293db86-4244-4b64-93d6-b90b4c429b1b",
   "dynasty": "明",
-  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461"
+  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461",
+  "genreId": 1
  },
  {
   "author": "袁凯",
@@ -3347,7 +3589,8 @@
   "title": "客中除夕",
   "id": "6ef77c4d-1845-4e0d-addc-d574444ad12d",
   "dynasty": "明",
-  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461"
+  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461",
+  "genreId": 1
  },
  {
   "author": "袁凯",
@@ -3358,7 +3601,8 @@
   "title": "淮西夜坐",
   "id": "f52d7724-ebdd-410d-b7ed-304671d08d60",
   "dynasty": "明",
-  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461"
+  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461",
+  "genreId": 1
  },
  {
   "author": "袁凯",
@@ -3371,7 +3615,8 @@
   "title": "白燕",
   "id": "a33660ee-2e52-4c8e-8767-e9356c70f63c",
   "dynasty": "明",
-  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461"
+  "authorId": "417dbf36-ddb1-43fe-adca-8c5f94910461",
+  "genreId": 1
  },
  {
   "author": "袁宏道",
@@ -3387,7 +3632,8 @@
   "title": "徐文长传",
   "id": "3351aae3-34d3-40d1-bcc0-fe5b1d86ef0c",
   "dynasty": "明",
-  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0"
+  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0",
+  "genreId": 6
  },
  {
   "author": "袁宏道",
@@ -3400,7 +3646,8 @@
   "title": "感事",
   "id": "e93579db-21c9-4fc3-b675-06da8471f09a",
   "dynasty": "明",
-  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0"
+  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0",
+  "genreId": 1
  },
  {
   "author": "袁宏道",
@@ -3412,7 +3659,8 @@
   "title": "晚游六桥待月记",
   "id": "40ddd295-7ed7-493a-a064-d980dfafbe17",
   "dynasty": "明",
-  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0"
+  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0",
+  "genreId": 6
  },
  {
   "author": "袁宏道",
@@ -3424,7 +3672,8 @@
   "title": "满井游记",
   "id": "955b99a2-9f9f-41bb-a648-dab20285166f",
   "dynasty": "明",
-  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0"
+  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0",
+  "genreId": 6
  },
  {
   "author": "袁宏道",
@@ -3438,7 +3687,8 @@
   "title": "虎丘记",
   "id": "68287bbc-8322-461d-8c43-a154ae955c30",
   "dynasty": "明",
-  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0"
+  "authorId": "43d21cb8-9fa5-4145-8297-ca5591256ff0",
+  "genreId": 6
  },
  {
   "author": "袁崇焕",
@@ -3449,7 +3699,8 @@
   "title": "临刑口占",
   "id": "d01a85f7-6e16-4fc9-bdf7-bf2e71ff93ed",
   "dynasty": "明",
-  "authorId": "0521e581-c607-4cdf-9af2-bbc7617bb7d7"
+  "authorId": "0521e581-c607-4cdf-9af2-bbc7617bb7d7",
+  "genreId": 1
  },
  {
   "author": "谢榛",
@@ -3462,7 +3713,8 @@
   "title": "除夕吴子充诸人集旅寓有感",
   "id": "0087b64b-c810-4bd2-89c9-a810bc207864",
   "dynasty": "明",
-  "authorId": "1c5ea9ac-a1de-4d8a-9af5-6c1522c704bc"
+  "authorId": "1c5ea9ac-a1de-4d8a-9af5-6c1522c704bc",
+  "genreId": 1
  },
  {
   "author": "边贡",
@@ -3475,7 +3727,8 @@
   "title": "午日观竞渡",
   "id": "5912aa82-7ec5-41e8-a4b6-7a0cab5ed23f",
   "dynasty": "明",
-  "authorId": "91a6346f-8c7a-4527-a034-add0f70f5137"
+  "authorId": "91a6346f-8c7a-4527-a034-add0f70f5137",
+  "genreId": 1
  },
  {
   "author": "道源",
@@ -3486,7 +3739,8 @@
   "title": "早梅",
   "id": "461e4920-2d35-4620-b1c0-04f9e94946c9",
   "dynasty": "明",
-  "authorId": "b30f42e4-b760-49cb-ae69-feb8dcacdb59"
+  "authorId": "b30f42e4-b760-49cb-ae69-feb8dcacdb59",
+  "genreId": 1
  },
  {
   "author": "郑成功",
@@ -3497,7 +3751,8 @@
   "title": "出师讨满夷自瓜州至金陵",
   "id": "f933082e-5e42-415e-a21a-804e8ddf164c",
   "dynasty": "明",
-  "authorId": "f68de2d8-bd6b-4cb6-86e2-426dcf97409f"
+  "authorId": "f68de2d8-bd6b-4cb6-86e2-426dcf97409f",
+  "genreId": 1
  },
  {
   "author": "金銮",
@@ -3507,7 +3762,8 @@
   "title": "沉醉东风·忧旱",
   "id": "a08739c4-e100-4d22-bc48-a1eafc4cd04d",
   "dynasty": "明",
-  "authorId": "660fa4a5-5a93-419a-88de-058bd0fe0b24"
+  "authorId": "660fa4a5-5a93-419a-88de-058bd0fe0b24",
+  "genreId": 3
  },
  {
   "author": "钟惺",
@@ -3521,7 +3777,8 @@
   "title": "浣花溪记",
   "id": "fa961022-1d54-4784-97bb-2f62364cc77c",
   "dynasty": "明",
-  "authorId": "1de8303d-73fa-4879-8d71-3c41b2de4762"
+  "authorId": "1de8303d-73fa-4879-8d71-3c41b2de4762",
+  "genreId": 6
  },
  {
   "author": "钱嶫",
@@ -3554,7 +3811,8 @@
   "title": "悯黎咏",
   "id": "7e1a253d-4740-44c9-9573-3ba1484531fb",
   "dynasty": "明",
-  "authorId": "e6fd77cb-3ee9-44f9-9b33-cb6073e96715"
+  "authorId": "e6fd77cb-3ee9-44f9-9b33-cb6073e96715",
+  "genreId": 1
  },
  {
   "author": "钱晔",
@@ -3567,7 +3825,8 @@
   "title": "过江",
   "id": "8ade16f9-6d20-45d2-9f62-4882db45be3f",
   "dynasty": "明",
-  "authorId": "5f60b590-9c40-487f-91a9-bc089b4f3523"
+  "authorId": "5f60b590-9c40-487f-91a9-bc089b4f3523",
+  "genreId": 1
  },
  {
   "author": "钱福",
@@ -3581,7 +3840,8 @@
   "title": "明日歌",
   "id": "d0c18af1-2daf-4452-9569-192cbc54a9ad",
   "dynasty": "明",
-  "authorId": "6683ce4c-c851-406a-a755-1b11aa32e3c2"
+  "authorId": "6683ce4c-c851-406a-a755-1b11aa32e3c2",
+  "genreId": 1
  },
  {
   "author": "陆娟",
@@ -3592,7 +3852,8 @@
   "title": "代父送人之新安",
   "id": "ccb198c3-7287-4790-a266-e43a200fe0c6",
   "dynasty": "明",
-  "authorId": "f2091f05-3fb6-47c7-bdaa-1e61e93fb34d"
+  "authorId": "f2091f05-3fb6-47c7-bdaa-1e61e93fb34d",
+  "genreId": 1
  },
  {
   "author": "陆容",
@@ -3603,7 +3864,8 @@
   "title": "满江红·咏竹",
   "id": "b3f6821b-4d59-42a1-9367-4067ce41d36f",
   "dynasty": "明",
-  "authorId": "247f1f85-f6da-4c74-9b54-c82572964d90"
+  "authorId": "247f1f85-f6da-4c74-9b54-c82572964d90",
+  "genreId": 2
  },
  {
   "author": "陈子龙",
@@ -3616,7 +3878,8 @@
   "title": "九日登一览楼",
   "id": "a8ec9cfb-cee8-4584-b0cc-693811cbed30",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 1
  },
  {
   "author": "陈子龙",
@@ -3629,7 +3892,8 @@
   "title": "小车行",
   "id": "deeeb89d-4a8e-4a05-b7e7-cd1c04c329f1",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 1
  },
  {
   "author": "陈子龙",
@@ -3640,7 +3904,8 @@
   "title": "山花子·春愁",
   "id": "82191380-cf99-456b-ab20-1267d0bcc38f",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 2
  },
  {
   "author": "陈子龙",
@@ -3657,7 +3922,8 @@
   "title": "易水歌",
   "id": "c3b7e6a6-e544-47c4-b2be-a7d1c5b1fe07",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 1
  },
  {
   "author": "陈子龙",
@@ -3668,7 +3934,8 @@
   "title": "江城子·病起春尽",
   "id": "cf06b3ec-030f-49cf-8261-d0cca554a688",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 2
  },
  {
   "author": "陈子龙",
@@ -3679,7 +3946,8 @@
   "title": "浣溪沙·杨花",
   "id": "accb51cc-5d77-45e4-9a4d-fc0607d95d1b",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 2
  },
  {
   "author": "陈子龙",
@@ -3690,7 +3958,8 @@
   "title": "渡易水",
   "id": "267f36bd-a330-4a90-8b29-aa3747831401",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 1
  },
  {
   "author": "陈子龙",
@@ -3701,7 +3970,8 @@
   "title": "点绛唇·春日风雨有感",
   "id": "7c110c02-56e2-4622-ba41-089d8193e748",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 2
  },
  {
   "author": "陈子龙",
@@ -3712,7 +3982,8 @@
   "title": "诉衷情·春游",
   "id": "a049e69e-4857-4bc6-950b-35f3fd5993ba",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 2
  },
  {
   "author": "陈子龙",
@@ -3723,7 +3994,8 @@
   "title": "谒金门·五月雨",
   "id": "a2b0c641-fcd8-4ab0-bf8b-13f300ce32d0",
   "dynasty": "明",
-  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d"
+  "authorId": "a54df4f9-63c6-4bdd-aa8b-3f9e4e40885d",
+  "genreId": 2
  },
  {
   "author": "陈献章",
@@ -3734,7 +4006,8 @@
   "title": "舫子",
   "id": "cc6af273-96f2-4451-9e39-479198589c68",
   "dynasty": "明",
-  "authorId": "bb4f09a3-1d58-4c51-942d-feaa036893ce"
+  "authorId": "bb4f09a3-1d58-4c51-942d-feaa036893ce",
+  "genreId": 1
  },
  {
   "author": "陈继儒",
@@ -3745,7 +4018,8 @@
   "title": "摊破浣溪沙·初夏夜饮归",
   "id": "7d4ced0e-d273-4cab-9722-46ca2ba713e9",
   "dynasty": "明",
-  "authorId": "cde45044-a0af-4bf1-9367-c15a7e50af2d"
+  "authorId": "cde45044-a0af-4bf1-9367-c15a7e50af2d",
+  "genreId": 1
  },
  {
   "author": "陈铎",
@@ -3755,7 +4029,8 @@
   "title": "沉醉东风·闲情",
   "id": "c9f7ef50-bcc1-4d50-b1b7-bf03bd6294e3",
   "dynasty": "明",
-  "authorId": "9ae9a595-51ea-4f71-8b7d-b3d677025b84"
+  "authorId": "9ae9a595-51ea-4f71-8b7d-b3d677025b84",
+  "genreId": 3
  },
  {
   "author": "陈铎",
@@ -3770,7 +4045,8 @@
   "title": "渔家六首",
   "id": "57f3749d-f6be-411d-ae68-7e0b676abd59",
   "dynasty": "明",
-  "authorId": "9ae9a595-51ea-4f71-8b7d-b3d677025b84"
+  "authorId": "9ae9a595-51ea-4f71-8b7d-b3d677025b84",
+  "genreId": 1
  },
  {
   "author": "陈霆",
@@ -3781,7 +4057,8 @@
   "title": "踏莎行·晚景",
   "id": "bd66341a-86e9-464f-9122-9dc5873042c1",
   "dynasty": "明",
-  "authorId": "4e045d0c-9129-49e6-8270-c56da50e16fd"
+  "authorId": "4e045d0c-9129-49e6-8270-c56da50e16fd",
+  "genreId": 2
  },
  {
   "author": "顾炎武",
@@ -3791,7 +4068,8 @@
   "title": "与友人书（节选）",
   "id": "69a9ce23-f668-4f27-a0cc-929a3a56d447",
   "dynasty": "明",
-  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690"
+  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690",
+  "genreId": 6
  },
  {
   "author": "顾炎武",
@@ -3804,7 +4082,8 @@
   "title": "又酬傅处士次韵二首·其二",
   "id": "1fced6f5-5e88-442b-9c25-0b98e5510e27",
   "dynasty": "明",
-  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690"
+  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690",
+  "genreId": 1
  },
  {
   "author": "顾炎武",
@@ -3815,7 +4094,8 @@
   "title": "廉耻(节选)",
   "id": "65637370-88aa-4148-a047-1307a1dd0ab3",
   "dynasty": "明",
-  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690"
+  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690",
+  "genreId": 6
  },
  {
   "author": "顾炎武",
@@ -3830,7 +4110,8 @@
   "title": "精卫·万事有不平",
   "id": "ad167884-98a5-4c98-a809-fd3177559547",
   "dynasty": "明",
-  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690"
+  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690",
+  "genreId": 1
  },
  {
   "author": "顾炎武",
@@ -3843,7 +4124,8 @@
   "title": "酬朱监纪四辅",
   "id": "94588571-564a-4116-8f5f-2a820b265eff",
   "dynasty": "明",
-  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690"
+  "authorId": "bbcdf23a-a152-429d-9da7-66cc3a460690",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3856,7 +4138,8 @@
   "title": "吊岳王墓",
   "id": "daadc6b0-8d6f-4740-b6df-e6c2688512c8",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3867,7 +4150,8 @@
   "title": "寻胡隐君",
   "id": "c01c84af-f783-4fde-be4d-0efa4a8a722b",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3878,7 +4162,8 @@
   "title": "念奴娇·策勋万里",
   "id": "ec2fe7dd-5ff2-4676-82c0-e85ad649f63b",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 2
  },
  {
   "author": "高启",
@@ -3889,7 +4174,8 @@
   "title": "春暮西园",
   "id": "f0fee126-c41a-4abe-ab18-2459a608055a",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3934,7 +4220,8 @@
   "title": "梅花九首",
   "id": "040c6e43-7128-48f0-9725-5f5e43ed844f",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3947,7 +4234,8 @@
   "title": "清明呈馆中诸公",
   "id": "4bc46612-8779-4f79-9a01-93225f23de53",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3968,7 +4256,8 @@
   "title": "登金陵雨花台望大江",
   "id": "2327628a-2a48-4d73-913d-efbe2effa558",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -3979,7 +4268,8 @@
   "title": "送陈秀才还沙上省墓",
   "id": "f581ab93-beb1-4377-84ff-02d0df126172",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高启",
@@ -4021,7 +4311,8 @@
   "title": "青丘子歌",
   "id": "ba767910-d5d0-4ae5-ae67-1fb1264bccf1",
   "dynasty": "明",
-  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4"
+  "authorId": "5e1d5841-4bb8-4979-af6c-29703cf2e4c4",
+  "genreId": 1
  },
  {
   "author": "高珩",
@@ -4032,7 +4323,8 @@
   "title": "春日杂咏",
   "id": "54b0a57b-b137-4854-8f30-1cb4a5033453",
   "dynasty": "明",
-  "authorId": "359e8b5a-3e2b-48c6-a00d-a6b48c7f4bd5"
+  "authorId": "359e8b5a-3e2b-48c6-a00d-a6b48c7f4bd5",
+  "genreId": 1
  },
  {
   "author": "魏学洢",
@@ -4047,7 +4339,8 @@
   "title": "核舟记",
   "id": "1538f528-3432-4be5-8900-07379d2d042e",
   "dynasty": "明",
-  "authorId": "b7c60d5d-bdb2-4d8b-9fcb-eb819da377d0"
+  "authorId": "b7c60d5d-bdb2-4d8b-9fcb-eb819da377d0",
+  "genreId": 6
  },
  {
   "author": "魏禧",
@@ -4063,7 +4356,8 @@
   "title": "大铁椎传",
   "id": "f4166a4f-365f-414e-9832-eec8c6a3ad9c",
   "dynasty": "明",
-  "authorId": "405f2c8e-6e66-429f-a613-33929bbc1091"
+  "authorId": "405f2c8e-6e66-429f-a613-33929bbc1091",
+  "genreId": 6
  },
  {
   "author": "魏禧",
@@ -4076,7 +4370,8 @@
   "title": "登雨花台",
   "id": "b98453c8-a7c6-4e95-b086-7f3de8a9c135",
   "dynasty": "明",
-  "authorId": "405f2c8e-6e66-429f-a613-33929bbc1091"
+  "authorId": "405f2c8e-6e66-429f-a613-33929bbc1091",
+  "genreId": 1
  },
  {
   "author": "黄宗羲",
@@ -4090,7 +4385,8 @@
   "title": "原君",
   "id": "342a99d1-ee3b-43fc-84c5-5d22133cfe97",
   "dynasty": "明",
-  "authorId": "0d1ea8d9-0ba9-4bed-a599-0427275400db"
+  "authorId": "0d1ea8d9-0ba9-4bed-a599-0427275400db",
+  "genreId": 6
  },
  {
   "author": "黄宗羲",
@@ -4102,7 +4398,8 @@
   "title": "过云木冰记",
   "id": "69a84b4c-4b87-476b-8e3c-1088e7f839b3",
   "dynasty": "明",
-  "authorId": "0d1ea8d9-0ba9-4bed-a599-0427275400db"
+  "authorId": "0d1ea8d9-0ba9-4bed-a599-0427275400db",
+  "genreId": 6
  },
  {
   "author": "黄峨",
@@ -4115,6 +4412,24 @@
   "title": "寄夫",
   "id": "f1ebc7d1-8733-4335-ae44-b3bd3a647917",
   "dynasty": "明",
-  "authorId": "ee6145f1-0ff4-4458-877b-992f9df95f00"
+  "authorId": "ee6145f1-0ff4-4458-877b-992f9df95f00",
+  "genreId": 1
+ },
+ {
+  "author": "朱权",
+  "paragraphs": [
+   "霜落芝城柳影疏，殷勤送客出鄱湖。",
+   "黄金甲锁雷霆印，红锦韬缠日月符。",
+   "天上晓行骑只鹤，人间夜宿解双凫。",
+   "匆匆归到神仙府，为问蟠桃熟也无。"
+  ],
+  "tags": [
+   "七言律诗",
+   "千家诗"
+  ],
+  "title": "送天师",
+  "id": "83ea5fee-b7a6-4028-af11-f191a1482f01",
+  "dynasty": "明",
+  "genreId": 1
  }
 ]

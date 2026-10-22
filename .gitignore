@@ -1,5 +1,5 @@
 # PyCharm：工程状态（workspace/索引）不入库，但共享的运行配置要入库——
-# 它们用 $PROJECT_DIR$ 写死 poetry-pipeline/.venv，换机器/换人打开即可用。
+# 它们用 $PROJECT_DIR$ 指向根 .venv（整套仓库共用同一个环境），换机器/换人打开即可用。
 .idea/*
 !.idea/runConfigurations/
 .idea/**/workspace.xml

@@ -12,7 +12,8 @@
   "title": "君子行",
   "id": "e82225be-be5c-4672-b7ad-43ac77f5ec2c",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -23,7 +24,8 @@
   "title": "吴孙皓初童谣",
   "id": "8724ee07-5334-4898-b23b-37168beb338c",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -34,7 +36,8 @@
   "title": "子夜歌四十二首·其三",
   "id": "1534d1a5-e053-4e80-8be4-fef28c124bfd",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -45,7 +48,8 @@
   "title": "子夜歌四十二首·其二",
   "id": "b05b7c45-a921-474c-becb-dfc308d46df8",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -55,7 +59,8 @@
   "title": "灵帝末京都童谣",
   "id": "d8fa7837-6e9f-4787-ad3a-dcbe67db3aec",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -66,7 +71,8 @@
   "title": "神弦歌十一首·其六·青溪小姑曲",
   "id": "054dcae4-20eb-49db-97c2-11bc0057788d",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -88,7 +94,8 @@
   "title": "董逃歌",
   "id": "f0da3aa3-6079-4bea-b2a7-6fd8bb8184a5",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "佚名",
@@ -99,7 +106,8 @@
   "title": "青阳渡",
   "id": "298db7c4-3077-4499-a0c6-66d3efbfc67a",
   "dynasty": "魏晋",
-  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24"
+  "authorId": "aa302abf-39cf-4b8f-8158-bb8f7f9f3c24",
+  "genreId": 1
  },
  {
   "author": "傅玄",
@@ -111,7 +119,8 @@
   "title": "吴楚歌",
   "id": "6ede625e-19a6-4e9b-8e2b-baca5d61a459",
   "dynasty": "魏晋",
-  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db"
+  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db",
+  "genreId": 1
  },
  {
   "author": "傅玄",
@@ -135,7 +144,8 @@
   "title": "有女篇",
   "id": "938493e4-fff1-44be-9aa1-5d6804ffac0f",
   "dynasty": "魏晋",
-  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db"
+  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db",
+  "genreId": 1
  },
  {
   "author": "傅玄",
@@ -156,7 +166,8 @@
   "title": "短歌行",
   "id": "4170e33a-67b7-4f1d-9f3d-7225203ccf29",
   "dynasty": "魏晋",
-  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db"
+  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db",
+  "genreId": 1
  },
  {
   "author": "傅玄",
@@ -178,7 +189,8 @@
   "title": "豫章行苦相篇",
   "id": "87d62024-4fae-43f0-8553-58f89e1011c4",
   "dynasty": "魏晋",
-  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db"
+  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db",
+  "genreId": 1
  },
  {
   "author": "傅玄",
@@ -190,7 +202,8 @@
   "title": "车遥遥篇",
   "id": "9320e3f4-7138-48b4-b73a-4d23e7000ce0",
   "dynasty": "魏晋",
-  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db"
+  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db",
+  "genreId": 1
  },
  {
   "author": "傅玄",
@@ -213,7 +226,8 @@
   "title": "青青河边草篇",
   "id": "11d42e78-68c1-4b1d-a7b0-86c08d7d6e05",
   "dynasty": "魏晋",
-  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db"
+  "authorId": "f010e8a3-8996-46e6-ac9d-c0393b8333db",
+  "genreId": 1
  },
  {
   "author": "刘义庆",
@@ -223,7 +237,8 @@
   "title": "阮裕焚车",
   "id": "52de6d7b-ca7c-4fd7-9fdc-cc2d9bf210d9",
   "dynasty": "魏晋",
-  "authorId": "e87cce2d-568a-45ef-be00-605432ec988f"
+  "authorId": "e87cce2d-568a-45ef-be00-605432ec988f",
+  "genreId": 1
  },
  {
   "author": "刘伶",
@@ -239,7 +254,8 @@
   "title": "北芒客舍诗",
   "id": "6e353a57-3481-44e9-bacd-c86baa8947cd",
   "dynasty": "魏晋",
-  "authorId": "89e8699a-eb69-443d-b672-18307188e4d6"
+  "authorId": "89e8699a-eb69-443d-b672-18307188e4d6",
+  "genreId": 1
  },
  {
   "author": "刘伶",
@@ -250,7 +266,8 @@
   "title": "酒德颂",
   "id": "5dd7a072-fead-42f1-b7ab-1df39c3c514b",
   "dynasty": "魏晋",
-  "authorId": "89e8699a-eb69-443d-b672-18307188e4d6"
+  "authorId": "89e8699a-eb69-443d-b672-18307188e4d6",
+  "genreId": 6
  },
  {
   "author": "刘琨",
@@ -277,7 +294,8 @@
   "title": "扶风歌",
   "id": "6bd47fb8-e245-4c0d-9b20-29954d0b0267",
   "dynasty": "魏晋",
-  "authorId": "2fd6c705-32d1-4e5e-b1e7-32ca9ba55696"
+  "authorId": "2fd6c705-32d1-4e5e-b1e7-32ca9ba55696",
+  "genreId": 1
  },
  {
   "author": "刘琨",
@@ -301,7 +319,8 @@
   "title": "重赠卢谌",
   "id": "ea0c776e-01c5-4dec-9ae8-fa7620898c41",
   "dynasty": "魏晋",
-  "authorId": "2fd6c705-32d1-4e5e-b1e7-32ca9ba55696"
+  "authorId": "2fd6c705-32d1-4e5e-b1e7-32ca9ba55696",
+  "genreId": 1
  },
  {
   "author": "司马懿",
@@ -316,7 +335,8 @@
   "title": "征辽东歌",
   "id": "f34a9da9-2f22-4fe1-a252-8b5226d47d1c",
   "dynasty": "魏晋",
-  "authorId": "2ad1435b-878b-4919-bb1d-0a826bd6ff9a"
+  "authorId": "2ad1435b-878b-4919-bb1d-0a826bd6ff9a",
+  "genreId": 1
  },
  {
   "author": "向秀",
@@ -338,7 +358,8 @@
   "title": "思旧赋",
   "id": "01bb7161-c635-4be5-9f11-17e5bfc71355",
   "dynasty": "魏晋",
-  "authorId": "85f35998-b900-4254-acdf-c47079212011"
+  "authorId": "85f35998-b900-4254-acdf-c47079212011",
+  "genreId": 4
  },
  {
   "author": "吴隐之",
@@ -349,7 +370,8 @@
   "title": "酌贪泉",
   "id": "398b345e-26db-41b0-a3aa-ad6e54412135",
   "dynasty": "魏晋",
-  "authorId": "46fa043a-4420-4694-a9a9-864555789490"
+  "authorId": "46fa043a-4420-4694-a9a9-864555789490",
+  "genreId": 1
  },
  {
   "author": "孙绰",
@@ -360,7 +382,8 @@
   "title": "情人碧玉歌二首·其二",
   "id": "df5d03de-65a4-4c3b-b27c-e84cb6857f0b",
   "dynasty": "魏晋",
-  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975"
+  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975",
+  "genreId": 1
  },
  {
   "author": "孙绰",
@@ -375,7 +398,8 @@
   "title": "游天台山赋",
   "id": "ea5f64f6-3100-4b58-b03d-d2ae45643b7a",
   "dynasty": "魏晋",
-  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975"
+  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975",
+  "genreId": 4
  },
  {
   "author": "孙绰",
@@ -386,7 +410,8 @@
   "title": "碧玉歌",
   "id": "3801d110-fb59-429c-906c-fec271bbb287",
   "dynasty": "魏晋",
-  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975"
+  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975",
+  "genreId": 1
  },
  {
   "author": "孙绰",
@@ -402,7 +427,8 @@
   "title": "秋日诗",
   "id": "2304b32b-82fe-422c-9ff6-3f92151782b6",
   "dynasty": "魏晋",
-  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975"
+  "authorId": "9d5fa152-4edb-49c1-a0c3-3248dea20975",
+  "genreId": 1
  },
  {
   "author": "嵇康",
@@ -417,7 +443,8 @@
   "title": "与山巨源绝交书",
   "id": "19c15025-6418-459e-a84b-69c82d92adb2",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 6
  },
  {
   "author": "嵇康",
@@ -433,7 +460,8 @@
   "title": "养生论",
   "id": "534ed0a0-1beb-47b9-8709-18bf11fc958b",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 6
  },
  {
   "author": "嵇康",
@@ -448,7 +476,8 @@
   "title": "四言赠兄秀才入军诗十八首·其十四",
   "id": "090941bb-5e6e-48a1-b917-ae2a5b619f6f",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 1
  },
  {
   "author": "嵇康",
@@ -470,7 +499,8 @@
   "title": "声无哀乐论",
   "id": "031d861b-ca48-4e30-bf4e-d51f714f03be",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 6
  },
  {
   "author": "嵇康",
@@ -522,7 +552,8 @@
   "title": "幽愤诗",
   "id": "402c688e-5c6f-40f1-9bd5-e570120097b3",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 1
  },
  {
   "author": "嵇康",
@@ -541,7 +572,8 @@
   "title": "游仙诗",
   "id": "f2153b89-6221-4622-ae67-220df202b778",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 1
  },
  {
   "author": "嵇康",
@@ -562,7 +594,8 @@
   "title": "琴赋",
   "id": "fbbd9225-ef5d-487a-84be-a87f32910d06",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 4
  },
  {
   "author": "嵇康",
@@ -575,7 +608,8 @@
   "title": "赠秀才从军·其九",
   "id": "c95e60f8-530c-4ee1-a268-bcd2379551a6",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 1
  },
  {
   "author": "嵇康",
@@ -616,7 +650,8 @@
   "title": "赠秀才入军",
   "id": "d19ccbea-e11a-4712-ba60-f0d42c9c9ee4",
   "dynasty": "魏晋",
-  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4"
+  "authorId": "2c7fd51f-801b-4a97-855e-2b3ba7fe05e4",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -682,7 +717,8 @@
   "title": "三都赋",
   "id": "40862262-3d82-42b1-96c4-88a48f8a2bd0",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 4
  },
  {
   "author": "左思",
@@ -749,7 +785,8 @@
   "title": "咏史八首",
   "id": "f16fc279-977b-46d9-a2dd-14d8bd2eda23",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -766,7 +803,8 @@
   "title": "咏史八首·其一",
   "id": "43a5f58a-7a44-4f10-940e-6d09ee12ea4f",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -781,7 +819,8 @@
   "title": "咏史八首·其三",
   "id": "e3deee53-85d0-4924-9b0d-4c1df9f0a35d",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -796,7 +835,8 @@
   "title": "咏史八首·其二",
   "id": "5a8bdbdc-dec9-49b7-8d25-cad324ec1117",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -811,7 +851,8 @@
   "title": "咏史八首·其五",
   "id": "d2d4c6b7-6601-4056-9ae5-ef794038a766",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -826,7 +867,8 @@
   "title": "咏史八首·其六",
   "id": "92fc8aa4-2e69-4a23-a2a3-5b8c5440acd5",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -843,7 +885,8 @@
   "title": "咏史八首·其四",
   "id": "178a650b-9b2f-4d15-a33a-20fe75218886",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -880,7 +923,8 @@
   "title": "娇女诗",
   "id": "9147836e-2db5-4284-974a-eca11f6e2c01",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -905,7 +949,8 @@
   "title": "招隐二首",
   "id": "6426fe99-9326-43fd-8999-2cb39e0f9554",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -922,7 +967,8 @@
   "title": "招隐诗二首·其一",
   "id": "b0f1d0a0-a2ba-4e9c-ab22-2a99ae10425f",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -937,7 +983,8 @@
   "title": "杂诗·秋风何冽冽",
   "id": "c5c2889a-d68c-469d-ad8a-3d440a298704",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 1
  },
  {
   "author": "左思",
@@ -949,7 +996,8 @@
   "title": "白发赋",
   "id": "036d383e-8821-40c2-be02-acd11e7ba319",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 4
  },
  {
   "author": "左思",
@@ -971,7 +1019,8 @@
   "title": "蜀都赋",
   "id": "91cb7850-5315-4a0f-9ba2-776f33ec6706",
   "dynasty": "魏晋",
-  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9"
+  "authorId": "cf99fcdf-91d3-4d79-9ed4-82dcbab597f9",
+  "genreId": 4
  },
  {
   "author": "左棻",
@@ -984,7 +1033,8 @@
   "title": "啄木诗",
   "id": "f77590d5-aea8-4918-85cd-f975972bd2f9",
   "dynasty": "魏晋",
-  "authorId": "3d20a7e2-1aed-463c-b71b-161e46792f24"
+  "authorId": "3d20a7e2-1aed-463c-b71b-161e46792f24",
+  "genreId": 1
  },
  {
   "author": "干宝",
@@ -997,7 +1047,8 @@
   "title": "三王墓",
   "id": "b0640b1d-a6f3-4216-ac83-6f6e7a293521",
   "dynasty": "魏晋",
-  "authorId": "7660c8bb-1611-4177-bb27-701945459d71"
+  "authorId": "7660c8bb-1611-4177-bb27-701945459d71",
+  "genreId": 6
  },
  {
   "author": "干宝",
@@ -1009,7 +1060,8 @@
   "title": "宋定伯捉鬼",
   "id": "90bba460-901c-4550-8415-ad890b091404",
   "dynasty": "魏晋",
-  "authorId": "7660c8bb-1611-4177-bb27-701945459d71"
+  "authorId": "7660c8bb-1611-4177-bb27-701945459d71",
+  "genreId": 6
  },
  {
   "author": "干宝",
@@ -1022,7 +1074,8 @@
   "title": "李寄斩蛇",
   "id": "21b1d4d6-b70e-44f6-86bc-a08684092098",
   "dynasty": "魏晋",
-  "authorId": "7660c8bb-1611-4177-bb27-701945459d71"
+  "authorId": "7660c8bb-1611-4177-bb27-701945459d71",
+  "genreId": 1
  },
  {
   "author": "张华",
@@ -1067,7 +1120,8 @@
   "title": "励志诗",
   "id": "c5f19631-b986-4399-a516-7338755ff2ce",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 1
  },
  {
   "author": "张华",
@@ -1086,7 +1140,8 @@
   "title": "壮士篇",
   "id": "bd52c788-f6be-4815-a0d0-a3dc8928b035",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 1
  },
  {
   "author": "张华",
@@ -1100,7 +1155,8 @@
   "title": "情诗五首·其五",
   "id": "84d5ceef-1125-4da8-9f14-b2d9196f2686",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 1
  },
  {
   "author": "张华",
@@ -1110,7 +1166,8 @@
   "title": "永怀赋",
   "id": "98ab054a-5f01-4733-afd3-3ce3f478fae2",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 4
  },
  {
   "author": "张华",
@@ -1129,7 +1186,8 @@
   "title": "游侠篇",
   "id": "21c78832-27e7-4671-bc5e-9c421c025e42",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 1
  },
  {
   "author": "张华",
@@ -1168,7 +1226,8 @@
   "title": "轻薄篇",
   "id": "d182a97b-8a5e-46f0-bb7c-bea13c18c0e3",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 1
  },
  {
   "author": "张华",
@@ -1181,7 +1240,8 @@
   "title": "鹪鹩赋",
   "id": "d1ec13fd-fb4f-4c99-b10b-bda8522c426e",
   "dynasty": "魏晋",
-  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156"
+  "authorId": "73404f98-b31a-4953-b61a-2f1df2e59156",
+  "genreId": 4
  },
  {
   "author": "张协",
@@ -1197,7 +1257,8 @@
   "title": "杂诗",
   "id": "705ee261-41d5-4b55-8146-903a3ae746fb",
   "dynasty": "魏晋",
-  "authorId": "433cc233-28d7-4b9f-b70a-83ed829e2c5a"
+  "authorId": "433cc233-28d7-4b9f-b70a-83ed829e2c5a",
+  "genreId": 1
  },
  {
   "author": "张翰",
@@ -1208,7 +1269,8 @@
   "title": "思吴江歌",
   "id": "0ded0ad1-e2e4-4cb8-a7d8-0dbfbffffced",
   "dynasty": "魏晋",
-  "authorId": "f9cd16e9-3223-4ee1-a88b-73a7712df1d0"
+  "authorId": "f9cd16e9-3223-4ee1-a88b-73a7712df1d0",
+  "genreId": 1
  },
  {
   "author": "张载",
@@ -1221,7 +1283,8 @@
   "title": "剑阁铭",
   "id": "59b33f9e-79f5-47ba-9816-f7c056f03c3e",
   "dynasty": "魏晋",
-  "authorId": "6558d761-aa0d-41fd-8473-fe4cc0e92894"
+  "authorId": "6558d761-aa0d-41fd-8473-fe4cc0e92894",
+  "genreId": 6
  },
  {
   "author": "徐干",
@@ -1260,7 +1323,8 @@
   "title": "室思",
   "id": "8a0101d6-f320-4d03-9ec4-07926eefd1df",
   "dynasty": "魏晋",
-  "authorId": "0a9fcebe-b062-4336-9111-0869fe85b4bb"
+  "authorId": "0a9fcebe-b062-4336-9111-0869fe85b4bb",
+  "genreId": 1
  },
  {
   "author": "徐干",
@@ -1273,7 +1337,8 @@
   "title": "答刘桢诗",
   "id": "db0f5bec-e8d4-43c9-bd30-eee5886455d0",
   "dynasty": "魏晋",
-  "authorId": "0a9fcebe-b062-4336-9111-0869fe85b4bb"
+  "authorId": "0a9fcebe-b062-4336-9111-0869fe85b4bb",
+  "genreId": 1
  },
  {
   "author": "支遁",
@@ -1291,7 +1356,8 @@
   "title": "咏利城山居",
   "id": "948ea6d8-a8e5-47b5-baf7-d9c719291daf",
   "dynasty": "魏晋",
-  "authorId": "4e8da16c-323c-45fd-b9d7-67e1f05f7b3a"
+  "authorId": "4e8da16c-323c-45fd-b9d7-67e1f05f7b3a",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1305,7 +1371,8 @@
   "title": "与吴质书",
   "id": "df3c9e59-667d-4b17-9564-a25a47569c82",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 6
  },
  {
   "author": "曹丕",
@@ -1317,7 +1384,8 @@
   "title": "与朝歌令吴质书",
   "id": "b12369d9-d168-49a8-b105-037b92a61682",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 6
  },
  {
   "author": "曹丕",
@@ -1335,7 +1403,8 @@
   "title": "临高台",
   "id": "51eba6ed-562e-476b-8c00-1bb3af53f8ce",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1349,7 +1418,8 @@
   "title": "丹霞蔽日行",
   "id": "c7a75c9c-2d51-484c-be85-520fcc7efecc",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1366,7 +1436,8 @@
   "title": "于玄武陂作诗",
   "id": "7fb219d5-50b9-42aa-a72a-fc078833ef8f",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1382,7 +1453,8 @@
   "title": "典论·论文",
   "id": "2cf72b50-525f-4b64-9cab-b9f7b65848d0",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 6
  },
  {
   "author": "曹丕",
@@ -1403,7 +1475,8 @@
   "title": "善哉行·其一",
   "id": "4b52b75d-6272-4618-8de1-93a77c046b5f",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1422,7 +1495,8 @@
   "title": "善哉行·有美一人",
   "id": "361afd02-554a-43e8-b0f2-ff04eb1f123f",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1437,7 +1511,8 @@
   "title": "大墙上蒿行",
   "id": "ad016bde-6070-4877-a5dc-c063c8972582",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1454,7 +1529,8 @@
   "title": "寡妇诗",
   "id": "4e1ff67e-e395-417b-85bd-d3f92caddcf0",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1474,7 +1550,8 @@
   "title": "广陵于马上作诗",
   "id": "de1dadc2-592a-4474-b8d6-5705f9ac3abb",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1487,7 +1564,8 @@
   "title": "月重轮行",
   "id": "4ee4d39b-c43d-4259-9a75-709d8c376b38",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1510,7 +1588,8 @@
   "title": "杂诗二首",
   "id": "b63caa62-c75e-4a7d-be60-3cfeab2dcfe6",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1520,7 +1599,8 @@
   "title": "沧海赋",
   "id": "f37f3e27-8ab9-469f-9318-c5d14bb6281c",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 4
  },
  {
   "author": "曹丕",
@@ -1534,7 +1614,8 @@
   "title": "清河作诗",
   "id": "aaf6cde3-557c-4a3d-9dae-477c7e8382c7",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1559,7 +1640,8 @@
   "title": "煌煌京洛行",
   "id": "fc2d613c-ea70-46d4-b5f4-5498ce81deb8",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1574,7 +1656,8 @@
   "title": "燕歌行二首·其一",
   "id": "6d4376dd-89a7-43e3-a360-6424567255ef",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1590,7 +1673,8 @@
   "title": "燕歌行二首·其二",
   "id": "be5f3db4-1a9f-4181-9514-520b265f3325",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1611,7 +1695,8 @@
   "title": "短歌行",
   "id": "b511097e-906f-4c18-bedb-3550a6c32427",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1628,7 +1713,8 @@
   "title": "秋胡行",
   "id": "57f2ae3f-7834-490a-af82-cbf90b7821f9",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1645,7 +1731,8 @@
   "title": "芙蓉池作",
   "id": "9d1ad7fd-8736-4117-9de7-109af9bdcbf2",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1655,7 +1742,8 @@
   "title": "诗",
   "id": "ff5d9d0e-85a8-459c-93fe-00ef53bbdbb5",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1671,7 +1759,8 @@
   "title": "陌上桑",
   "id": "31b87461-0256-45a9-9eef-476e8370ec84",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹丕",
@@ -1688,7 +1777,8 @@
   "title": "黎阳作诗三首·其一",
   "id": "8f8b3ea6-2961-4284-8f28-928cec9f6f50",
   "dynasty": "魏晋",
-  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534"
+  "authorId": "571ce5db-5f05-49f5-8321-e733e8f53534",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1705,7 +1795,8 @@
   "title": "七哀诗",
   "id": "af548be5-bcea-4194-ae77-dbd6d94e0683",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1719,7 +1810,8 @@
   "title": "七步诗",
   "id": "35b5efae-739a-40ee-8c79-b484b92cf248",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1734,7 +1826,8 @@
   "title": "与杨德祖书",
   "id": "b82e1762-a85e-427a-a959-fa5e6472dbb9",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 6
  },
  {
   "author": "曹植",
@@ -1758,7 +1851,8 @@
   "title": "仙人篇",
   "id": "cc805d71-ba7e-417d-8b0d-65e4578f3e4f",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1772,7 +1866,8 @@
   "title": "侍太子坐诗",
   "id": "e252c8a9-c15b-4ad3-a309-c289a816ec42",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1788,7 +1883,8 @@
   "title": "公宴",
   "id": "07a5349e-6be1-48e9-8ea7-30604915a7cb",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1809,7 +1905,8 @@
   "title": "吁嗟篇",
   "id": "362bf49a-daec-40f5-ab0e-2a9908ffbd33",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1832,7 +1929,8 @@
   "title": "名都篇",
   "id": "ab6caa34-4ce9-4618-91e6-855b8a508436",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1853,7 +1951,8 @@
   "title": "善哉行二首",
   "id": "0f429e5e-5d18-49ba-91d5-c72970e79eb2",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1887,7 +1986,8 @@
   "title": "大魏篇",
   "id": "b9ed3990-69e3-4b0e-87d5-07cd09d07507",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1912,7 +2012,8 @@
   "title": "妾薄命行·其二",
   "id": "a5d4b9a4-c89f-4063-a2d4-5e09ba38fdf4",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1922,7 +2023,8 @@
   "title": "孟冬篇",
   "id": "975c94f6-494c-4a9c-b458-cec9e5b34828",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1935,7 +2037,8 @@
   "title": "当墙欲高行",
   "id": "9846af91-7f6c-4194-8be2-ed68aabcb524",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1955,7 +2058,8 @@
   "title": "怨歌行",
   "id": "cce29bf5-f39b-4310-b3fa-bef9c1d658ca",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1970,7 +2074,8 @@
   "title": "情诗",
   "id": "1c52f633-f89b-4bc6-a68e-4547a888a129",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -1980,7 +2085,8 @@
   "title": "慰情赋序",
   "id": "89114a39-5b80-497c-8eb9-c37f84fae888",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 6
  },
  {
   "author": "曹植",
@@ -1991,7 +2097,8 @@
   "title": "文帝诔",
   "id": "7eb4f85d-f301-43a7-a943-453900507923",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 6
  },
  {
   "author": "曹植",
@@ -2020,7 +2127,8 @@
   "title": "朔风诗五章",
   "id": "480226ac-2f50-416d-9834-97a22d11b292",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2074,7 +2182,8 @@
   "title": "杂诗七首",
   "id": "b83d209f-8e37-4dc2-be69-1b1cccaf16b1",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2089,7 +2198,8 @@
   "title": "杂诗七首·其一",
   "id": "709ec67d-7193-4095-98a6-5c5a6711e631",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2108,7 +2218,8 @@
   "title": "杂诗七首·其七",
   "id": "cd9e56de-68e2-4f9a-8517-90f3732f3132",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2124,7 +2235,8 @@
   "title": "杂诗七首·其三",
   "id": "3412320d-c832-4ebd-bc83-9c46832a365f",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2139,7 +2251,8 @@
   "title": "杂诗七首·其五",
   "id": "07fe0038-6367-41e0-b4e3-5b735e68a3a7",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2154,7 +2267,8 @@
   "title": "杂诗七首·其六",
   "id": "454aff8e-f675-4eae-8a9a-f3ffbb082c5f",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2167,7 +2281,8 @@
   "title": "杂诗七首·其四",
   "id": "4a67d2ed-8522-4366-be36-1e3f039d64eb",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2180,7 +2295,8 @@
   "title": "梁甫行",
   "id": "4d4f8247-fb88-4325-b7e0-1114b56ad058",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2201,7 +2317,8 @@
   "title": "正会诗",
   "id": "7050c3f3-e5ea-4232-a3ba-246914548ff1",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2215,7 +2332,8 @@
   "title": "求自试表",
   "id": "89d719d0-1ca1-4008-8f3b-eb086f4b848f",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 6
  },
  {
   "author": "曹植",
@@ -2231,7 +2349,8 @@
   "title": "洛神赋",
   "id": "d6c30017-c931-4647-920c-768e48d1b799",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 4
  },
  {
   "author": "曹植",
@@ -2252,7 +2371,8 @@
   "title": "浮萍篇",
   "id": "7cf5434b-934e-47d1-a7a6-1ba919f113f2",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2275,7 +2395,8 @@
   "title": "白马篇",
   "id": "00cee679-5953-4773-81e4-1554640bddcd",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2297,7 +2418,8 @@
   "title": "种葛篇",
   "id": "929b3a1b-17da-4608-82d3-3308dddfe975",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2318,7 +2440,8 @@
   "title": "箜篌引",
   "id": "dab503ff-793c-4b09-9a26-d3cf5604b7e9",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2342,7 +2465,8 @@
   "title": "美女篇",
   "id": "248dfe11-d99c-4b41-bf8a-b6ae7ec3d970",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2359,7 +2483,8 @@
   "title": "薤露行",
   "id": "58cd195f-2991-4d76-b84b-82fea31a704c",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2370,7 +2495,8 @@
   "title": "蝉赋",
   "id": "305f2d97-f4a9-46a9-867d-839eab1dcd7c",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 4
  },
  {
   "author": "曹植",
@@ -2386,7 +2512,8 @@
   "title": "行女哀辞",
   "id": "2d6acf16-78ee-46ab-bcec-8e6eb0c485a8",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2409,7 +2536,8 @@
   "title": "赠徐干诗",
   "id": "05f81ede-cff7-445d-a854-a05c42b1e58a",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2426,7 +2554,8 @@
   "title": "赠王粲诗",
   "id": "7d660555-e7a9-406b-9b3d-d70bac24d6ef",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2443,7 +2572,8 @@
   "title": "赠白马王彪·并序",
   "id": "72e50438-e453-4189-8946-d24145535106",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2462,7 +2592,8 @@
   "title": "远游篇",
   "id": "270702ef-2dcb-40c0-8ad9-43dd4f84f3d4",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2487,7 +2618,8 @@
   "title": "送应氏二首",
   "id": "1a862c08-6f97-43f9-822b-46a5fe1ac6d7",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2502,7 +2634,8 @@
   "title": "野田黄雀行",
   "id": "7408836f-8aa5-4b3b-818d-bdf35e3f08e9",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2531,7 +2664,8 @@
   "title": "铜雀台赋",
   "id": "dcf22332-41f8-408d-9a6d-e550da04d504",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 4
  },
  {
   "author": "曹植",
@@ -2545,7 +2679,8 @@
   "title": "门有万里客行",
   "id": "e0093ed9-3166-4996-9ce8-236fbbce8622",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2562,7 +2697,8 @@
   "title": "飞龙篇",
   "id": "6b53418c-1f65-4b81-8cbf-c513fcfe35bf",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "曹植",
@@ -2579,7 +2715,8 @@
   "title": "鰕䱇篇",
   "id": "061ed441-565f-4203-bd8c-cc0ec7d553f3",
   "dynasty": "魏晋",
-  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b"
+  "authorId": "68f9d6c8-117e-42cd-9463-0e296221d49b",
+  "genreId": 1
  },
  {
   "author": "木华",
@@ -2599,7 +2736,8 @@
   "title": "海赋",
   "id": "4824afff-726e-4190-85df-3aad372f0943",
   "dynasty": "魏晋",
-  "authorId": "a58e6e3d-582c-4bbd-b4a6-1ae88fac9c0e"
+  "authorId": "a58e6e3d-582c-4bbd-b4a6-1ae88fac9c0e",
+  "genreId": 4
  },
  {
   "author": "李兴",
@@ -2615,7 +2753,8 @@
   "title": "诸葛亮故宅铭",
   "id": "76a24474-d3d2-4462-b75f-aaf5602a9350",
   "dynasty": "魏晋",
-  "authorId": "1577eaea-31cd-47dc-b4f7-76d61ee5b66c"
+  "authorId": "1577eaea-31cd-47dc-b4f7-76d61ee5b66c",
+  "genreId": 6
  },
  {
   "author": "李康",
@@ -2632,7 +2771,8 @@
   "title": "运命论",
   "id": "c224afa5-2018-48d8-befb-8f542edf00c9",
   "dynasty": "魏晋",
-  "authorId": "64488c23-8159-4682-b725-0d97bd190eae"
+  "authorId": "64488c23-8159-4682-b725-0d97bd190eae",
+  "genreId": 6
  },
  {
   "author": "李暠",
@@ -2647,7 +2787,8 @@
   "title": "述志赋",
   "id": "3e4205ab-d6ee-40cf-936e-d42e981614f7",
   "dynasty": "魏晋",
-  "authorId": "efb146b1-8993-478f-972c-bf2d681f6e96"
+  "authorId": "efb146b1-8993-478f-972c-bf2d681f6e96",
+  "genreId": 4
  },
  {
   "author": "潘岳",
@@ -2700,7 +2841,8 @@
   "title": "悼亡诗三首",
   "id": "c705b52f-065a-4af9-8e30-5747c4827bd1",
   "dynasty": "魏晋",
-  "authorId": "0df80526-6611-4478-91d8-112600134bf8"
+  "authorId": "0df80526-6611-4478-91d8-112600134bf8",
+  "genreId": 1
  },
  {
   "author": "潘岳",
@@ -2722,7 +2864,8 @@
   "title": "悼亡诗三首·其一",
   "id": "26a370c6-7613-46ee-8b7f-b238cf1a5152",
   "dynasty": "魏晋",
-  "authorId": "0df80526-6611-4478-91d8-112600134bf8"
+  "authorId": "0df80526-6611-4478-91d8-112600134bf8",
+  "genreId": 1
  },
  {
   "author": "潘岳",
@@ -2735,7 +2878,8 @@
   "title": "秋兴赋",
   "id": "0a5c6c54-71ee-4465-92d9-0eb2e0d50f12",
   "dynasty": "魏晋",
-  "authorId": "0df80526-6611-4478-91d8-112600134bf8"
+  "authorId": "0df80526-6611-4478-91d8-112600134bf8",
+  "genreId": 4
  },
  {
   "author": "潘岳",
@@ -2782,7 +2926,8 @@
   "title": "西征赋",
   "id": "cf70d136-3381-442f-b4a0-36ca96df7e74",
   "dynasty": "魏晋",
-  "authorId": "0df80526-6611-4478-91d8-112600134bf8"
+  "authorId": "0df80526-6611-4478-91d8-112600134bf8",
+  "genreId": 4
  },
  {
   "author": "潘岳",
@@ -2795,7 +2940,8 @@
   "title": "闲居赋",
   "id": "4ca80e71-3876-4bea-a27a-0da303e9005d",
   "dynasty": "魏晋",
-  "authorId": "0df80526-6611-4478-91d8-112600134bf8"
+  "authorId": "0df80526-6611-4478-91d8-112600134bf8",
+  "genreId": 4
  },
  {
   "author": "王康琚",
@@ -2814,7 +2960,8 @@
   "title": "反招隐诗",
   "id": "6ead4cdf-88e3-4123-866c-9a54bc39eb19",
   "dynasty": "魏晋",
-  "authorId": "33b514cc-f103-4d4e-a7a3-70f503e3753a"
+  "authorId": "33b514cc-f103-4d4e-a7a3-70f503e3753a",
+  "genreId": 1
  },
  {
   "author": "王献之",
@@ -2825,7 +2972,8 @@
   "title": "桃叶歌三首·其三",
   "id": "cf53bfd1-d99d-4166-afee-6262c18aa6a6",
   "dynasty": "魏晋",
-  "authorId": "c650a950-1f1d-437f-a8cc-8f5b4a23d31a"
+  "authorId": "c650a950-1f1d-437f-a8cc-8f5b4a23d31a",
+  "genreId": 1
  },
  {
   "author": "王羲之",
@@ -2860,7 +3008,8 @@
   "title": "兰亭诗二首·其二",
   "id": "2bad6872-2276-4930-b2fa-22f2a2d022df",
   "dynasty": "魏晋",
-  "authorId": "2e58fefc-7625-44bd-b5e3-61fe63ea9c6c"
+  "authorId": "2e58fefc-7625-44bd-b5e3-61fe63ea9c6c",
+  "genreId": 1
  },
  {
   "author": "王羲之",
@@ -2873,7 +3022,8 @@
   "title": "兰亭集序",
   "id": "2179fd20-9cd7-4901-a997-84c9fc22a24c",
   "dynasty": "魏晋",
-  "authorId": "2e58fefc-7625-44bd-b5e3-61fe63ea9c6c"
+  "authorId": "2e58fefc-7625-44bd-b5e3-61fe63ea9c6c",
+  "genreId": 6
  },
  {
   "author": "王羲之",
@@ -2908,7 +3058,8 @@
   "title": "笔势论十二章",
   "id": "d723edfb-3ee1-496d-9c30-00c430361e5b",
   "dynasty": "魏晋",
-  "authorId": "2e58fefc-7625-44bd-b5e3-61fe63ea9c6c"
+  "authorId": "2e58fefc-7625-44bd-b5e3-61fe63ea9c6c",
+  "genreId": 6
  },
  {
   "author": "王赞",
@@ -2923,7 +3074,8 @@
   "title": "杂诗",
   "id": "ab588a51-8858-441c-ba83-1fcb90397481",
   "dynasty": "魏晋",
-  "authorId": "36f4c7f3-1b82-4a44-8224-6f6470328467"
+  "authorId": "36f4c7f3-1b82-4a44-8224-6f6470328467",
+  "genreId": 1
  },
  {
   "author": "石崇",
@@ -2947,7 +3099,8 @@
   "title": "王明君",
   "id": "1d3e86da-8c60-43f4-95e7-9885a2404c60",
   "dynasty": "魏晋",
-  "authorId": "c1e7f8e9-ace1-4cc6-ba27-c72c6ce97631"
+  "authorId": "c1e7f8e9-ace1-4cc6-ba27-c72c6ce97631",
+  "genreId": 1
  },
  {
   "author": "繁钦",
@@ -2963,7 +3116,8 @@
   "title": "咏蕙诗",
   "id": "2a83c4ed-5bf2-4800-a172-b03c7a747f4a",
   "dynasty": "魏晋",
-  "authorId": "a4352637-b497-4a5c-aec6-28ec87b0850c"
+  "authorId": "a4352637-b497-4a5c-aec6-28ec87b0850c",
+  "genreId": 1
  },
  {
   "author": "繁钦",
@@ -3004,7 +3158,8 @@
   "title": "定情诗",
   "id": "8e0dfa79-a6ef-479d-a519-a2ab0ed6e997",
   "dynasty": "魏晋",
-  "authorId": "a4352637-b497-4a5c-aec6-28ec87b0850c"
+  "authorId": "a4352637-b497-4a5c-aec6-28ec87b0850c",
+  "genreId": 1
  },
  {
   "author": "葛洪",
@@ -3014,7 +3169,8 @@
   "title": "画工弃市",
   "id": "f29a35f5-0d31-4d43-95d8-0e4f72f37403",
   "dynasty": "魏晋",
-  "authorId": "26e93203-2717-43dd-b3f1-435618ffdcaa"
+  "authorId": "26e93203-2717-43dd-b3f1-435618ffdcaa",
+  "genreId": 1
  },
  {
   "author": "西晋·李密",
@@ -3026,7 +3182,8 @@
   "title": "赐饯东堂诏令赋诗",
   "id": "ab56a581-bfa6-4b34-8261-b6a4d05d0ecb",
   "dynasty": "魏晋",
-  "authorId": "eb2fc4a5-9b25-41f9-8fc3-07a4645886c2"
+  "authorId": "eb2fc4a5-9b25-41f9-8fc3-07a4645886c2",
+  "genreId": 1
  },
  {
   "author": "西晋·李密",
@@ -3039,7 +3196,8 @@
   "title": "陈情表",
   "id": "cac8ba66-b140-4b22-a14b-1ca223bad571",
   "dynasty": "魏晋",
-  "authorId": "eb2fc4a5-9b25-41f9-8fc3-07a4645886c2"
+  "authorId": "eb2fc4a5-9b25-41f9-8fc3-07a4645886c2",
+  "genreId": 6
  },
  {
   "author": "谢混",
@@ -3057,7 +3215,8 @@
   "title": "游西池",
   "id": "8d17f07c-e40d-4edf-987c-06a24becd274",
   "dynasty": "魏晋",
-  "authorId": "a02b165f-177b-4348-ae1d-66af49c875b2"
+  "authorId": "a02b165f-177b-4348-ae1d-66af49c875b2",
+  "genreId": 1
  },
  {
   "author": "谢道韫",
@@ -3067,7 +3226,8 @@
   "title": "咏雪联句",
   "id": "637e35c8-ec31-4ee9-93dd-2898cb07a51e",
   "dynasty": "魏晋",
-  "authorId": "66bde646-8ace-4de0-bb1d-8a82ee513c7e"
+  "authorId": "66bde646-8ace-4de0-bb1d-8a82ee513c7e",
+  "genreId": 1
  },
  {
   "author": "谢道韫",
@@ -3080,7 +3240,8 @@
   "title": "拟嵇中散咏松诗",
   "id": "2a13bc71-ffb2-4dca-8cf2-271c01cb0092",
   "dynasty": "魏晋",
-  "authorId": "66bde646-8ace-4de0-bb1d-8a82ee513c7e"
+  "authorId": "66bde646-8ace-4de0-bb1d-8a82ee513c7e",
+  "genreId": 1
  },
  {
   "author": "谢道韫",
@@ -3094,7 +3255,8 @@
   "title": "泰山吟",
   "id": "b993a877-03cb-43ba-b8ff-c174313b697e",
   "dynasty": "魏晋",
-  "authorId": "66bde646-8ace-4de0-bb1d-8a82ee513c7e"
+  "authorId": "66bde646-8ace-4de0-bb1d-8a82ee513c7e",
+  "genreId": 1
  },
  {
   "author": "邯郸淳",
@@ -3104,7 +3266,8 @@
   "title": "一毛不拔",
   "id": "8742688d-dd56-4248-a004-f01f8c5e8bf1",
   "dynasty": "魏晋",
-  "authorId": "2614f238-ca9b-4ada-9798-febd1b2eef13"
+  "authorId": "2614f238-ca9b-4ada-9798-febd1b2eef13",
+  "genreId": 1
  },
  {
   "author": "邯郸淳",
@@ -3114,7 +3277,8 @@
   "title": "截竿入城",
   "id": "807e3749-1d82-48c4-b427-74a325e98642",
   "dynasty": "魏晋",
-  "authorId": "2614f238-ca9b-4ada-9798-febd1b2eef13"
+  "authorId": "2614f238-ca9b-4ada-9798-febd1b2eef13",
+  "genreId": 6
  },
  {
   "author": "邯郸淳",
@@ -3124,7 +3288,8 @@
   "title": "楚人隐形",
   "id": "04e45db9-cab3-4114-9e66-7348fbc88882",
   "dynasty": "魏晋",
-  "authorId": "2614f238-ca9b-4ada-9798-febd1b2eef13"
+  "authorId": "2614f238-ca9b-4ada-9798-febd1b2eef13",
+  "genreId": 1
  },
  {
   "author": "郭璞",
@@ -3141,7 +3306,8 @@
   "title": "江赋",
   "id": "552f24f7-5cf0-43f2-bd4e-e2e1f25b1041",
   "dynasty": "魏晋",
-  "authorId": "34ad5c81-c2cd-4f4a-9745-628acda5d100"
+  "authorId": "34ad5c81-c2cd-4f4a-9745-628acda5d100",
+  "genreId": 4
  },
  {
   "author": "郭璞",
@@ -3157,7 +3323,8 @@
   "title": "游仙诗·京华游侠窟",
   "id": "9ab9578d-feb9-4f72-a69d-9fc20c235d1b",
   "dynasty": "魏晋",
-  "authorId": "34ad5c81-c2cd-4f4a-9745-628acda5d100"
+  "authorId": "34ad5c81-c2cd-4f4a-9745-628acda5d100",
+  "genreId": 1
  },
  {
   "author": "郭璞",
@@ -3171,7 +3338,8 @@
   "title": "游仙诗十九首·其五",
   "id": "561e7efb-9d54-4520-933a-ebda36aac039",
   "dynasty": "魏晋",
-  "authorId": "34ad5c81-c2cd-4f4a-9745-628acda5d100"
+  "authorId": "34ad5c81-c2cd-4f4a-9745-628acda5d100",
+  "genreId": 1
  },
  {
   "author": "释慧远",
@@ -3187,7 +3355,8 @@
   "title": "庐山东林杂诗",
   "id": "26fa589f-e853-49cd-bb63-baaa0b19cca1",
   "dynasty": "魏晋",
-  "authorId": "586a1dcc-0f4a-4800-89a7-909b47a87441"
+  "authorId": "586a1dcc-0f4a-4800-89a7-909b47a87441",
+  "genreId": 1
  },
  {
   "author": "阮瑀",
@@ -3208,7 +3377,8 @@
   "title": "驾出北郭门行",
   "id": "ec567725-5f91-4341-897b-3d5cf415905f",
   "dynasty": "魏晋",
-  "authorId": "2d4aadb1-7edc-46fc-8dbe-28867d3c3ebc"
+  "authorId": "2d4aadb1-7edc-46fc-8dbe-28867d3c3ebc",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3223,7 +3393,8 @@
   "title": "咏怀·其三",
   "id": "2c3a1a8c-0ebd-482b-a23f-0f4cb1faa272",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3239,7 +3410,8 @@
   "title": "咏怀·其三十九",
   "id": "8db042d9-15f7-4531-8672-95006342d632",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3717,7 +3889,8 @@
   "title": "咏怀八十二首",
   "id": "7dc96fb6-ca0d-43f5-a15f-5abc28dbf3ff",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3730,7 +3903,8 @@
   "title": "咏怀八十二首·其一",
   "id": "dd2f665b-ee41-4560-b34b-1175b663f0f2",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3745,7 +3919,8 @@
   "title": "咏怀八十二首·其七十九",
   "id": "7941b38a-cf27-4555-9a3f-20b3baf1d9c3",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3760,7 +3935,8 @@
   "title": "咏怀八十二首·其三十一",
   "id": "a35ea00b-d01a-44ad-8d35-fefc6d8bd4e2",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3777,7 +3953,8 @@
   "title": "咏怀八十二首·其三十二",
   "id": "d0d58709-1619-4e85-b155-bd5268cda4cb",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3791,7 +3968,8 @@
   "title": "咏怀八十二首·其十七",
   "id": "466977f5-c6e5-4a1c-a0d8-67469eb9f199",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3810,7 +3988,8 @@
   "title": "咏怀诗十三首·其一",
   "id": "3b9786e4-f097-4e30-99ab-7991ac5f5987",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 1
  },
  {
   "author": "阮籍",
@@ -3844,7 +4023,8 @@
   "title": "大人先生传",
   "id": "441ac09d-57a5-4fdb-bc55-2340e704e73a",
   "dynasty": "魏晋",
-  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0"
+  "authorId": "34dd8996-bbff-46a5-8155-d0ffcdf7cae0",
+  "genreId": 6
  },
  {
   "author": "陆机",
@@ -3860,7 +4040,8 @@
   "title": "叹逝赋",
   "id": "23466390-2936-458e-9940-f8f4a977ed1d",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 4
  },
  {
   "author": "陆机",
@@ -3874,7 +4055,8 @@
   "title": "拟明月何皎皎",
   "id": "3252bc6e-f3aa-43af-a33e-93e7bdaa4d7b",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -3891,7 +4073,8 @@
   "title": "拟西北有高楼诗",
   "id": "ebbbf245-247e-4b3e-a8cb-4bfbf60a06fe",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -3916,7 +4099,8 @@
   "title": "文赋",
   "id": "a80e86c4-a45a-4e56-9e17-d7c27f58f9d6",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 4
  },
  {
   "author": "陆机",
@@ -3935,7 +4119,8 @@
   "title": "梁甫吟",
   "id": "53d27f50-4248-47a1-bccc-47374ea47198",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -3954,7 +4139,8 @@
   "title": "猛虎行",
   "id": "6ab974ec-50f6-47f3-9cbd-fd31660a55b1",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -3973,7 +4159,8 @@
   "title": "短歌行",
   "id": "88e350d4-0fee-42be-817d-4dfa18eb0bfe",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -3988,7 +4175,8 @@
   "title": "赴洛道中作二首·其二",
   "id": "4bc402dc-b2cf-4549-8891-e5b7ce8962f6",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -4006,7 +4194,8 @@
   "title": "赴洛道中作诗二首·其一",
   "id": "ec9464da-4c96-4c6a-825d-f54675be141c",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -4025,7 +4214,8 @@
   "title": "长歌行",
   "id": "058fbd00-103d-47aa-8de2-43a116033e84",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陆机",
@@ -4044,7 +4234,8 @@
   "title": "门有车马客行",
   "id": "2a2272e9-82fa-4997-8e68-53d6ab80965c",
   "dynasty": "魏晋",
-  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9"
+  "authorId": "9b77fb73-7bb4-42de-b4ef-af374caef6d9",
+  "genreId": 1
  },
  {
   "author": "陈寿",
@@ -4056,7 +4247,8 @@
   "title": "三国志·华佗传(节选)",
   "id": "b19b78be-c243-4feb-bc30-662f8fe6ebbd",
   "dynasty": "魏晋",
-  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5"
+  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5",
+  "genreId": 6
  },
  {
   "author": "陈寿",
@@ -4071,7 +4263,8 @@
   "title": "公无渡河",
   "id": "c4090cdc-befa-45f2-9235-12fa240f89f3",
   "dynasty": "魏晋",
-  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5"
+  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5",
+  "genreId": 1
  },
  {
   "author": "陈寿",
@@ -4081,7 +4274,8 @@
   "title": "曹冲称象",
   "id": "25eb66e6-9f12-4450-8c08-102478e591f6",
   "dynasty": "魏晋",
-  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5"
+  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5",
+  "genreId": 6
  },
  {
   "author": "陈寿",
@@ -4096,7 +4290,8 @@
   "title": "隆中对",
   "id": "e80bcc4b-f4ba-411b-85fc-22bff98950da",
   "dynasty": "魏晋",
-  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5"
+  "authorId": "69b318b0-137d-44d8-92e7-917b35a038a5",
+  "genreId": 6
  },
  {
   "author": "陈琳",
@@ -4119,7 +4314,8 @@
   "title": "饮马长城窟行",
   "id": "be18199c-a236-47f0-8c0a-7ec9224397ce",
   "dynasty": "魏晋",
-  "authorId": "e2335b2c-5eca-4b61-8152-c85b78da781d"
+  "authorId": "e2335b2c-5eca-4b61-8152-c85b78da781d",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4134,7 +4330,8 @@
   "title": "与子俨等疏",
   "id": "0283904b-1aaa-43f2-a614-08af86b00fa6",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 6
  },
  {
   "author": "陶渊明",
@@ -4154,7 +4351,8 @@
   "title": "与殷晋安别",
   "id": "be29be12-d8e0-4fea-b792-f503a3f8f834",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4173,7 +4371,8 @@
   "title": "丙辰岁八月中于下潠田舍获",
   "id": "5e213812-3852-4e50-b225-f2a6af41ecb7",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4190,7 +4389,8 @@
   "title": "乙巳岁三月为建威参军使都经钱溪",
   "id": "1ec510e6-efcb-4f64-91ca-11a5d787459e",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4209,7 +4409,8 @@
   "title": "九日闲居",
   "id": "4bf1d778-a9d7-4e81-9071-2c543e2ff67c",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4225,7 +4426,8 @@
   "title": "乞食",
   "id": "801e3411-9c9c-4dad-80c5-48906cb8bf95",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4242,7 +4444,8 @@
   "title": "于王抚军座送客",
   "id": "60a04bef-5f4e-4db4-ba67-4fa0b33b5880",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4259,7 +4462,8 @@
   "title": "五月旦作和戴主簿",
   "id": "d0cb620c-4ad9-4666-a1dd-06b1ebc55b2e",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4270,7 +4474,8 @@
   "title": "五柳先生传",
   "id": "f9b7fa03-6b5d-4688-aefb-688c9c373e7f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 6
  },
  {
   "author": "陶渊明",
@@ -4296,7 +4501,8 @@
   "title": "停云",
   "id": "db3efc02-1f15-49a0-8eac-d6fdb503d06d",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4309,7 +4515,8 @@
   "title": "停云·其二",
   "id": "f3d602ad-eb09-4641-9062-ae8fafe47a7d",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4342,7 +4549,8 @@
   "title": "劝农",
   "id": "609b6d16-e718-4738-be50-b3c6571e4144",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4391,7 +4599,8 @@
   "title": "命子",
   "id": "085c49e8-9b7b-4ff7-897e-a153fdffd148",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4410,7 +4619,8 @@
   "title": "和刘柴桑",
   "id": "a2d38091-2904-4cb2-9f63-4a647ae868ba",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4427,7 +4637,8 @@
   "title": "和胡西曹示顾贼曹",
   "id": "379d74cb-3a7b-447e-ab09-66c130632979",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4443,7 +4654,8 @@
   "title": "和郭主簿·其二",
   "id": "d40ec17a-d099-494c-8c91-adf25d529bf8",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4461,7 +4673,8 @@
   "title": "和郭主簿二首·其一",
   "id": "6ec0f410-fead-49ce-b357-69ea23e833a2",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4480,7 +4693,8 @@
   "title": "咏三良",
   "id": "625abb9d-8fe2-454e-a5e6-b02e3272bec3",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4501,7 +4715,8 @@
   "title": "咏二疏",
   "id": "1f0080b3-0921-472a-bbae-88d896eb3181",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4525,7 +4740,8 @@
   "title": "咏荆轲",
   "id": "651d022c-1a6f-4fa2-850b-2f8c5195b014",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4540,7 +4756,8 @@
   "title": "咏贫士·其一",
   "id": "df709822-e4f1-4b02-b621-23468ae7786c",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4559,7 +4776,8 @@
   "title": "始作镇军参军经曲阿作",
   "id": "32b76db2-0c7f-41ff-937d-fb7bb21eb931",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4578,7 +4796,8 @@
   "title": "岁暮和张常侍",
   "id": "ee483678-6046-4b71-9820-e6dd8dcb22e1",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4595,7 +4814,8 @@
   "title": "己酉岁九月九日",
   "id": "db72d3d4-b4d0-480b-86c7-6ed76e4de223",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4612,7 +4832,8 @@
   "title": "庚子岁五月中从都还阻风于规林·其一",
   "id": "ba41755d-6dd9-411d-b20c-cb7265e24299",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4627,7 +4848,8 @@
   "title": "庚子岁五月中从都还阻风于规林·其二",
   "id": "d9c4e6e0-1f49-4eeb-8499-a538ce94e5fc",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4646,7 +4868,8 @@
   "title": "庚戌岁九月中于西田获早稻",
   "id": "bd02b012-68c7-441c-8e3a-ff720c0e7d02",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4660,7 +4883,8 @@
   "title": "归去来兮辞",
   "id": "c26aea0d-25a7-43e7-ac4d-b0e810262587",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 5
  },
  {
   "author": "陶渊明",
@@ -4679,7 +4903,8 @@
   "title": "归园田居·其一",
   "id": "935d46a7-d600-4ba2-abe5-f664b8134472",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4692,7 +4917,8 @@
   "title": "归园田居·其三",
   "id": "b3940436-a797-442f-9e39-8197403ac629",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4707,7 +4933,8 @@
   "title": "归园田居·其二",
   "id": "b393d7ed-f7cc-4640-a3bb-ed1a56dfe526",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4721,7 +4948,8 @@
   "title": "归园田居·其五",
   "id": "3386cd29-5c66-49d1-a4c9-af704ca0d973",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4738,7 +4966,8 @@
   "title": "归园田居·其四",
   "id": "e3c4584e-53ce-4a31-94df-25695b2ae09a",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4751,7 +4980,8 @@
   "title": "归鸟·其一",
   "id": "3da62970-1034-4718-b60c-c48327a466e3",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4792,7 +5022,8 @@
   "title": "形影神三首",
   "id": "0b20411a-bbef-4b9b-a376-27e39d211ef5",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4811,7 +5042,8 @@
   "title": "怨诗楚调示庞主簿邓治中",
   "id": "ff7786fa-17d3-4e10-9d3e-20bf540ffa75",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4831,7 +5063,8 @@
   "title": "悲从弟仲德",
   "id": "452894ea-6e05-4391-b6dd-c7807d81eb10",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4852,7 +5085,8 @@
   "title": "戊申岁六月中遇火",
   "id": "d1e7053b-c42d-42ff-9514-e8eefc3af916",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4921,7 +5155,8 @@
   "title": "拟古九首",
   "id": "cba86a56-fce1-46bf-b76a-cc90ac985a3f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4939,7 +5174,8 @@
   "title": "拟挽歌辞·其三",
   "id": "96cc4390-f64e-4764-b2b3-9f93a615586d",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4970,7 +5206,8 @@
   "title": "拟挽歌辞三首",
   "id": "c5474f17-28a0-43a2-84d0-7e8c6c72f5da",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -4996,7 +5233,8 @@
   "title": "时运",
   "id": "5abe1c30-1660-4851-8a7a-76c717ca5a12",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5009,7 +5247,8 @@
   "title": "时运·其二",
   "id": "ce1968a1-b425-4de1-92e8-a87f0ad9c31f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5025,7 +5264,8 @@
   "title": "晋故征西大将军长史孟府君传",
   "id": "e3426e25-2b23-4342-994f-92c65b6d7768",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 6
  },
  {
   "author": "陶渊明",
@@ -5043,7 +5283,8 @@
   "title": "有会而作",
   "id": "570e3f73-1306-42a2-b0e5-1b4a20f1974c",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5058,7 +5299,8 @@
   "title": "杂诗十二首·其一",
   "id": "6fee1403-959e-4337-b897-c5b4562539ca",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5073,7 +5315,8 @@
   "title": "杂诗十二首·其七",
   "id": "ce0cda76-fafe-4c8a-a2ec-5d56545f170d",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5087,7 +5330,8 @@
   "title": "杂诗十二首·其三",
   "id": "ee9d7632-96fa-43c7-bc08-d4deafd7ebf7",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5103,7 +5347,8 @@
   "title": "杂诗十二首·其二",
   "id": "81d5f13c-c696-4855-b251-0e4d5aa9f446",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5120,7 +5365,8 @@
   "title": "杂诗十二首·其五",
   "id": "b76d2007-6297-4ce0-8cae-a2c79a346285",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5135,7 +5381,8 @@
   "title": "杂诗十二首·其四",
   "id": "6b8e60b0-6795-4c63-bba1-d381bf45ea23",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5149,7 +5396,8 @@
   "title": "桃花源记",
   "id": "95dadce8-5eb3-451a-95f6-314ed8eb5545",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 6
  },
  {
   "author": "陶渊明",
@@ -5174,7 +5422,8 @@
   "title": "桃花源诗",
   "id": "661a0508-7acc-47be-a0df-86e73ab00825",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5193,7 +5442,8 @@
   "title": "止酒",
   "id": "23111b13-2613-4c7c-9e7e-221ee47a6284",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5213,7 +5463,8 @@
   "title": "游斜川",
   "id": "eec50c76-f2d6-4355-a4d0-d6be926b6a5f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5232,7 +5483,8 @@
   "title": "癸卯岁十二月中作与从弟敬远",
   "id": "4ce5e156-8c12-4c3a-8546-10decdf29946",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5256,7 +5508,8 @@
   "title": "癸卯岁始春怀古田舍二首",
   "id": "b6495844-2eb0-40e2-ab3f-f7931c8a7b0e",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5273,7 +5526,8 @@
   "title": "示周续之祖企谢景夷三郎",
   "id": "02e9e7e9-028a-49b9-b6f2-7a42c99792d3",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5288,7 +5542,8 @@
   "title": "移居·其二",
   "id": "f822eb69-7b06-48ce-adbb-d867b019959a",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5309,7 +5564,8 @@
   "title": "移居二首",
   "id": "c041937b-b678-4f48-9d0c-8becb67c8859",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5327,7 +5583,8 @@
   "title": "答庞参军",
   "id": "ea21b414-ef08-4a55-8f86-615316c7a733",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5340,7 +5597,8 @@
   "title": "自祭文",
   "id": "a9973916-3114-4d1e-9fa7-edbea0e3ef94",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 6
  },
  {
   "author": "陶渊明",
@@ -5366,7 +5624,8 @@
   "title": "荣木",
   "id": "14a13feb-0199-40be-a6e3-f60dc33f6cfe",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5379,7 +5638,8 @@
   "title": "蜡日",
   "id": "853377e8-d81b-4fff-8b1b-4978b291f6e9",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5392,7 +5652,8 @@
   "title": "诸人共游周家墓柏下",
   "id": "431be3d1-2bec-4965-85e1-3c586ee92382",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5409,7 +5670,8 @@
   "title": "读山海经·其一",
   "id": "b611e4c3-16e1-4e4c-9cb6-23a6ee95f800",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5422,7 +5684,8 @@
   "title": "读山海经十三首·其三",
   "id": "4149c47e-c208-4911-9344-0646395c6b12",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5435,7 +5698,8 @@
   "title": "读山海经十三首·其九",
   "id": "f34c885f-7443-4dcf-97b2-eeb2e83e8c62",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5448,7 +5712,8 @@
   "title": "读山海经十三首·其五",
   "id": "a6e19620-6c48-4e92-b360-583bd6ce733f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5461,7 +5726,8 @@
   "title": "读山海经十三首·其八",
   "id": "c654ae92-0f90-4ef0-b1ee-4c16e53175bd",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5474,7 +5740,8 @@
   "title": "读山海经十三首·其十",
   "id": "a91fc7ac-37a2-43c4-925d-a7889ac0ff6a",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5487,7 +5754,8 @@
   "title": "读山海经十三首·其十二",
   "id": "2c848125-7ad2-47e2-9de7-5151ecf1a74f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5503,7 +5771,8 @@
   "title": "责子",
   "id": "14f62ffe-ebe9-4f54-bba6-f3795177ef93",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5525,7 +5794,8 @@
   "title": "赠羊长史·并序",
   "id": "326ff48d-21f7-4d25-819a-b42102a06dd7",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5551,7 +5821,8 @@
   "title": "赠长沙公",
   "id": "63b83ab3-e560-4e08-873b-007a9df9ca64",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5570,7 +5841,8 @@
   "title": "辛丑岁七月赴假还江陵夜行涂口",
   "id": "230f8e49-245f-468b-9be3-3b45205d25a6",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5587,7 +5859,8 @@
   "title": "还旧居",
   "id": "6cb65704-fd11-49ff-8de8-9e1f34e4735b",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5604,7 +5877,8 @@
   "title": "连雨独饮",
   "id": "7e819b42-40ce-4194-b352-4edf9abfc761",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5628,7 +5902,8 @@
   "title": "述酒",
   "id": "7cb39255-c56a-4f2a-9d5f-95acc4493f02",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5644,7 +5919,8 @@
   "title": "酬丁柴桑",
   "id": "9b8df87a-63f1-4dd4-bf52-e56ba194fc88",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5658,7 +5934,8 @@
   "title": "酬刘柴桑",
   "id": "b64b31fb-ce88-4f06-a63f-d53ff61aa698",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5671,7 +5948,8 @@
   "title": "闲情赋",
   "id": "8e2dd5d5-27c6-48f6-9ab6-662d98972622",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 4
  },
  {
   "author": "陶渊明",
@@ -5690,7 +5968,8 @@
   "title": "饮酒·二十",
   "id": "163af387-36fa-4069-b231-c77a2d2eeb49",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5704,7 +5983,8 @@
   "title": "饮酒·其一",
   "id": "ab01b7e0-96cd-4d90-b5bf-5dbbd52e5399",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5718,7 +5998,8 @@
   "title": "饮酒·其七",
   "id": "60b6f2a2-6c35-4a8e-9afd-5868d52c4b58",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5732,7 +6013,8 @@
   "title": "饮酒·其三",
   "id": "98f68195-3d12-4bca-bd1b-fda8fc2b2244",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5749,7 +6031,8 @@
   "title": "饮酒·其九",
   "id": "5c852f1c-80f4-47b7-8855-550802e1241e",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5762,7 +6045,8 @@
   "title": "饮酒·其二",
   "id": "23c5e613-ebc6-4f4b-a3ce-016e09b09d7c",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5776,7 +6060,8 @@
   "title": "饮酒·其五",
   "id": "aef4be6d-34ba-4df4-ab61-af1f50f2536d",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5790,7 +6075,8 @@
   "title": "饮酒·其八",
   "id": "8f79277d-84fc-4b95-b885-8ccf3b8196da",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5803,7 +6089,8 @@
   "title": "饮酒·其六",
   "id": "9587ff3e-8e9f-4351-b6a5-18a7a2b0514a",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5817,7 +6104,8 @@
   "title": "饮酒·其十",
   "id": "b6b1c7d7-05f6-4836-9799-fa1298d8b33d",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5832,7 +6120,8 @@
   "title": "饮酒·其四",
   "id": "ff282764-050e-491e-9492-2684afac4e3f",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5846,7 +6135,8 @@
   "title": "饮酒·十三",
   "id": "14f8880d-cee6-45d6-a3bd-3a5a961cafce",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5862,7 +6152,8 @@
   "title": "饮酒·十九",
   "id": "e0aa7ecd-748e-41ef-b09e-b59ad7d796db",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5877,7 +6168,8 @@
   "title": "饮酒·十二",
   "id": "e5e69ec7-aa37-435f-aa5d-b27403890c72",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5891,7 +6183,8 @@
   "title": "饮酒·十五",
   "id": "91b3de52-d8a8-4649-a8af-dc9c255e1d69",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5906,7 +6199,8 @@
   "title": "饮酒·十六",
   "id": "92fa85fe-a125-4d98-bea8-ec10c4784cb2",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5920,7 +6214,8 @@
   "title": "饮酒·十四",
   "id": "bf127897-ecbb-443c-896b-2b054286a1d9",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明",
@@ -5933,7 +6228,8 @@
   "title": "饮酒·幽兰生前庭",
   "id": "92622859-360e-47e5-bbce-45cda1df7e8e",
   "dynasty": "魏晋",
-  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de"
+  "authorId": "b25c192f-cfbc-4ec2-9683-b7cb429de2de",
+  "genreId": 1
  },
  {
   "author": "陶渊明/顾恺之",
@@ -5944,7 +6240,8 @@
   "title": "四时",
   "id": "7c0d51ce-ecfb-497f-bc91-eb9da8cbf6e1",
   "dynasty": "魏晋",
-  "authorId": "5429d577-6107-4634-81e1-b82ce122a6e0"
+  "authorId": "5429d577-6107-4634-81e1-b82ce122a6e0",
+  "genreId": 1
  },
  {
   "author": "陶潜",
@@ -5955,7 +6252,8 @@
   "title": "感士不遇赋并序",
   "id": "b1a6c309-b5ce-493f-b0fc-8fcaec4fc361",
   "dynasty": "魏晋",
-  "authorId": "6aaae9ac-0880-4d38-81d7-39375291e685"
+  "authorId": "6aaae9ac-0880-4d38-81d7-39375291e685",
+  "genreId": 4
  },
  {
   "author": "鲁褒",
@@ -5972,6 +6270,7 @@
   "title": "钱神论",
   "id": "70dfa4e3-b494-4abc-aa7f-edbd382e5c9e",
   "dynasty": "魏晋",
-  "authorId": "12a2cdce-ce4c-4b95-ad0a-9d48096d7c33"
+  "authorId": "12a2cdce-ce4c-4b95-ad0a-9d48096d7c33",
+  "genreId": 6
  }
 ]
