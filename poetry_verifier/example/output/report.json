@@ -1,0 +1,37 @@
+{
+  "started_at": "2026-10-17T05:02:55.358676+00:00",
+  "files_scanned": 1,
+  "poems_processed": 1,
+  "by_status": {
+    "corrected": 1
+  },
+  "by_field": {
+    "paragraphs": 1
+  },
+  "by_source": {
+    "古文岛(gushiwen.cn)": 1
+  },
+  "conflicts": [],
+  "applied": [
+    {
+      "file": "synthetic_input.json",
+      "uid": "syn-1",
+      "title": "將進酒",
+      "author": "李白",
+      "field": "paragraphs",
+      "old": [
+        "君不見黃河之水天上來，奔流到海不復□。",
+        "君不見高堂明鏡悲白髮，朝如青絲暮成雪。"
+      ],
+      "new": [
+        "君不見黃河之水天上來，奔流到海不復回。",
+        "君不見高堂明鏡悲白髮，朝如青絲暮成雪。"
+      ],
+      "reason": "补全缺失/存疑字（□/[..] → 权威来源原文）",
+      "confidence": 0.9,
+      "source": "古文岛(gushiwen.cn)",
+      "url": "https://www.gushiwen.cn/shiwenv_ee16df5673bc.aspx"
+    }
+  ],
+  "errors": []
+}

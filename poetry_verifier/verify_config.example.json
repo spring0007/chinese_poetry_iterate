@@ -1,0 +1,33 @@
+{
+  "root": "E:\\chinese_poetry_iterate",
+  "out_dir": "E:\\chinese_poetry_iterate\\verify_output",
+  "collections": [],
+  "exclude_dirs": [".venv", "build", "poetry-pipeline", "node_modules", "_probe", "_scrape", ".git", ".idea", "__pycache__", "images", "strains", "rank", "loader", ".workbuddy"],
+  "title_match_ratio": 0.82,
+  "max_poems": 0,
+  "max_time": 0,
+  "request": {
+    "timeout": 20,
+    "retries": 3,
+    "backoff_base": 1.5,
+    "backoff_max": 30,
+    "delay": 1.2,
+    "max_pages": 8
+  },
+  "retrieval": {
+    "primary": "gushiwen",
+    "search_api_url": "",
+    "search_api_engine": "tavily"
+  },
+  "verify": {
+    "confidence_threshold": 0.8,
+    "fill_placeholders": true,
+    "add_missing_fields": false,
+    "overwrite_conflicts": false
+  },
+  "llm": {
+    "enabled": false,
+    "base_url": "https://api.deepseek.com/v1",
+    "model": "deepseek-chat"
+  }
+}
