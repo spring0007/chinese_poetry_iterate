@@ -46,7 +46,20 @@ except ImportError:
 #        判断方法：poems 上有没有 author_id 列。消费方一律改用
 #        `LEFT JOIN authors a ON a.uid = p.author_uid`；佚名仍是 author_uid=''
 #        （join 不上任何作者行，等价于原来的 author_id=0 的 NULL 语义）。
-SCHEMA_VERSION = "3.4"
+#   3.5  poems 表新增 genre_id 列（体裁），字典表暂时借用 source 表。
+#   3.6  （已回退，见 3.7）字典表归位：source 改为朝代表，另建 genre 表存体裁，
+#        poems 补 dynasty_id / genre_id / genre 三列。
+#   3.7  **减负**：删掉 `source` 表与 `poems.genre` / `poems.dynasty_id` 两列。
+#        留下来的只有 `genre` 字典表 + `poems.genre_id` 一列：
+#          - 朝代本来就在 id 高 4 位里，`parse_id()` / `id >> 27` 就能反解，
+#            再存一列 dynasty_id 等于把同一事实抄两遍，白占 34 万行；
+#          - 体裁名由 `genre` 表带出（`JOIN genre ON genre.id = poems.genre_id`），
+#            名称副本同理是冗余；改名只改字典表一处，不必全表 UPDATE。
+#        判断方法：有没有 `source` 表、poems 上有没有 `dynasty_id` / `genre` 列
+#        —— 3.7 一个都没有；有 `genre` 表 + `poems.genre_id` 就对了。
+#        注意 sources（复数）**不是**被删的那张：它是「语料来源集合」（tang-poem /
+#        song-ci / user-added…），app.py 靠它把改动写回源 JSON，3.7 起照旧保留。
+SCHEMA_VERSION = "3.7"
 
 # ---------------------------------------------------------------- 编码表
 # 位布局: (dynasty << 27) | (kind << 24) | seq  -> 最大 2^31-1，可存进 int32
@@ -99,6 +112,61 @@ DYNASTY_LABEL = {
 KIND_LABEL = {
     "poem": "诗", "ci": "词", "qu": "曲", "prose": "文",
     "classic": "经", "fu": "赋", "article": "论著",
+}
+
+# ---------------------------------------------------------------- 朝代表（已废弃）
+# v3.6 曾把朝代做成一张 `source(id, name)` 字典表 + `poems.dynasty_id` 一列，
+# v3.7 已整体删除：朝代在 `id >> 27` 里本来就有，`parse_id()` 直接反解，
+# 中文名查上面的 DYNASTY_LABEL 即可，落库时没有再存一份的必要。
+# 需要「按朝代分组」时用 `id >> 27` 作分组键，别指望库里有个 dynasty 列。
+#
+# 唯一的例外是 **authors.dynasty**：authors.id 是导入顺序序号、不含朝代编码，
+# 所以这一列必须硬存，取值只能是上面 DYNASTY 的**键**（字符串），不是编码值。
+# 拼错的后果很安静——库里多出一个 parse_id 反解不出来的"朝代"，UI 直接显示
+# 原文。2026-10-20 就发生过：sources.py 把三个 AuthorSource 的来源名
+# （chuci/nalan/mengxue）当 dynasty 传，15 位作者带着非法值跑了三次重建。
+# 现在有两条防线：verify_db.py 的断言 + test_sources.py 的单元测试。
+
+# ---------------------------------------------------------------- 体裁表（genre）
+# 为什么体裁要单独一张表、而不能继续靠 id 里的 kind：kind 只有 3 bit（7 个值），
+# 分的是「诗/词/曲/文/经/赋/论著」这种**存储大类**；而这个项目实际要按
+# 「诗 / 词 / 曲 / 赋 / 骚 / 文 / 新诗 / 联」八个体裁检索——骚（楚辞体）、新诗、
+# 联语都挤在 kind=poem 里，汉魏晋南北朝的赋又与诗混编在同一批文件里。
+# 所以体裁必须是独立的一列 + 一张字典表，不能反解。
+#
+# 落库形态（v3.7 起）：`genre(id INTEGER PRIMARY KEY, name TEXT)`，行就是下面
+# 这 8 条；poems.genre_id 指向它。**名称不再往 poems 里抄一份**——3.6 试过存
+# `poems.genre`，等于同一事实写两处，改口径要全表 UPDATE 34 万行，3.7 已删。
+# 源数据里只写 genreId，名称一律由这张表带出——改名只改这一处，不会留下
+# 十几万条各说各话的 "genre" 字符串。
+#
+# id 一旦发布就不许改（外部按 id 过滤、按 id 统计与归档）：**只许追加，不许重排**。
+# 新增体裁时必须取 max(id)+1，别插在中间。
+GENRES = [
+    (1, "shi",    "诗",   "古体诗、近体诗、乐府；齐言或杂言，允许带小序"),
+    (2, "ci",     "词",   "按词牌填写，长短句；词牌依据 宋词 语料与常见别名表"),
+    (3, "qu",     "曲",   "散曲、套数、剧曲；题名含曲牌或以【曲牌】/〔曲牌〕标记"),
+    (4, "fu",     "赋",   "以“赋”名篇的赋体：骚体赋、骈赋、文赋"),
+    (5, "sao",    "骚",   "楚辞体，多用“兮”字：离骚、九歌、九章、九叹…"),
+    (6, "wen",    "文",   "散文、骈文与应用文体：书序记铭论表疏诏诔碑传…"),
+    (7, "xinshi", "新诗", "近现代自由体诗"),
+    (8, "lian",   "联",   "联语：对联、长联、楹联"),
+]
+GENRE_NAME = {g[0]: g[2] for g in GENRES}          # 1 -> "诗"
+GENRE_BY_CODE = {g[1]: g[0] for g in GENRES}       # "shi" -> 1
+GENRE_BY_NAME = {g[2]: g[0] for g in GENRES}       # "诗" -> 1
+
+# kind -> 体裁的默认映射。整集同体裁的集合（全唐诗=诗、宋词=词、蒙学=文…）直接
+# 按它落 genre_id，不必逐条判定；个别集合用 Collection.genre 覆盖（楚辞=骚、
+# 纳兰词=词），已逐条标注的八集则以记录里的 genreId 为准（见 build.build_poems）。
+KIND_GENRE = {
+    "poem": 1,      # 诗
+    "ci": 2,        # 词
+    "qu": 3,        # 曲
+    "prose": 6,     # 文
+    "classic": 6,   # 经/蒙学 —— 落到「文」
+    "fu": 4,        # 赋
+    "article": 6,   # 论著 —— 落到「文」
 }
 
 # 自建号段的 seq 起点：与构建期产物（从 0 开始）错开 1000 万，
@@ -208,7 +276,7 @@ def unpack_strains(b: bytes, length: int) -> str:
 # 全库统一转成简体并去掉空格。转简体后原文即检索文本，
 # 不再需要额外存一份"简体副本"——这是本项目最大的一次瘦身（省掉一整份正文）。
 #
-# 实测：唐诗 27.82%、宋诗 26.65% 字符为繁体，宋词/元曲已是简体；
+# 实测：唐诗 27.82%、宋诗 26.65% 字符为繁体，宋词已是简体；
 # 空格只出现在标题（如"帝京篇十首 一"），正文抽样 79,607 条空格数为 0。
 
 _SPACES = (" ", "\u3000", "\t", "\xa0", "\u2007", "\u202f")
@@ -286,17 +354,19 @@ def quantize_score(values: List[int]) -> int:
 # ---------------------------------------------------------------- 统一记录
 # 全部文本在建库时已归一为「简体 + 无空格」，因此：
 #   - body 既是展示文本也是检索文本，不再需要第二份副本
-#   - 朝代 / 体裁 不落库：id 高位已编码，用 parse_id() 反解即可
+#   - 朝代 / 体裁 在 id 高位里有编码（parse_id 可反解）；体裁另用 genre_id 显式
+#     指向 genre 字典表（v3.7：dynasty_id 与 genre 名称副本已删，别再加回来）
 #   - 作者 / 标题 / 词牌 / 来源 用字典 id，避免 34 万行里重复堆同样的字符串
 @dataclass
 class Poem:
     id: int
-    dynasty: str                    # 仅构建期使用，不落库
+    dynasty: str                    # 构建期用：只参与 make_id，不落库
     kind: str                       # 仅构建期使用，不落库
     title: str
     author: str                     # 佚名为 ""
     lines: List[str]
     rhythmic: str = ""              # 词牌 / 曲牌，诗为空串
+    genre_id: int = 0               # 体裁 id，指向 SQLite 的 genre 表（1 诗…8 联）
     tags: List[str] = field(default_factory=list)
     notes: List[str] = field(default_factory=list)
     strains: Optional[bytes] = None   # 4bit 打包后的平仄，长度与正文逐字对应
@@ -305,6 +375,11 @@ class Poem:
     src_id: str = ""            # 源库 UUID，仅用于回溯，不参与检索
     src: str = ""               # 来源集合名，便于定位脏数据
     extra: dict = field(default_factory=dict)  # prologue / biography / chapter 等低频字段
+
+    @property
+    def genre(self) -> str:
+        """体裁中文名（只用于日志/展示，不落库；库里靠 genre 表 JOIN 出来）。"""
+        return GENRE_NAME.get(self.genre_id, "")
 
     @property
     def body(self) -> str:
@@ -325,6 +400,8 @@ class Poem:
             "a": self.author,
             "l": self.lines,
         }
+        if self.genre_id:
+            o["y"] = self.genre_id     # 体裁 id：与 SQLite 的 genre 表同一套编号
         if self.rhythmic:
             o["r"] = self.rhythmic
         if self.tags:
@@ -353,6 +430,7 @@ class Poem:
             id=o["i"], dynasty=d, kind=k,
             title=o.get("t", ""), author=o.get("a", ""), lines=o.get("l", []),
             rhythmic=o.get("r", ""), tags=o.get("g", []), notes=o.get("n", []),
+            genre_id=o.get("y", 0),
             score=o.get("s", 0),
             strains=bytes.fromhex(o["p"]) if o.get("p") else None,
             strains_len=o.get("pl", 0),
@@ -367,6 +445,7 @@ BUNDLE_FIELDS = [
     ("t", "标题"),
     ("a", "作者"),
     ("l", "正文行数组（简体、无空格）"),
+    ("y", "体裁 id，与 SQLite 的 genre 表同一套编号（1 诗 2 词 3 曲 4 赋 5 骚 6 文 7 新诗 8 联）"),
     ("r", "词牌 / 曲牌（可选）"),
     ("g", "标签数组（可选）"),
     ("n", "注释数组（可选）"),

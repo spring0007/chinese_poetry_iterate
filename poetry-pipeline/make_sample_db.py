@@ -26,7 +26,7 @@
 uid 同理（extras.jsonl 里的记录也是按 uid 挂的，取出来的子集照样能对回去）。
 
 # 产物
-一份**独立完整**的库：poems / authors / rhythmics / sources / poem_extras / meta
+一份**独立完整**的库：poems / authors / rhythmics / sources / genre / poem_extras / meta
 都只含被抽中的那部分，索引与主库同构，sqlite3.connect 打开就能用。
 """
 from __future__ import annotations
@@ -45,7 +45,8 @@ import schema as S
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # 从主库原样复制结构的表。顺序不重要（表间没有外键约束，id 也只是普通整数）。
-TABLES = ("poems", "authors", "rhythmics", "sources", "poem_extras", "meta")
+TABLES = ("poems", "authors", "rhythmics", "genre", "sources",
+          "poem_extras", "meta")
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf8"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -73,7 +74,7 @@ def pick_ids(src: str, per_group: int, seed: int, top_n: int = 100):
             buckets.setdefault(key, []).append((pid, uid in rich_uids))
         # 全局高分榜：score 最高的 top_n 首，不论落在哪组都保进来。
         # why 走 WHERE score>0：score 是 heat_score.py 产出的 0-255 量化热度，0 表示
-        # 没有热度数据（诗经/元曲/近现代等未评估的集合全是 0），把它们算进"高分榜"
+        # 没有热度数据（诗经/近现代等未评估的集合全是 0），把它们算进"高分榜"
         # 只会用 score=0 的条目填满尾部，失去意义——库小到不够 top_n 条时就少取。
         # id 兜底排序：score 并列（100 分就有成百上千首）时按 id 升序，保证两次构建
         # 抽到的是同一批，可复现性不被 SQLite 的内部行序左右。
@@ -148,6 +149,10 @@ def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42,
                     "WHERE id IN (SELECT DISTINCT rhythmic_id FROM poems WHERE rhythmic_id<>0)")
         con.execute("INSERT INTO sources SELECT * FROM src.sources "
                     "WHERE id IN (SELECT DISTINCT src_id FROM poems WHERE src_id<>0)")
+        # 体裁字典是全局约定（id 1..8 跨库同一套），子集里往往只剩两三种，但字典要
+        # 整份带上：否则「诗=1」在精简库里查不到名称，客户端还要另配一张表。
+        # （v3.7 删掉了 source 朝代表——朝代在 id 高位里，子集照抄 id 即可反解。）
+        con.execute("INSERT INTO genre SELECT * FROM src.genre")
         # 3b) n_poems 按子集重算。它抄自主库（口径是"指向本行的作品数"），
         #     但子集里每位作者名下只剩几首，照抄会让 UI 显示"111 首"而实际只有 20 条。
         #     它是派生数据，重算不影响"简化版是主库真子集"——诗、uid、id 一个没动。
@@ -167,7 +172,7 @@ def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42,
 
         stats = {"poems": count("poems"), "authors": count("authors"),
                  "rhythmics": count("rhythmics"), "sources": count("sources"),
-                 "extras": count("poem_extras")}
+                 "genre": count("genre"), "extras": count("poem_extras")}
         parent = con.execute("SELECT v FROM src.meta WHERE k='n_poems'").fetchone()
         con.executemany("INSERT OR REPLACE INTO meta VALUES(?,?)", [
             ("n_poems", str(stats["poems"])),
@@ -248,9 +253,10 @@ def main():
           % ("[score 高分榜]", t["kept"], t["added"]))
     s = r["stats"]
     print("\n产物 %s" % r["out"])
-    print("  %.1f MB   poems %d / authors %d / rhythmics %d / sources %d / poem_extras %d"
+    print("  %.1f MB   poems %d / authors %d / rhythmics %d / sources %d / "
+          "genre %d / poem_extras %d"
           % (r["size"] / 1048576, s["poems"], s["authors"], s["rhythmics"],
-             s["sources"], s["extras"]))
+             s["sources"], s["genre"], s["extras"]))
     print("  平仄：id 沿用主库原值，可直接 ATTACH 现成的 poetry-strains.db")
     print("\n总耗时 %.1fs" % (time.time() - t0))
 

@@ -129,6 +129,32 @@ def _has_col(con, table: str, col: str) -> bool:
     return any(r[1] == col for r in con.execute("PRAGMA table_info(%s)" % table))
 
 
+def _genre_table(con) -> str:
+    """返回体裁字典的表名；没有就返回 ""。
+
+    v3.6 起叫 `genre`；v3.5 那一版体裁字典临时寄存在 `source` 表里，还要能读。
+    3.6 的 `source` 曾是朝代表、3.7 已整表删除，所以**先看 genre 在不在**；
+    只有「有 source、又有 genre_id、却没有 dynasty_id 列」才是 ≤3.5 那种老库，
+    别把朝代误当体裁 JOIN 出来（那会把「唐」显示成体裁）。
+    """
+    names = {r[0] for r in con.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'")}
+    if "genre" in names:
+        return "genre"
+    if "source" in names and not _has_col(con, "poems", "dynasty_id"):
+        return "source"          # ≤3.5 的老库：source 里装的就是体裁
+    return ""
+
+
+def has_genre(con) -> bool:
+    """库里有体裁字典（genre 表 / 老库的 source 表 + poems.genre_id）吗？
+
+    和 has_extras 同理按连接现查：同一个进程里会同时开新旧库（还有 ATTACH 的
+    平仄包），把"有没有体裁"缓存成模块级开关，换库之后就是错的。
+    """
+    return bool(_genre_table(con)) and _has_col(con, "poems", "genre_id")
+
+
 def _notes_expr(con) -> str:
     """SELECT 里的注释列。对外一律是 `\\x1f` 连接的多值形态，但**取值来源**随版本变。
 
@@ -160,9 +186,15 @@ def _cols(con) -> str:
     每次按连接现算而不是缓存成模块级常量：query.py 会同时连接新旧两种库
     （还有 ATTACH 进来的平仄包），把列清单绑在第一次打开的库上，换库就是错的。
     """
+    if not has_genre(con):
+        genre = "'' AS genre"
+    else:
+        # v3.7：体裁名只存在 genre 字典表里，poems 不存副本，一律 JOIN 出来。
+        # （3.6 曾把名称抄一份进 poems.genre，同一事实两处存，已删。）
+        genre = "g.name AS genre"
     return ("p.id AS pid, p.uid AS uid, a.name AS author, p.title AS title, "
-            "r.name AS rhythmic, p.body, p.tags, %s, p.score, p.n_char, s.name AS src"
-            % _notes_expr(con))
+            "r.name AS rhythmic, p.body, p.tags, %s, p.score, p.n_char, s.name AS src, %s"
+            % (_notes_expr(con), genre))
 
 
 def _author_join(con) -> str:
@@ -184,6 +216,11 @@ def _from(con) -> str:
             "LEFT JOIN authors a ON %s "
             "LEFT JOIN rhythmics r ON r.id = p.rhythmic_id "
             "LEFT JOIN sources s ON s.id = p.src_id" % _author_join(con))
+    # 体裁字典：v3.6 起是 genre(id, name)，poems.genre_id 指向它（≤3.5 的老库
+    # 借 source 表存同一套东西，_genre_table 会认出来）。更老的库两样都没有，
+    # 上面 _cols 会自动降级成 '' AS genre，这里也就不加这个 JOIN。
+    if has_genre(con):
+        base += " LEFT JOIN %s g ON g.id = p.genre_id" % _genre_table(con)
     if has_extras(con):
         base += " LEFT JOIN poem_extras pe ON pe.uid = p.uid"
     return base
@@ -195,12 +232,13 @@ def _decorate(row) -> dict:
     d["id"] = d["pid"]
     d["dynasty"], d["kind"], d["_seq"] = S.parse_id(d["pid"])
     d["author"] = d.get("author") or None      # 佚名 -> NULL
-    for k in ("title", "rhythmic", "src", "tags", "notes"):
+    for k in ("title", "rhythmic", "src", "tags", "notes", "genre"):
         d[k] = d.get(k) or ""
     return d
 
 
-def search(con, q: str, dynasty="", kind="", author="", limit=10, offset=0):
+def search(con, q: str, dynasty="", kind="", author="", limit=10, offset=0,
+           genre: int = 0):
     """
     全文子串检索。库已全量简体归一，只查 body 一次；
     查询词先转简体，所以用户输繁体同样能命中。
@@ -217,6 +255,9 @@ def search(con, q: str, dynasty="", kind="", author="", limit=10, offset=0):
     if author:
         sql += " AND a.name = ?"
         args.append(to_simplified(author))
+    if genre and has_genre(con):
+        sql += " AND p.genre_id = ?"
+        args.append(genre)
     sql += " ORDER BY p.score DESC, p.id LIMIT ? OFFSET ?"
     args += [limit, offset]
     return [_decorate(r) for r in con.execute(sql, args).fetchall()]
@@ -283,7 +324,7 @@ def count_rhythmic(con, r: str) -> int:
     return con.execute("SELECT COUNT(*) FROM poems WHERE rhythmic_id = ?", (rid[0],)).fetchone()[0]
 
 
-def search_count(con, q: str, dynasty="", kind="", author="") -> int:
+def search_count(con, q: str, dynasty="", kind="", author="", genre: int = 0) -> int:
     """与 search() 完全相同的 WHERE 条件，只取 COUNT——供分页算总页数。"""
     sql = "SELECT COUNT(*) %s WHERE p.body LIKE ?" % _from(con)
     args = ["%" + to_simplified(q) + "%"]
@@ -297,10 +338,14 @@ def search_count(con, q: str, dynasty="", kind="", author="") -> int:
     if author:
         sql += " AND a.name = ?"
         args.append(to_simplified(author))
+    if genre and has_genre(con):
+        sql += " AND p.genre_id = ?"
+        args.append(genre)
     return con.execute(sql, args).fetchone()[0]
 
 
-def run_query(con, *, kw="", dynasty="", kind="", author="", rhy="", limit=50, offset=0):
+def run_query(con, *, kw="", dynasty="", kind="", author="", rhy="", limit=50,
+              offset=0, genre: int = 0):
     """
     统一检索入口，返回 (total, rows)。GUI 用它做分页——
     total 是命中的总条数（与 limit/offset 无关），rows 是当前页的数据。
@@ -314,8 +359,8 @@ def run_query(con, *, kw="", dynasty="", kind="", author="", rhy="", limit=50, o
     if author and not kw:
         rows = by_author(con, author, limit, offset)
         return count_author(con, author), rows
-    rows = search(con, kw, dynasty, kind, author, limit, offset)
-    total = search_count(con, kw, dynasty, kind, author)
+    rows = search(con, kw, dynasty, kind, author, limit, offset, genre)
+    total = search_count(con, kw, dynasty, kind, author, genre)
     if total == 0 and kw:                       # 0 命中兜底：关键词其实是标题
         rows = by_title(con, kw, limit, offset)
         total = title_count(con, kw)
@@ -372,7 +417,8 @@ def show(rows, full=False):
         body = r["body"].replace("\n", "／")
         if not full and len(body) > 60:
             body = body[:60] + "…"
-        meta = "[%s/%s] " % (S.DYNASTY_LABEL.get(r["dynasty"], r["dynasty"]), r["kind"])
+        meta = "[%s/%s%s] " % (S.DYNASTY_LABEL.get(r["dynasty"], r["dynasty"]), r["kind"],
+                               "/" + r["genre"] if r.get("genre") else "")
         who = r["author"] if r["author"] else "佚名"
         tag = (" #" + ",".join(r["tags"].split("\x1f"))) if r["tags"] else ""
         print("  %s%-14s 《%s》 score=%d id=%d%s" %
@@ -420,6 +466,8 @@ def main():
     p = sub.add_parser("search"); p.add_argument("q")
     p.add_argument("--dynasty", default=""); p.add_argument("--kind", default="")
     p.add_argument("--author", default=""); p.add_argument("--limit", type=int, default=10)
+    p.add_argument("--genre", type=int, default=0,
+                   help="体裁 id（1 诗 2 词 3 曲 4 赋 5 骚 6 文 7 新诗 8 联）")
     p.add_argument("--full", action="store_true")
 
     p = sub.add_parser("author"); p.add_argument("name"); p.add_argument("--limit", type=int, default=20)
@@ -435,7 +483,8 @@ def main():
     con = open_db(args.db, args.strains_db)
 
     if args.cmd == "search":
-        rows = search(con, args.q, args.dynasty, args.kind, args.author, args.limit)
+        rows = search(con, args.q, args.dynasty, args.kind, args.author, args.limit,
+                      genre=args.genre)
         print("命中 %d 条（limit=%d）" % (len(rows), args.limit))
         show(rows, args.full)
     elif args.cmd == "author":
@@ -449,7 +498,8 @@ def main():
         if not r:
             print("未找到 id=%d" % args.id); return
         print("id=%s  朝代=%s  体裁=%s  序号=%s" %
-              (r["id"], S.DYNASTY_LABEL.get(r["dynasty"], r["dynasty"]), r["kind"], r["_seq"]))
+              (r["id"], S.DYNASTY_LABEL.get(r["dynasty"], r["dynasty"]),
+               r.get("genre") or "未标注", r["_seq"]))
         who = r["author"] if r["author"] else "佚名"
         print("《%s》 %s%s" % (r["title"], who,
                               "  [" + r["rhythmic"] + "]" if r["rhythmic"] else ""))

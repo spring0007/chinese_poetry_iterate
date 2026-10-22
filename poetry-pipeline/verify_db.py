@@ -64,9 +64,61 @@ chk("主库 text_form = simplified-nospace",
 # ---------- 1. 规模
 n_poem = one("SELECT COUNT(*) FROM poems")
 print("\n-- 规模 --")
-print("  poems %d / authors %d / rhythmics %d / sources %d" % (
+print("  poems %d / authors %d / rhythmics %d / genre(体裁) %d / sources %d" % (
     n_poem, one("SELECT COUNT(*) FROM authors"), one("SELECT COUNT(*) FROM rhythmics"),
-    one("SELECT COUNT(*) FROM sources")))
+    one("SELECT COUNT(*) FROM genre"), one("SELECT COUNT(*) FROM sources")))
+
+# ---------- 1b. 体裁字典：genre（schema 3.5 起，3.7 后是唯一的字典表）
+# 体裁是唯一「id 与名称分家」的地方：poems 只存 genre_id，名称只存在 genre 表。
+# 3.7 删掉了 source（朝代表）与 poems.genre / dynasty_id，这里也顺手断言它们
+# 确实不在了——留着会诱使调用方继续往冗余列上写，等于把刚清理的债又借回来。
+print("\n-- 体裁字典：genre --")
+_n_genre = one("SELECT COUNT(*) FROM genre")
+chk("genre 表是体裁字典（%d 行）" % len(S.GENRES), _n_genre == len(S.GENRES),
+    "实际 %s 行" % _n_genre)
+_got = [tuple(r) for r in cur.execute("SELECT id, name FROM genre ORDER BY id")]
+_want = [(g[0], g[2]) for g in S.GENRES]
+chk("genre 的 id/名称与 schema.GENRES 完全一致", _got == _want, "实际 %s" % (_got,))
+_n_bad_g = one("SELECT COUNT(*) FROM poems WHERE genre_id NOT IN (SELECT id FROM genre)")
+chk("每条诗都有合法 genreId（无 0 / 越界）", _n_bad_g == 0, "%d 条越界" % _n_bad_g)
+chk("没有 source 表（v3.7 已删，朝代由 id 高位反解）",
+    one("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='source'") == 0)
+_pcols = [r[1] for r in cur.execute("PRAGMA table_info(poems)")]
+chk("poems 没有 dynasty_id 列（v3.7 已删）", "dynasty_id" not in _pcols)
+chk("poems 没有 genre 列（v3.7 已删，名称走 genre 表）", "genre" not in _pcols)
+for _gid, _name, _c in cur.execute(
+        "SELECT g.id, g.name, COUNT(p.id) FROM genre g "
+        "LEFT JOIN poems p ON p.genre_id=g.id GROUP BY g.id ORDER BY g.id").fetchall():
+    print("  %d %-3s %7d 条 (%.1f%%)"
+          % (_gid, _name, _c, 100.0 * _c / max(n_poem, 1)))
+
+# 朝代虽然不落列，但 id 高位必须落在已知编码内（0..13 / 15），
+# 否则 parse_id 会反解出一个不存在的朝代，外部按 id 分段就会漏数据。
+print("\n-- 朝代（由 id 高位反解，无存储列）--")
+_known = ",".join(str(c) for c in sorted(S.DYNASTY.values()))
+_n_bad_d = one("SELECT COUNT(*) FROM poems WHERE (id >> %d) NOT IN (%s)"
+               % (S.KIND_BITS + S.SEQ_BITS, _known))
+chk("每条诗的 id 高位都是已知朝代编码", _n_bad_d == 0, "%d 条越界" % _n_bad_d)
+for _dc, _c in cur.execute("SELECT (id >> %d) AS d, COUNT(*) FROM poems "
+                           "GROUP BY d ORDER BY d" % (S.KIND_BITS + S.SEQ_BITS)).fetchall():
+    print("  %2d %-5s %7d 条"
+          % (_dc, S.DYNASTY_LABEL.get(S.DYNASTY_NAME.get(_dc), "未知"), _c))
+
+# authors 是唯一**硬存朝代**的表（authors.id 不含朝代编码，只能靠列），
+# 所以这一列的取值必须闭合在 schema.DYNASTY 的键里，否则：
+#   ① query.py 用 DYNASTY_LABEL 反解会原样吐出 'chuci' 这种非朝代串；
+#   ② 将来若建朝代字典表并加外键，这行数据会直接违约。
+# 2026-10-20 之前 sources.py 把三个 AuthorSource 的来源名（chuci/nalan/mengxue）
+# 误当 dynasty 传进来，15 位作者因此带着非法朝代值，而这里当时没有断言。
+print("\n-- 朝代（authors 硬存列，须闭合在 DYNASTY 编码内）--")
+_n_bad_ad = one("SELECT COUNT(*) FROM authors WHERE dynasty NOT IN (%s)"
+                % ",".join("?" * len(S.DYNASTY)), *sorted(S.DYNASTY))
+chk("authors.dynasty 全部落在 schema.DYNASTY 内", _n_bad_ad == 0,
+    "%d 行非法" % _n_bad_ad if _n_bad_ad else "")
+for _ac, _c in cur.execute("SELECT dynasty, COUNT(*) FROM authors GROUP BY dynasty "
+                           "ORDER BY 2 DESC").fetchall():
+    print("  %-10s %-5s %6d 位"
+          % (_ac, S.DYNASTY_LABEL.get(_ac, "!! 非法"), _c))
 
 # 平仄必须是独立包：主库里出现 poem_strains 说明拆分没生效
 has_tbl = one("SELECT COUNT(*) FROM sqlite_master WHERE type='table' "
@@ -155,7 +207,8 @@ print("\n-- 要求3：减少重复数据 --")
 n_title_uniq = one("SELECT COUNT(DISTINCT title) FROM poems")
 print("  标题: %d 条记录 / %d 个唯一值，重复率 %.2f 次/值（<2 时不值得建字典表）"
       % (n_poem, n_title_uniq, n_poem / max(n_title_uniq, 1)))
-for col, label in (("author_uid", "作者"), ("rhythmic_id", "词牌"), ("src_id", "来源")):
+for col, label in (("author_uid", "作者"), ("rhythmic_id", "词牌"),
+                   ("src_id", "来源"), ("genre_id", "体裁")):
     u = one("SELECT COUNT(DISTINCT %s) FROM poems" % col)
     print("  %-4s: %d 条记录 / %d 个唯一值，重复率 %.1f 次/值 -> 已字典化"
           % (label, n_poem, u, n_poem / max(u, 1)))
@@ -240,7 +293,7 @@ print("\n-- 抽样 --")
 for dy, kind, label in (("song", "ci", "宋词"), ("unknown", "classic", "蒙学"),
                         ("han", "poem", "曹操"), ("qing", "prose", "幽梦影"),
                         ("song", "fu", "歌赋·宋"), ("han", "fu", "歌赋·汉"),
-                        ("qing", "poem", "清代诗词")):
+                        ("qing", "poem", "清代诗词"), ("yuan", "poem", "元诗")):
     rows = cur.execute(
         "SELECT a.name, p.title, p.body FROM poems p "
         "LEFT JOIN authors a ON a.uid=p.author_uid "

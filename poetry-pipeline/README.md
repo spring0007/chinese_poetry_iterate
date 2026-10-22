@@ -79,7 +79,10 @@ python -c "import sqlite3;print(sqlite3.connect('dist/poetry.db').execute(\"SELE
 | v3.1         | 3.1            | `poems.uid`：内容派生的稳定关联键（见 §3.1.1）                                                                                               |
 | v3.2         | 3.2            | `authors.uid` / `poems.author_uid`（作者稳定标识，两列同步）；新增 **`poem_extras`** 表（extras.jsonl 落库），`poems.notes` 内容迁入该表并清空（见 §3.1.2） |
 | v3.3         | 3.3            | **`poems` 表删除 `notes` 列**（注释唯一存放处是 `poem_extras.notes`）；`poem_extras` 精简为 8 列（去掉 `source` / `alt_sources` / `license` / `url`），`updated` 改为 **Unix 整数秒**；新增简化测试库生成器 `make_sample_db.py`（见 §5.6、§5.8） |
-| **v3.4（当前）** | **3.4**        | **`poems` 表删除 `author_id` 列**——作者关联只走 `author_uid`（见 §3.1.2）。同一次构建还修掉了 `authors.n_poems` 在「同名跨朝代」作者上虚高的口径问题（见 §3.1.2 末） |
+| v3.4         | 3.4            | **`poems` 表删除 `author_id` 列**——作者关联只走 `author_uid`（见 §3.1.2）。同一次构建还修掉了 `authors.n_poems` 在「同名跨朝代」作者上虚高的口径问题（见 §3.1.2 末） |
+| v3.5         | 3.5            | `poems` 新增 `genre_id`（体裁），八集源数据逐条标注 `genreId`（见 §3.7） |
+| v3.6         | 3.6            | 字典表归位：`source` 改为**朝代表**（id 与 `id>>27` 同源），新建 **`genre`** 表存体裁；`poems` 补 `dynasty_id` / `genre` 两列。源数据只留 `genreId`，名称不进 JSON（见 §3.7） |
+| **v3.7（当前）** | **3.7**        | **字典表减负**：删除 **`source`** 表（朝代表）与 **`poems.dynasty_id` / `poems.genre`** 两列——朝代在 `id>>27` 里、体裁名在 `genre` 表里，冗余副本一律不留。库里只剩 `genre` 一张字典表 + `poems.genre_id` 一列（见 §3.7） |
 
 `schema_version` 是硬约束，不是注释：主版本不一致时 `store.open_ro/open_rw` 直接 `Rejected`，  
 `query.py` 打 WARN，避免"拿 v2 的库配 v3 代码"这种查得到但语义错的情况。
@@ -103,15 +106,28 @@ python -c "import sqlite3;print(sqlite3.connect('dist/poetry.db').execute(\"SELE
 
 | 目录               |       体积 |    占比 | 性质                                           |
 | ---------------- | -------: | ----: | -------------------------------------------- |
-| 全唐诗（含诗人简介）       | 133.0 MB | 37.8% | 核心数据：唐 57,607 首 + 宋诗 254,248 首               |
+| 全唐诗（含诗人简介）       | 130.6 MB | 37.2% | 核心数据：唐 57,412 首 + 宋诗 254,191 首               |
 | strains/json（平仄） | 104.1 MB | 29.6% | **派生数据**，7 种符号，与正文逐字 1:1                     |
 | rank/poet（热度）    |  60.6 MB | 17.2% | 搜索引擎命中数，靠字符串关联                               |
 | 御定全唐詩            |  19.7 MB |  5.6% | **异文版本**，与全唐诗标题交集 69.8%                      |
 | 全唐诗/error        |   8.9 MB |  2.5% | 脏数据，构建时排除                                    |
-| 宋词               |   8.8 MB |  2.5% | 21,053 首                                     |
+| 宋词               |   8.8 MB |  2.5% | 21,048 首                                     |
 | 近现代              |   6.3 MB |  1.8% | 2026-10 自 shicihui.com 采集：11,848 首 / 101 位作者 |
-| 元曲               |   4.0 MB |  1.1% | 11,057 首                                     |
+| 元曲               |   4.0 MB |  1.1% | 10,914 首                                     |
 | 其余 12 个集合        |  ~6.2 MB |  1.8% | 诗经/楚辞/论语/蒙学/纳兰性德等                            |
+
+> **2026-10-19 清理空正文**：`tang-poem` 先删 4（57,602 → 57,598）、`song-poem` 删 23
+> （254,248 → 254,225）、`yuan-qu` 删 143（11,057 → 10,914）。删的是 `paragraphs` 为
+> `[]` / 全空白的记录，原文级删除、保留缩进与行尾，条数与保留记录内容已逐片比对。
+> 构建侧本来就在分配 seq 前丢弃空正文，所以 `dist/` 各产物**一条未变**（唐 57,720 /
+> 宋 254,192 / 元曲 10,906 的库内条数不变，id 也不变）。
+>
+> **2026-10-19 第二轮清洗（水墨并入 + 残缺记录）**：`tang-poem` 再删 186（153 条只有「。」的
+> 空标题占位 + 21 条正文仅标点的「句」+ 11 条作者小传/校记 + 1 条完全重复），57,598 → **57,412**；
+> `song-poem` 去重 34 条 → **254,191**；`song-ci` 去重 5 条 → **21,048**。水墨唐诗 176 首逐篇
+> 命中原诗（不新增记录），原诗追加 tag「水墨唐诗」+ 译文；水墨目录已删除，`shuimo-tangshi`
+> 集合从 sources.py 摘除。主库 348,811 → **348,502**（−176 水墨独立记录 −225 删除 + 92 原本会被
+> 去重掉的重复），authors 14,374、平仄 311,594、extras 99,671。
 
 ### 1.2 四个结构性问题
 
@@ -216,6 +232,7 @@ notes      []string  注释。**v3.3 起主库不再有这一列**——唯一�
                    对外仍按 \x1f 多值形态给出（query.py 负责拼装），调用方看到的形状没变
 strains    bytes   4bit/字打包的平仄，与正文逐字 1:1（只在平仄包里）
 score      uint8   热度 0-255，由 rank 五个引擎命中数 log 量化
+genre_id   int     指向 genre 表（v3.5 起）：1 诗 2 词 3 曲 4 赋 5 骚 6 文 7 新诗 8 联
 src        string  来源集合，便于定位脏数据
 ```
 
@@ -229,6 +246,8 @@ src        string  来源集合，便于定位脏数据
 
 - `body_s`（简体副本）—— 全库已归一为简体，正文即检索列，不需要第二份；
 - `dynasty` / `kind` 两列 —— id 高位已编码，用 `parse_id()` 反解；
+  （v3.6 曾加回数值列 `dynasty_id` 与一张 `source` 朝代表，v3.7 已确认是冗余、整体删除；
+  按朝代筛就写 `WHERE id >= lo AND id < hi`，或 `GROUP BY id>>27`）
 - `titles` 字典表 —— 见 §3.3，它是净亏损。
 
 **v3 起 `strains` 移出主库** —— 见 §3.4。
@@ -321,6 +340,7 @@ v3 扩充的编码位（为外接数据预留）：
 | unknown/preqin/han/wudai  |    0–3 |   | poem / ci / qu              |     0–2 |
 | tang/song/yuan/ming/qing  |    4–8 |   | prose / classic             |     3–4 |
 | modern                    |      9 |   | **fu（赋）** / **article（论著）** | **5–6** |
+| weijin/nanbeichao/sui/jin |  10–13 |   |                             |         |
 | **custom（自建，GUI/API 新增）** | **15** |   |                             |         |
 
 `custom` 占最高位（15）是刻意的：GUI / API 新增的条目与构建期产物共用同一条查询路径，  
@@ -361,7 +381,7 @@ v1 里还额外给 UNIQUE 列重复建了普通索引（`ix_titles_name` 与 `sq
 | 需要平仄的用法  |  123.6 MB | 110.5 + 13.1 = 123.6 MB |
 | Web 端按需  |   48.9 MB | **44.0 MB**（平仄另 4.3 MB） |
 
-平仄只覆盖唐诗 / 宋诗（311,783 条 = 全库 **87.3%**），而检索、列表、卡片这些高频路径  
+平仄只覆盖唐诗 / 宋诗（311,780 条 = 全库 **89.4%**），而检索、列表、卡片这些高频路径  
 根本用不到它。塞进主库等于让所有不需要平仄的用法都多背 13 MB。
 
 ```bash
@@ -376,7 +396,7 @@ python query.py --db ./dist/poetry.db --strains-db ./dist/poetry-strains.db get 
 python query.py --db ./dist/poetry.db bench                    # 不挂载，详情里平仄为 null
 ```
 
-`verify_db.py` 会断言「平仄包按 id 全部可关联主库」（311,783 / 311,783）。  
+`verify_db.py` 会断言「平仄包按 id 全部可关联主库」（311,780 / 311,780）。  
 **没挂平仄包时 `has_strains()` 返回 False，不会报错** —— 平仄永远是可选增强，不是查询前置条件。
 
 ### 3.5 双产物
@@ -389,7 +409,7 @@ python query.py --db ./dist/poetry.db bench                    # 不挂载，详
 bundle 构成（全量，v3）：
 
 ```
-shards/   184 个 zstd 分片   43.9 MB
+shards/   190 个 zstd 分片   44.6 MB
 index/    作者 / 标题 / 词牌 三个索引 + 枚举
 bundle-strains/   79 个分片   4.31 MB（仅 --with-strains）
 ```
@@ -402,10 +422,151 @@ bundle-strains/   79 个分片   4.31 MB（仅 --with-strains）
 | 唐诗 tang/poem    |  57,722 |   6.7 MB |
 | 宋词 song/ci      |  21,049 |   2.8 MB |
 | 近现代 modern/poem |  11,847 |   1.5 MB |
-| 元曲 yuan/qu      |  10,906 |   1.5 MB |
 | 其余 10 个集合       |   1,470 | < 0.8 MB |
 
+> 元曲（yuan/qu）自 2026-10-20 起**完全不参与构建**，见 §3.6。主库、主 bundle、
+> 平仄包里都没有 `kind=qu` 的记录与 `yuan-qu-*.jsonl.zst` 分片。
+
 **只想装唐诗就只下 `tang-poem-*.jsonl.zst`（6.7 MB）** —— 这是 SQLite 单文件做不到的。
+
+### 3.6 元曲已移出构建（2026-10-20）
+
+元曲（`dynasty=yuan` / `kind=qu`，源文件 10,914 条）**不再参与任何构建产物**：
+`poetry.db`、`bundle/`、`poetry-strains.db` 里都没有它，也不再产出 `dist/yuanqu/`。
+
+源文件 `元曲/yuanqu.json` 与 `元曲/authors.json` 原样保留在仓库里，只是：
+
+- `sources.py` 的 `COLLECTIONS` 里不再有 `yuan-qu`；
+- `sources.py` 的 `AUTHOR_SOURCES` 里不再有 `yuanqu.authors`；
+- `build.py` 里 `emit_separate()` / `--with-yuanqu` / `Collection.separate` 整套机制已删除。
+
+需要重新纳入时，在 `COLLECTIONS` 加回一条普通集合即可，它会直接进主库：
+
+```python
+Collection("yuan-qu", "yuan", "qu", r"元曲\yuanqu.json", has_id=False, label="元曲", genre=3)
+```
+
+元曲的 id 独占 `yuan/qu` 一个桶（`id = yuan<<27 | qu<<24 | seq`，即 838,860,800 起），
+`seq` 按 `(dynasty, kind)` 分别计数，所以加回来也不会动其它集合的 id。
+
+> 沿革：2026-10-19 曾把元曲做成「独立包」（`separate=True` + `--with-yuanqu` +
+> `emit_separate()` + `dist/yuanqu/`），2026-10-20 按需求整体移除该机制，产物一并删除。
+
+### 3.7 体裁标注：八集逐条打 genreId（2026-10-19）
+
+`南北朝 / 明 / 汉 / 近现代 / 金 / 隋 / 魏晋 / 清诗` 八个文件夹共 **13,808 条**（19 个分片）
+已逐条标注体裁。体裁 ID 是**全局唯一、稳定、跨文件夹共用**的——同一个「词」在任何一集里
+都是 `genreId=2`，检索端只认 ID，不必做字符串匹配。
+
+登记表：**`genres.json`**（仓库根目录，`genre_tag.py` 生成，不要手改）
+
+| id | code | 名称 | 说明 |
+|---:|---|---|---|
+| 1 | `shi` | 诗 | 古体、近体、乐府；齐言或杂言，允许带小序 |
+| 2 | `ci` | 词 | 按词牌填写，长短句；词牌依据 `宋词` 语料 1,421 调 + 别名表 |
+| 3 | `qu` | 曲 | 散曲、套数、剧曲；题名含曲牌或以 `【曲牌】`/`〔曲牌〕` 标记 |
+| 4 | `fu` | 赋 | 以「赋」名篇的赋体：骚体赋、骈赋、文赋 |
+| 5 | `sao` | 骚 | 楚辞体，多用「兮」：离骚、九歌、九章、九叹… |
+| 6 | `wen` | 文 | 散文、骈文与应用文体：书序记铭论表疏诏诔碑传… |
+| 7 | `xinshi` | 新诗 | 近现代自由体诗 |
+| 8 | `lian` | 联 | 联语：对联、长联、楹联 |
+
+源数据里**只落一个键**（其余字段一个字节都不动）：
+
+```json
+ "authorId": "59a5ced1-e4dd-4078-bd98-1a2af15ce5c9",
+ "genreId": 2
+```
+
+体裁的中文名**不进源数据**——它是字典表的数据，改口径只改一处，不会留下十几万条
+各说各话的字符串。`poetry.db` 里也只有 `genre` 表存名称，`poems` 只有 `genre_id`
+（v3.7 删掉了名称副本 `poems.genre`）。实测分布：
+
+| 集 | 条数 | 诗 | 词 | 曲 | 赋 | 骚 | 文 | 新诗 | 联 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 南北朝 | 299 | 248 | – | – | 19 | – | 32 | – | – |
+| 明 | 299 | 182 | 54 | 9 | 1 | – | 53 | – | – |
+| 汉 | 267 | 123 | – | – | 31 | 13 | 100 | – | – |
+| 近现代 | 11,848 | 7,554 | 4,246 | 7 | 1 | 31 | 6 | 3 | – |
+| 金 | 292 | 131 | 154 | 5 | 1 | – | 1 | – | – |
+| 隋 | 289 | 280 | 1 | – | – | 2 | 6 | – | – |
+| 魏晋 | 299 | 246 | – | – | 22 | 1 | 30 | – | – |
+| 清诗 | 215 | 119 | 66 | 2 | – | – | 25 | – | 3 |
+| **合计** | **13,808** | **8,883** | **4,521** | **23** | **75** | **47** | **253** | **3** | **3** |
+
+**工具**：
+
+```bash
+python genre_tag.py                  # 只试标，打印分布（不写文件）
+python genre_tag.py --samples 5      # 再每类抽 5 条看
+python genre_tag.py --folder 金      # 只看一集
+python genre_tag.py --apply          # 备份 → 原地写入 → 逐条自检
+python genre_tag.py --verify         # 校验已写入的标注，有问题退出码 1
+```
+
+**判定顺序**（`classify()` 里的优先级，改规则从这里下手）：
+`辞+兮→骚` → `新诗` → `词`（词牌/曲牌两栖按宋词频次归属）→ `诗/辞` 题尾 → `曲` →
+`赋` → `骚` → `联` → 标题强标记 `六言诗·…` → 诗体尾字 `…行/篇/吟/歌` → 文体尾字
+`…书/序/记/铭/论/表` → 文言叙事词 → 齐短句成章 → 结构判文 → 兜底诗。
+
+几条踩过的坑（都写在代码注释里了）：
+
+- `base()` 先归一标题（去尾注、去「N首」「·其N」）再匹配词牌，否则组诗全部漏判。
+- 词牌只出现 1~2 次的（`宋词` 里多为「以题代词牌」，如《春晴》其实是七律题），
+  同名且正文是齐言四/八句时要二次确认，否则七律会被判成词。
+- 唐前四集加「非齐言」要求才认词，否则《子夜歌》《折杨柳》这类乐府全被词牌表带走。
+- `SHI_MARK`（`六言诗/七言/杂言诗`）必须排在文体尾字之前，否则《六言诗·给彭德怀同志》
+  会被「同志」的「志」判成文。
+- 「赋得/赋此/归赋/同赋」是动词用法，不能算赋体。
+
+**写盘方式**：文本级外科编辑——只在目标记录的 `}` 前插入两行，缩进按该文件实测值
+（八个集里只有 `近现代` 是 4 空格 + LF，其余是 1 空格 + CRLF），换行符原样保留。
+写前逐条自检：JSON 合法、条数不变、既有字段逐字节相同、字段顺序未乱。
+备份在 `dist/backups/genres-before-<时间戳>.tar.gz`。
+
+**落库形态（schema 3.7）**：
+
+```sql
+CREATE TABLE genre (id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE);  -- 体裁
+CREATE INDEX ix_poems_genre ON poems(genre_id);
+-- poems 只多一列 genre_id → genre.id；「名称副本」和「朝代表」都不再有
+```
+
+| 表 | 行数 | 含义 |
+|---|---:|---|
+| `genre` | 8 | 体裁表：1 诗 2 词 3 曲 4 赋 5 骚 6 文 7 新诗 8 联 |
+| `sources`（复数） | 24 | 语料来源集合（`tang-poem` / `song-ci` / `user-added`…），**和 genre 表不是一回事** |
+
+**朝代没有表也没有列**（v3.7 删了 `source` 表和 `poems.dynasty_id`）：
+
+```sql
+SELECT id >> 27 AS dynasty_code, COUNT(*) FROM poems GROUP BY dynasty_code;
+-- 中文名用 schema.DYNASTY_LABEL[DYNASTY_NAME[code]] 反解
+-- 按朝代筛：WHERE id >= (4 << 27) AND id < (5 << 27)   —— 唐
+```
+
+id 高位就是朝代编码，PK 的 B-tree 天然有序，这个区间扫比一列低基数索引更省空间，
+也不存在「id 说是唐、字典说是宋」的自相矛盾。`verify_db.py` 会断言：
+`source` 表不存在、`poems` 上没有 `dynasty_id` / `genre` 列、每条诗的 `id>>27`
+都落在已知朝代编码内。
+
+**其余文件夹怎么分类（一个字节都不改源文件）**：写入数据库时按「整集同体裁」统一
+赋同一个 genreId，优先级是 `记录里的 genreId` > `Collection.genre` > `KIND_GENRE[kind]`：
+
+| 集合 | 依据 | genreId |
+|---|---|---:|
+| `tang-poem` / `song-poem` / `shijing` / `caocao` / `yuding-tangshi` | kind=poem | 1 诗 |
+| `song-ci` / `wudai-nantang` / `wudai-huajianji` | kind=ci | 2 词 |
+| `fu`（外接歌赋） | kind=fu | 4 赋 |
+| `chuci` | `Collection.genre=5` | 5 骚 |
+| `lunyu` / `sishuwujing` / `mengxue` / `youmengying` | kind=classic / prose | 6 文 |
+| `nalanxingde` | `Collection.genre=2`（kind 是 poem） | 2 词 |
+| `qing-poetry`（外接） | kind=poem | 1 诗 |
+| 八个朝代文件夹 + 近现代 | 记录自带 `genreId` | 逐条 |
+
+新增集合只要 kind 写对，必要时加一个 `genre=` 参数即可，源 JSON 不必动。
+`genre_id` 不参与 `make_id` / `make_uid`，所以**id 与 uid 一条都不变**；
+bundle 侧的 `y` 键仍是体裁 id（不重复存名称）。
 
 ---
 
@@ -790,7 +951,8 @@ con.execute("ATTACH DATABASE 'dist/poetry-strains.db' AS strainsdb")
 ```
 
 产物是一份**独立完整**的库：`poems` / `authors` / `rhythmics` / `sources` / `poem_extras` /  
-`meta` 都只含被抽中的那部分，索引与主库同构，`sqlite3.connect` 打开就能用。`meta` 里  
+`meta` 都只含被抽中的那部分（`genre` 体裁表**整份**照抄——它是全局约定，
+子集里少几行会让 id 查不到名称），索引与主库同构，`sqlite3.connect` 打开就能用。`meta` 里  
 留了样本标记（`sample=1` / `sample_parent` / `sample_per_group` / `sample_seed` /  
 `sample_groups`），拿到库的人一眼能看出它不是全量库、也知道怎么重造。
 
@@ -879,7 +1041,7 @@ python examples/api_server.py --db ./dist/poetry.db --allow-write   # 开放写�
 poetry-pipeline/
 ├── schema.py       统一数据模型：SCHEMA_VERSION、id 编解码、平仄 4bit 打包、热度量化、
 │                   norm_text（简体归一，跑到不动点）/ norm_author（佚名置空）
-├── sources.py      源数据注册表：17 个内置集合 + external/ 外接集合的字段映射、
+├── sources.py      源数据注册表：23 个内置集合 + external/ 外接集合的字段映射、
 │                   分片自然排序、嵌套正文展平 _flatten()、标题兜底 pick_title()、
 │                   整集作者补录（所有"脏"兼容逻辑收敛在这一层，加新集合只改这张表）
 ├── build.py        ETL 主流程：读取 → 挂接 → 归一 → 去重 → 产出 → ANALYZE
@@ -896,6 +1058,7 @@ poetry-pipeline/
 ├── fetch_extras.py 外部数据抓取：多源轮换 + 断点续传 -> 落入 extras（唯一联网的地方）
 ├── verify_db.py    断言式校验：三条硬要求 + 数据质量 + 平仄包关联 + 外接数据
 │                   + 作者稳定标识同步 + extras 落库，失败非零退出
+├── genre_tag.py    体裁标注：八集逐条打 genreId（规则在 classify()，登记表出 genres.json）
 ├── size_report.py  体积账：字典化是否划算、库内页占用，数字可复现
 ├── smoke_gui.py    窗口冒烟：真构造一遍窗口，录入→落库→删除→并发检索
 ├── smoke_store.py  写入层冒烟：导出/导入闭环、繁体归一、删除权限
@@ -990,6 +1153,13 @@ bundle/             45.7 MB  （190 个 zstd 分片 + 索引）
 bundle-strains/      4.3 MB  （79 个分片，可选）
 ```
 
+> **2026-10-19：元曲移出主产物**。主库 359,717 → **348,811** 条（−10,906 元曲），
+> bundle 190 个分片 / 44.6 MB；元曲另出 `dist/yuanqu/`（`yuanqu.db` 6.5 MB +
+> `bundle/` 1.6 MB，共 8.1 MB）。主库其余集合的 id/uid **一条未变**——poems.id 的
+> 低 24 位是 `(dynasty, kind)` 桶内序号，元曲独占 `yuan/qu` 一个桶，摘掉它不会
+> 让别的集合位移；平仄包也随之重出（311,780 条，id 全部命中主库）。
+> 2026-10-20 起元曲**连同独立包一起移出构建**，该目录与其产物已删除，见 §3.6。
+>
 > **v3.4 又回落 5.1 MB（329.3 → 324.2 MB）**：`poems` 去掉 `author_id` 列
 > （35.7 万行 × 4 字节 ≈ 1.4 MB）并删掉 `ix_poems_author` 索引（实测约 1.8 MB）。
 > 作者关联改走 `author_uid`，而 `ix_poems_author_uid` 本来就在，不需要新增索引——

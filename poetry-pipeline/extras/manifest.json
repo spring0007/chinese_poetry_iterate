@@ -1,7 +1,7 @@
 {
   "schema": "1.0",
   "compat_schema": "3.4",
-  "generated_at": "2026-10-17T20:27:22",
+  "generated_at": "2026-10-19T12:37:39",
   "root": "extras",
   "fields": {
     "i": "诗的稳定 uid，与主库 poems.uid 一一对应（内容派生，重建不变；早于 schema 3.1 的老数据这里是数字 poems.id）",
@@ -18,10 +18,10 @@
     "u": "updated      最后更新时间（JSONL 里是本地时间 ISO，落库转成 Unix 整数秒）"
   },
   "image_dir": "images",
-  "count": 99518,
+  "count": 99671,
   "field_counts": {
     "tr": 86804,
-    "nt": 5280,
+    "nt": 5493,
     "in": 990,
     "bg": 3197,
     "ap": 91956
@@ -49,18 +49,18 @@
       "records": 2243
     },
     {
+      "name": "poem-notes",
+      "license": "unknown",
+      "home": "",
+      "attribution": "",
+      "records": 1066
+    },
+    {
       "name": "llm",
       "license": "AI-generated",
       "home": "",
       "attribution": "内容由本地大模型生成，未经人工校勘，仅供参考",
       "records": 990
-    },
-    {
-      "name": "poem-notes",
-      "license": "unknown",
-      "home": "",
-      "attribution": "",
-      "records": 781
     },
     {
       "name": "shuge",

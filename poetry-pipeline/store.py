@@ -115,7 +115,7 @@ def _has_column(con, table: str, col: str) -> bool:
 
 
 def require_writable_schema(con, path: str) -> None:
-    """写路径必须确认主库是当前 schema（3.4）的形态，缺什么一次性说清楚。
+    """写路径必须确认主库是当前 schema（3.6）的形态，缺什么一次性说清楚。
 
     why 单独一步：缺少列时 sqlite 抛的是 "NOT NULL constraint failed: poems.uid"
     这种**指向症状而不是病因**的错误，调用方（GUI）只能原样弹给用户看。
@@ -131,6 +131,17 @@ def require_writable_schema(con, path: str) -> None:
         miss.append("缺 authors.uid")
     if not _has_table(con, "poem_extras"):
         miss.append("缺 poem_extras 表")
+    # v3.7 的结构要求：只要 genre 字典表 + poems.genre_id 一列。
+    # （source 朝代表与 poems.dynasty_id / genre 名称副本已删——朝代从 id 高位反解，
+    #  体裁名 JOIN genre 表取，缺了会在这里一次性说清，而不是在 add_poem 里抛
+    #  "no such column"。）
+    if not _has_table(con, "genre"):
+        miss.append("缺 genre 表（体裁表）")
+    if not _has_column(con, "poems", "genre_id"):
+        miss.append("缺 poems.genre_id（v3.5）")
+    for _gone, _ver in (("dynasty_id", "v3.7"), ("genre", "v3.7")):
+        if _has_column(con, "poems", _gone):
+            miss.append("多了 poems.%s 列（%s 已移除）" % (_gone, _ver))
     if _has_column(con, "poems", "notes"):
         # v3.3 把这一列删了。还留着它的库说明写路径没跟上：继续往里写就会退回
         # "注释有两个家"的状态，而读侧（query.py）已经只认 poem_extras.notes。
@@ -247,7 +258,7 @@ def ensure_src(con) -> int:
 # ---------------------------------------------------------------- 新增
 def add_poem(con, *, dynasty: str = "custom", kind: str = "poem",
              title: str = "", author: str = "", lines=None,
-             rhythmic: str = "", tags=None, notes=None) -> dict:
+             rhythmic: str = "", tags=None, notes=None, genre: int = 0) -> dict:
     """
     写入一条。返回 {"id":..., "author_id":..., "new_author":bool}。
 
@@ -278,6 +289,10 @@ def add_poem(con, *, dynasty: str = "custom", kind: str = "poem",
     aid, auid = ensure_author_row(con, n_author, dynasty) if n_author else (0, "")
     rid = _ensure_dict(con, "rhythmics", n_rhythmic) if n_rhythmic else 0
     sid = ensure_src(con)
+    # 体裁：自建条目按 kind 落一个默认值（诗→1、词→2、曲→3、文→6…），调用方想
+    # 精确指定（例如「这是一副对联」）就传 genre=8。0/越界一律退回 kind 默认，
+    # 免得不小心写进 genre 表里不存在的 id，让这条诗在按体裁判定筛不出来。
+    gid = genre if genre in S.GENRE_NAME else S.KIND_GENRE.get(kind, 0)
     body = "\n".join(n_lines)
     # uid 由内容派生（schema.make_uid），必须在这里算出来写进去：poems.uid 是
     # NOT NULL，而且外部数据（extras）就是靠它关联的。author_uid 同理——v3.4 起
@@ -286,9 +301,9 @@ def add_poem(con, *, dynasty: str = "custom", kind: str = "poem",
     uid = S.make_uid(dynasty, n_author, n_title, body)
 
     con.execute(
-        "INSERT INTO poems(id,uid,author_uid,title,rhythmic_id,src_id,body,tags,"
-        "score,n_char) VALUES(?,?,?,?,?,?,?,?,0,?)",
-        (pid, uid, auid, n_title, rid, sid, body,
+        "INSERT INTO poems(id,uid,author_uid,title,rhythmic_id,src_id,"
+        "genre_id,body,tags,score,n_char) VALUES(?,?,?,?,?,?,?,?,?,0,?)",
+        (pid, uid, auid, n_title, rid, sid, gid, body,
          "\x1f".join(n_tags), sum(len(x) for x in n_lines)))
     # 注释落 poem_extras —— v3.3 起 poems 已经**没有** notes 列，这里不是"留空",
     # 而是主库根本不存注释（理由见 set_notes 的注释）。

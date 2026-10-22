@@ -9,7 +9,7 @@
   3. poetry-strains.db   平仄可选包（--with-strains 才出）
      + bundle-strains/   平仄分片
 
-平仄为什么独立：它只覆盖唐诗/宋诗（311,786 条 = 全库 90.3%），宋词/元曲/蒙学一律没有。
+平仄为什么独立：它只覆盖唐诗/宋诗（311,594 条 = 全库 89.4%），宋词/蒙学一律没有。
 主包带上它要为所有用不到平仄的场景多传一份字节，也让主库无法按"要不要平仄"分别分发。
 
 用法:
@@ -104,12 +104,23 @@ def build_poems(colls: List[SRC.Collection], limit: int = 0) -> List[Poem]:
             if not author:
                 author = coll.default_author
 
+            # 体裁 id（v3.5 起，落 poems.genre_id，字典表是 SQLite 的 genre）：
+            #   1) 记录里带 genreId 的（八个朝代文件夹已逐条标注）→ 以它为准；
+            #   2) 否则用集合级默认（楚辞=骚、纳兰词=词 这类 kind 表达不出来的）；
+            #   3) 再否则按 kind 推（全唐诗=诗、宋词=词、蒙学=文…）。
+            # 这一步是「写入数据库时统一加同一个 genreId」的落点：其余文件夹的源
+            # 文件一个字节都不用改。
+            genre_id = rec.get("genreId")
+            if not isinstance(genre_id, int) or genre_id not in S.GENRE_NAME:
+                genre_id = coll.genre or S.KIND_GENRE.get(kind, 0)
+
             poems.append(Poem(
                 id=make_id(dynasty, kind, seq),
                 dynasty=dynasty, kind=kind,
                 title=SRC.pick_title(rec, coll, lines),
                 author=author,
                 lines=lines,
+                genre_id=genre_id,
                 rhythmic=(rec.get(coll.rhythmic) or "").strip() if coll.rhythmic else "",
                 tags=[str(t) for t in tags] if isinstance(tags, list) else ([str(tags)] if tags else []),
                 notes=[str(t) for t in notes] if isinstance(notes, list) else ([str(notes)] if notes else []),
@@ -124,7 +135,7 @@ def build_poems(colls: List[SRC.Collection], limit: int = 0) -> List[Poem]:
 
 # ============================================================ 2. 平仄挂接
 def attach_strains(poems: List[Poem], colls: List[SRC.Collection]):
-    """strains/ 按 UUID 关联。未命中的保持 None（不是错误：宋词/元曲本就没有平仄）。"""
+    """strains/ 按 UUID 关联。未命中的保持 None（不是错误：宋词/蒙学本就没有平仄）。"""
     by_src = collections.defaultdict(list)
     for p in poems:
         if p.src_id:
@@ -262,7 +273,7 @@ def merge_poem_authors(authors: List[dict], poems: List[Poem]) -> List[dict]:
     """
     作者 id 字典不能只由作者库文件（authors.tang/song/ci/nantang）构成。
 
-    这几个文件只覆盖唐/宋/五代，汉（曹操）、元（元曲作者）、清（张潮）以及
+    这几个文件只覆盖唐/宋/五代，汉（曹操）、元（元诗）、清（张潮）以及
     楚辞、蒙学里出现的姓名根本不在里面。只按作者库建映射的话，
     author_uids.get(name) 取不到 → author_uid 落空 → 与"佚名"同义，
     等于把真作者静默抹掉。这是最难发现的一类脏数据：表面上一切正常，
@@ -285,7 +296,7 @@ def merge_poem_authors(authors: List[dict], poems: List[Poem]) -> List[dict]:
 def normalize_all(poems: List[Poem]):
     """
     全库文本归一：转简体 + 去空格 + 佚名作者置空。
-    why 全部转简体而不是保留原文：源库里唐诗/宋诗是繁体、宋词/元曲是简体，
+    why 全部转简体而不是保留原文：源库里唐诗/宋诗是繁体、宋词是简体，
     不归一的话用户搜"乡愁"（0 首）和"鄉愁"（40 首）会得到完全不同结果。
     归一之后正文既是展示文本也是检索文本，省掉原先另存一份"简体副本"的开销。
     """
@@ -401,9 +412,25 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
                 "desc TEXT NOT NULL DEFAULT '', n_poems INTEGER NOT NULL DEFAULT 0, "
                 "score INTEGER NOT NULL DEFAULT 0)")
     con.execute("CREATE TABLE rhythmics(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
+    # 两张字典表，名字容易混，一次说清：
+    #   genre   —— **体裁表**（id 1..8 = 诗/词/曲/赋/骚/文/新诗/联），
+    #              poems.genre_id 指向它（v3.5 起）；名称只存在这里，poems 不抄副本。
+    #   sources —— **语料来源集合**（tang-poem / song-ci / user-added…），
+    #              poems.src_id 指向它。app.py 靠它反查「这条诗出自哪个 JSON」并把
+    #              改动写回源文件，snapshot_user_data 靠它认出 user-added/user-edit，
+    #              所以这张表不能删。
+    # v3.7 删掉了 `source`（朝代表）：朝代是 id 高 4 位的编码，`id >> 27` 就能反解，
+    # 再存一张表加一列 dynasty_id 属于同一事实抄两遍，已整体回退。
     con.execute("CREATE TABLE sources(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
+    con.execute("CREATE TABLE genre(id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE)")
+    # 体裁字典写死：它不进 _tid 那套「按出现顺序编号」的逻辑——那种编号会被集合
+    # 顺序影响，而 genreId 是要写进源数据、被外部按 id 过滤的，必须与 schema.GENRES
+    # 逐字一致。
+    con.executemany("INSERT INTO genre VALUES(?,?)",
+                    [(gid, name) for gid, _code, name, _desc in S.GENRES])
 
-    # 主表不存 dynasty/kind：id 高位已编码（见 schema.make_id），用 parse_id 反解。
+    # 主表不存 dynasty/kind：id 高位已编码（见 schema.make_id），查朝代用
+    # `id >> 27` 配 schema.DYNASTY_LABEL 反解即可，v3.7 起不再落 dynasty_id 列。
     # title 直接存字符串，不进字典表——实测 273,134 个唯一标题 / 345,354 首诗，
     # 重复率只有 1.3 次/值，字典表省不下数据，却要多付一份表 + 唯一索引 + 普通索引
     # 共 29.3 MB；逐行存只要 2.71 MB。字典化只对高重复列（作者 25.7 次/值、
@@ -423,6 +450,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
             title TEXT NOT NULL DEFAULT '',
             rhythmic_id INTEGER NOT NULL DEFAULT 0,
             src_id INTEGER NOT NULL DEFAULT 0,
+            genre_id INTEGER NOT NULL DEFAULT 0,
             body TEXT NOT NULL,
             tags TEXT NOT NULL DEFAULT '',
             score INTEGER NOT NULL DEFAULT 0,
@@ -469,6 +497,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
             p.title,
             _tid(rhythmic_ids, p.rhythmic),
             _tid(src_ids, p.src),
+            p.genre_id,
             p.body,
             "\x1f".join(p.tags),
             p.score,
@@ -482,8 +511,8 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         warn("%d 条记录有作者名却拿不到 author_uid，关联作者时会显示为佚名" % lost)
 
     con.executemany(
-        "INSERT INTO poems(id,uid,author_uid,title,rhythmic_id,src_id,body,tags,"
-        "score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?)", rows)
+        "INSERT INTO poems(id,uid,author_uid,title,rhythmic_id,src_id,"
+        "genre_id,body,tags,score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?,?)", rows)
 
     # n_poems 按"指向本行的作品数"统计，而不是按姓名统计。
     # why 按姓名会虚高：同名可跨朝代并存（实测 275 组，如唐宋各一个「严武」），
@@ -531,8 +560,16 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         author_rows)
     con.executemany("INSERT INTO rhythmics VALUES(?,?)", [(v, k) for k, v in rhythmic_ids.items()])
     con.executemany("INSERT INTO sources VALUES(?,?)", [(v, k) for k, v in src_ids.items()])
-    print("  poems %d 行 / authors %d / rhythmics %d"
-          % (len(rows), len(authors), len(rhythmic_ids)))
+    # 体裁分布一行速览：建完库立刻能看出「哪一类一条都没落上」（genre_id=0 就是漏了）
+    gstat = collections.Counter(p.genre_id for p in poems)
+    print("  poems %d 行 / authors %d / rhythmics %d" % (len(rows), len(authors), len(rhythmic_ids)))
+    print("  体裁分布 " + "、".join(
+        "%s=%d" % (S.GENRE_NAME.get(g, "未标注"), n)
+        for g, n in sorted(gstat.items(), key=lambda x: (x[0] or 99))))
+    # 朝代不落列，直接从 id 高位反解统计（v3.7）
+    print("  朝代分布 " + "、".join(
+        "%s=%d" % (S.DYNASTY_LABEL.get(S.DYNASTY_NAME.get(g), "未知"), n)
+        for g, n in sorted(collections.Counter(p.id >> 27 for p in poems).items())))
 
     # 注意：rhythmics.name / sources.name 已声明 UNIQUE，SQLite 会自动建
     # sqlite_autoindex_*，再手动建一个同名索引就是纯浪费（实测白白多占一份）。
@@ -546,6 +583,12 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     con.execute("CREATE INDEX ix_poems_author_uid ON poems(author_uid)")
     con.execute("CREATE INDEX ix_poems_title ON poems(title)")
     con.execute("CREATE INDEX ix_poems_rhythmic ON poems(rhythmic_id)")
+    # 朝代不建索引（v3.7）：没有 dynasty_id 列了。要按朝代筛就直接写
+    # `WHERE id >= lo AND id < hi`（id 高位就是朝代），PK 的 B-tree 天然有序，
+    # 反而比一列低基数索引更省——既不多占空间，也不会被优化器误判。
+    # 体裁是「按类浏览」的入口（只要词 / 只要赋），低基数但查询必带它，
+    # 建索引后是 8 段连续区间，比全表扫 34 万行便宜一个数量级。
+    con.execute("CREATE INDEX ix_poems_genre ON poems(genre_id)")
     con.execute("CREATE INDEX ix_poems_score ON poems(score DESC)")
     con.execute("CREATE UNIQUE INDEX ix_authors_uid ON authors(uid)")
     con.execute("CREATE INDEX ix_authors_name ON authors(name)")
@@ -575,6 +618,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         ("n_poems", str(len(poems))),
         ("n_authors", str(len(authors))),
         ("n_rhythmics", str(len(rhythmic_ids))),
+        ("n_genres", str(len(S.GENRES))),
         ("text_form", "simplified-nospace"),
         ("fts", "1" if with_fts else "0"),
         ("strains_pkg", "1" if with_strains else "0"),
@@ -588,7 +632,12 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
                  "写法是 LEFT JOIN authors a ON a.uid = p.author_uid。"
                  "译文/注释/简介/背景/赏析/配图在 poem_extras 表（uid 关联）；"
                  "poems 表**没有 notes 列** —— 注释的唯一存放处是 poem_extras.notes，"
-                 "构建期直接从源语料写入，不再经过主库中转。"),
+                 "构建期直接从源语料写入，不再经过主库中转。"
+                 "体裁在 poems.genre_id（字典表 genre(id,name)，1 诗 2 词 3 曲 4 赋 "
+                 "5 骚 6 文 7 新诗 8 联），名称从 genre 表 JOIN 出来，poems 里不存副本（v3.7）。"
+                 "朝代**没有列**：id 高 4 位就是朝代编码，用 `id >> 27` 配 "
+                 "schema.DYNASTY_LABEL 反解，按朝代筛就用 id 区间（v3.7 起）。"
+                 "语料来源集合在同目录的 sources 表（复数），和 genre 表职责不同，别混用。"),
     ])
     # ANALYZE 必须有：没有 sqlite_stat1 时，SQLite 会为了吃掉 ORDER BY score DESC
     # 而选 ix_poems_score 做全索引扫描，把 p.title = ? 这种高选择性查询拖到 900ms+。
@@ -637,6 +686,10 @@ def snapshot_user_data(db_path: str):
     # 否则"用老库重建"会直接报 no such column。
     has_au = any(r[1] == "author_uid" for r in con.execute("PRAGMA table_info(poems)"))
     ajoin = "a.uid = p.author_uid" if has_au else "a.id = p.author_id"
+    # 体裁列 v3.5 才有：拿老库（≤3.4）重建时不能 SELECT p.genre_id，否则直接报
+    # no such column。老库没有体裁就记 0，恢复时再按 kind 兜底（见 restore_user_data）。
+    has_genre = any(r[1] == "genre_id" for r in con.execute("PRAGMA table_info(poems)"))
+    genre_expr = "p.genre_id" if has_genre else "0"
     notes_expr = "p.notes" if has_notes_col else "''"
     if has_ex:
         notes_expr = ("COALESCE(NULLIF(%s,''), "
@@ -645,6 +698,7 @@ def snapshot_user_data(db_path: str):
     rows = con.execute("""
         SELECT p.id, %s AS author_uid, p.title, p.rhythmic_id, p.src_id, p.body, p.tags,
                %s AS notes, p.score, p.n_char, s.name AS src_name,
+               %s AS genre_id,
                a.name AS author_name, a.dynasty AS author_dyn,
                r.name AS rhythmic_name
         FROM poems p
@@ -652,7 +706,7 @@ def snapshot_user_data(db_path: str):
         LEFT JOIN authors a ON %s
         LEFT JOIN rhythmics r ON r.id = p.rhythmic_id
         WHERE s.name IN ('user-added', 'user-edit')
-    """ % ("p.author_uid" if has_au else "''", notes_expr, ajoin)).fetchall()
+    """ % ("p.author_uid" if has_au else "''", notes_expr, genre_expr, ajoin)).fetchall()
     out = [dict(x) for x in rows]
     con.close()
     return out
@@ -738,11 +792,20 @@ def restore_user_data(con, snapshot) -> tuple:
         # 写回权威源 extras.jsonl、再随 JSONL 重放进 poem_extras，所以重建后它还在，
         # 而且这份"在"是可复现的（不会像"只写表不写源"那样被下一次重放抹掉）。
         uid = make_uid(_dyn, aname or "", p["title"], p["body"])
+        # 体裁：快照带得出来就照搬（用户在库里改过的话以库里为准）；老库没有这一列
+        # 时按 kind 兜底，避免恢复进来的条目 genre_id=0 变成「未标注」。
+        # 名称不落库（v3.7 删了 poems.genre），需要时 JOIN genre 表。
+        gid = p["genre_id"] if "genre_id" in p.keys() else 0
+        if gid not in S.GENRE_NAME:
+            gid = S.KIND_GENRE.get(_kind, 0)
+        # 朝代不用写（v3.7 删了 dynasty_id）：id 高位就是朝代，_dyn 已经由
+        # parse_id 反解出来；修订条目的 id 不变，朝代也一定不变。
         con.execute(
             "INSERT OR REPLACE INTO poems(id,uid,author_uid,title,rhythmic_id,"
-            "src_id,body,tags,score,n_char) VALUES(?,?,?,?,?,?,?,?,?,?)",
-            (p["id"], uid, auid, p["title"], rid, sid, p["body"], p["tags"],
-             p["score"], p["n_char"]))
+            "src_id,genre_id,body,tags,score,n_char) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+            (p["id"], uid, auid, p["title"], rid, sid, gid,
+             p["body"], p["tags"], p["score"], p["n_char"]))
         txt = (p["notes"] or "").replace("\x1f", "\n").strip()
         if txt:
             notes_map[uid] = txt
@@ -1058,7 +1121,10 @@ def main():
         print("\n=== 5.5 extras 落库（poem_extras 表） ===")
         c = sqlite3.connect(db_path)
         try:
-            root_ex = os.path.join(args.out, "extras")
+            # extras 权威源在 poetry-pipeline/extras/（不在 dist/ 下：dist 被 .gitignore
+            # 整体忽略，而 extras 是采集成果、重建不出来）。路径统一走 default_root()，
+            # 不要再拼 args.out，否则换 --out 目录就找不到 JSONL。
+            root_ex = XDB.default_root()
             if args.no_extras:
                 # --no-extras：不把 extras.jsonl 重放进主库（那 9.7 万行大文本会把
                 # 主库从 144 MB 撑到 ~350 MB）。但注释照样要**写回权威源 JSONL**

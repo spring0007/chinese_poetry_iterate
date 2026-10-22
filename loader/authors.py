@@ -40,6 +40,7 @@ a defect in this code: 14,437 of the 17,537 unresolved works are in datasets
 that have **no biography source at all** — 元曲 (11,057 works), 纳兰性德,
 幽梦影, 楚辞, 诗经, 论语, 四书五经, 花间集, 曹操诗集. Everywhere a source exists
 coverage is high: 全唐诗全宋诗 99.9%, 水墨唐诗 98.9%, 御定全唐詩 98.5%, 宋词 78.5%.
+（水墨唐诗已于 2026-10-19 并入 全唐诗，本行是并入前的实测值。）
 
 Rung 3 is nearly dead, and it is kept anyway because it is cheap and it is
 *correct*: exactly one name qualifies (元好问, filed as 元 and biographied as

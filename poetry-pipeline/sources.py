@@ -99,6 +99,14 @@ class Collection:
     # 只对"集合名本身即作者"或作者毫无争议的集合补录，其余一律留 NULL，不猜。
     default_author: str = ""
     label: str = ""                   # 中文名，仅用于展示
+    # 整集的体裁 id（见 schema.GENRES：1 诗 2 词 3 曲 4 赋 5 骚 6 文 7 新诗 8 联）。
+    # 0 = 不指定，由 schema.KIND_GENRE 按 kind 推（全唐诗=诗、宋词=词、蒙学=文…）。
+    # 只有「kind 表达不出真正体裁」的集合才需要显式写：楚辞（kind=poem 但其实是骚）、
+    # 纳兰词（kind=poem 但整本是词）。八集已逐条标注 genreId 的集合不受这里影响——
+    # 记录里的 genreId 优先级更高，见 build.build_poems。
+    # why 放在集合级而不是逐条判：这些文件本身是单一文体的选本，整集同 ID 就是
+    # 「内容属于同一类就统一加同一个 genreId」，不必（也不该）回头改源文件。
+    genre: int = 0
 
 
 COLLECTIONS: List[Collection] = [
@@ -108,18 +116,19 @@ COLLECTIONS: List[Collection] = [
                tags="tags", notes="notes", has_id=True),
     Collection("song-ci", "song", "ci", r"宋词\ci.song.*.json",
                rhythmic="rhythmic", tags="tags", has_id=False),
-    Collection("yuan-qu", "yuan", "qu", r"元曲\yuanqu.json", has_id=False),
     Collection("shijing", "preqin", "poem", r"诗经\shijing.json",
                body="content", extra=["chapter", "section"]),
     Collection("chuci", "preqin", "poem", r"楚辞\chuci.json",
-               body="content", extra=["section"]),
+               body="content", extra=["section"], genre=5),
     Collection("lunyu", "preqin", "classic", r"论语\lunyu.json",
                title="chapter", author="", extra=["chapter"]),
     Collection("sishuwujing", "preqin", "classic", r"四书五经\*.json",
                title="chapter", author="", extra=["chapter"]),
+    # 蒙学里既有「单篇 dict」（三字经/千字文…）又有「篇目列表」（古文观止 222 篇），
+    # 故不能开 wrap_single——它会把 list 再包一层变成 [[...]]，整份数据被静默丢弃。
+    # iter_collection 里的 `isinstance(data, dict)` 已能处理单篇 dict，无需额外开关。
     Collection("mengxue", "unknown", "classic", r"蒙学\*.json",
-               body="content", tags="tags", extra=["abstract", "spells", "preface"],
-               wrap_single=True),
+               body="content", tags="tags", extra=["abstract", "spells", "preface"]),
     Collection("wudai-nantang", "wudai", "ci", r"五代诗词\nantang\poetrys.json",
                rhythmic="rhythmic", notes="notes"),
     Collection("wudai-huajianji", "wudai", "ci", r"五代诗词\huajianji\*.json",
@@ -128,14 +137,16 @@ COLLECTIONS: List[Collection] = [
                body="content", notes="comment", author="", default_author="张潮"),
     Collection("caocao", "han", "poem", r"曹操诗集\caocao.json", author="",
                default_author="曹操"),
-    Collection("shuimo-tangshi", "tang", "poem", r"水墨唐诗\shuimotangshi.json",
-               extra=["prologue"]),
+    # 水墨唐诗（176 首诵读选本）已于 2026-10-19 并入全唐诗：176 首逐篇命中原诗，
+    # 原记录不保留，只在原诗上追加 tags=水墨唐诗 与 notes=白话译文；目录已删除。
+    # 因此这里不再有 shuimo-tangshi 集合，也不再重复读一份 tang/poem。
     Collection("nalanxingde", "qing", "poem", r"纳兰性德\纳兰性德诗集.json",
-               body="para"),
-    # 御定全唐詩：与全唐诗内容高度重叠（标题交集 69.8%）但分段方式不同（十首合一 vs 逐首），
-    # 作为"异文版本"单独成包，默认不进主库，避免检索结果重复。
-    Collection("yuding-tangshi", "tang", "poem", r"御定全唐詩\json\*.json",
-               notes="notes", extra=["volume", "biography", "no#"], optional=True),
+               body="para", genre=2),
+    # 御定全唐詩：已逐篇与全唐诗去重（仅保留 2,675 首独有篇目）并繁转简，
+    # 分片命名与 全唐诗 同构（poet.yuding.NNNN.json，每片 1000 首，NNNN 为累计偏移）。
+    # 仍保持 optional：是否入主库由 --with-optional 决定，避免检索结果混入重复版本。
+    Collection("yuding-tangshi", "tang", "poem", r"御定全唐詩\poet.yuding.*.json",
+               tags="tags", notes="notes", optional=True),
     # 近现代诗词：2026-10 自 shicihui.com 近现代分类逐页（494 页）采集，
     # 11848 首 / 101 位作者，分片命名与 全唐诗 同构（poet.jinxiandai.NNNN.json，
     # 每片 1000 首），每条带 UUID 的 id，故 has_id=True，可直接复用全唐诗那条
@@ -143,6 +154,9 @@ COLLECTIONS: List[Collection] = [
     # （modern=9 就是为该集预留的），不需要改编码表。
     # why 追加在列表**末尾**而不是插进同事之间：poems.id 的低 24 位是集合内序号，
     # 插到中间会让其后每个集合的 seq 整体位移、id 全变；追加则一个既有 id 都不动。
+    # 体裁由记录里的 genreId 直接读到 poems.genre_id（v3.5 起；字典表 v3.6 起叫 genre），
+    # 不再走 extra：
+    # extra 是给 prologue/biography 这类长文本用的，体裁有自己的一列与 bundle 的 y 键。
     Collection("jinxiandai", "modern", "poem", r"近现代\poet.jinxiandai.*.json",
                has_id=True),
     # 2026-10 补全的缺失朝代（古文岛分站采集，stage1/2/3 产出）。
@@ -150,9 +164,12 @@ COLLECTIONS: List[Collection] = [
     # 集合内 seq 位移（见上方 jinxiandai 注释）。复用 poet.<code>.0.json
     # （body=paragraphs / title / author / id 均为既有命名约定），has_id=True
     # 以便按 id 回溯源库。朝代编码 weijin/nanbeichao/sui/jin 已在 schema.py 新增。
+    # 这八集已逐条标注体裁（记录里的 genreId，登记表 genres.json）：构建时读进
+    # poems.genre_id，源文件不必再改；也不参与 make_id / make_uid，故 id 全不变。
     Collection("han-new", "han", "poem", r"汉\poet.han.*.json", has_id=True),
     Collection("weijin-new", "weijin", "poem", r"魏晋\poet.weijin.*.json", has_id=True),
-    Collection("nanbeichao-new", "nanbeichao", "poem", r"南北朝\poet.nanbeichao.*.json", has_id=True),
+    Collection("nanbeichao-new", "nanbeichao", "poem", r"南北朝\poet.nanbeichao.*.json",
+               has_id=True),
     Collection("sui-new", "sui", "poem", r"隋\poet.sui.*.json", has_id=True),
     Collection("jin-new", "jin", "poem", r"金\poet.jin.*.json", has_id=True),
     Collection("yuan-new", "yuan", "poem", r"元诗\poet.yuanshi.*.json", has_id=True),
@@ -261,18 +278,24 @@ AUTHOR_SOURCES: List[AuthorSource] = [
     AuthorSource("authors.song", "song", r"全唐诗\authors.song.json"),
     AuthorSource("songci.authors", "song", r"宋词\author.song.json", desc_key="description"),
     AuthorSource("nantang.authors", "wudai", r"五代诗词\nantang\authors.json"),
-    # 元曲此前完全没有作者文件，正文里的元曲作者只能退化为佚名（author_uid=''）。
-    # 字段结构与 全唐诗\authors.tang.json 一致（desc/name/id）。
-    AuthorSource("yuanqu.authors", "yuan", r"元曲\authors.json"),
-    # 阶段 2 新建：这四个语料此前同样没有作者文件，其作者全部退化为佚名。
+    # 阶段 2 新建：这三个语料此前同样没有作者文件，其作者全部退化为佚名。
     # 屈原、东方朔、贾谊、刘向等楚辞名家，以及纳兰性德、周兴嗣、朱柏庐等，
     # 在此之前 load_authors() 里查不到任何记录。字段结构同上（desc/name/id）。
-    AuthorSource("chuci.authors", "chuci", r"楚辞\authors.json"),
-    AuthorSource("nalan.authors", "nalan", r"纳兰性德\authors.json"),
-    AuthorSource("mengxue.authors", "mengxue", r"蒙学\authors.json"),
-    AuthorSource("shuimotang.authors", "shuimotang", r"水墨唐诗\authors.json"),
+    #
+    # 第二参数是 **dynasty，不是来源 id**（2026-10-20 修正）：此前误填成集合名
+    # （chuci / nalan / mengxue），这 15 位作者的 authors.dynasty 因此落在
+    # schema.DYNASTY 编码之外——库里出现 id>>27 反解不出来的非法朝代值，连带
+    # make_author_uid 的派生键也带上垃圾串。三个值一律对齐所属 Collection：
+    # 楚辞=preqin、纳兰性德=qing、蒙学=unknown（蒙学一集本身即 unknown，作者跨
+    # 南朝梁/明/清三代，不臆断到具体朝代）。改这里会让这 15 人的 author_uid 变化，
+    # 重建后需重跑 author_heat.py --apply 把热度分按新 uid 写回。
+    AuthorSource("chuci.authors", "preqin", r"楚辞\authors.json"),
+    AuthorSource("nalan.authors", "qing", r"纳兰性德\authors.json"),
+    AuthorSource("mengxue.authors", "unknown", r"蒙学\authors.json"),
+    # 水墨唐诗的 authors.json 只有一条「韩竑」（即韩翃的讹写），其《寒食》已并入
+    # 韩翃名下，作者小传由 全唐诗/authors.tang.json 提供，无需单独作者源。
     # 御定全唐詩（清康熙年奉敕编纂，900 卷）同样无作者文件，
-    # 正文在 json\ 子目录下分卷存放。字段结构同上。
+    # 正文已改为与全唐诗同构的分片（poet.yuding.NNNN.json）。字段结构同上。
     AuthorSource("yuding.authors", "tang", r"御定全唐詩\authors.json"),
     # 近现代作者小传：与上面的 jinxiandai 一集同源（shicihui.com 采集，101 位）。
     # 字段结构与 全唐诗\authors.tang.json 一致（desc/name/id），dynasty 必须与集合
@@ -303,6 +326,10 @@ def iter_collection(coll: Collection) -> Iterator[tuple[str, dict]]:
     if not files:
         return
     for path in files:
+        # 作者元数据（{id,name,desc}）不是作品，蒙学/authors.json 即此类。
+        # 不跳过也不会出错（body 为空 → 被空正文丢弃），但会污染「空正文丢弃」这个脏数据指标。
+        if os.path.basename(path) == "authors.json":
+            continue
         data = load_json(path)
         if coll.wrap_single or isinstance(data, dict):
             data = [data]
