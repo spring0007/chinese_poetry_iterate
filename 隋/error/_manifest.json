@@ -1,0 +1,194 @@
+{
+  "entries": [
+    {
+      "source": "隋/poet.sui.0.json",
+      "archive": "poet.sui.0.json",
+      "original_items": 289,
+      "removed_items": 2,
+      "remaining_items": 287,
+      "processed_at": "2026-10-24T17:21:22",
+      "backup": "E:\\Poetry_Agent\\data\\backup_marks_20261024-172024\\隋\\poet.sui.0.json",
+      "items": [
+        {
+          "index": 36,
+          "reason": "content",
+          "fields": [
+            "paragraphs"
+          ],
+          "author": "佚名",
+          "title": "大隋仪同三司建州刺史故徐君墓志铭",
+          "dynasty": "隋",
+          "mark_count": 19,
+          "group": null,
+          "variant_of": null
+        },
+        {
+          "index": 108,
+          "reason": "content",
+          "fields": [
+            "paragraphs"
+          ],
+          "author": "佚名",
+          "title": "隋故太原王夫人墓志铭",
+          "dynasty": "隋",
+          "mark_count": 2,
+          "group": null,
+          "variant_of": null
+        }
+      ],
+      "skipped_quoted_only": [],
+      "intact_variant_kept": [],
+      "legacy_items_preserved": 0,
+      "archive_total": 2,
+      "legacy_note": "error/ 下可能已有 2026-06 那轮繁简转换留下的归档；本次为合并写入，历史条目未覆盖"
+    },
+    {
+      "source": "隋/poet.sui.0.json",
+      "archive": "poet.sui.0.json",
+      "batch": "fragment-anon-short",
+      "criteria": {
+        "sentences_in": [
+          1,
+          2
+        ],
+        "author_anonymous": true,
+        "chars_lt": 15
+      },
+      "original_items": 287,
+      "removed_items": 14,
+      "remaining_items": 273,
+      "archive_mode": "merged",
+      "archive_total": 16,
+      "processed_at": "2026-10-24T18:14:08",
+      "backup": "E:\\Poetry_Agent\\data\\backup_frag_20261024-181406\\隋\\poet.sui.0.json",
+      "items": [
+        {
+          "index": 14,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "元徽中童谣",
+          "sentences": 2,
+          "chars": 10,
+          "body": "襄阳白铜蹄。郎杀荆州儿。"
+        },
+        {
+          "index": 15,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "北军为韦睿歌",
+          "sentences": 2,
+          "chars": 14,
+          "body": "不畏萧娘与吕姥。但畏合肥有韦武。"
+        },
+        {
+          "index": 30,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "地驱乐歌",
+          "sentences": 2,
+          "chars": 14,
+          "body": "月明光光星欲堕。欲来不来早语我。"
+        },
+        {
+          "index": 39,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "徐陵引谚",
+          "sentences": 2,
+          "chars": 10,
+          "body": "图官在乱世，觅富在荒年。"
+        },
+        {
+          "index": 46,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "普通中童谣",
+          "sentences": 1,
+          "chars": 7,
+          "body": "青丝白马寿阳来。"
+        },
+        {
+          "index": 49,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "李彪引谚",
+          "sentences": 2,
+          "chars": 8,
+          "body": "一日不书。百事荒芜。"
+        },
+        {
+          "index": 51,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "杨衒之引游侠语",
+          "sentences": 2,
+          "chars": 12,
+          "body": "不畏张弓拔刀。唯畏白堕春醪。"
+        },
+        {
+          "index": 52,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "杨衒之引秦民语",
+          "sentences": 2,
+          "chars": 10,
+          "body": "快马健儿。不如老妪吹篪。"
+        },
+        {
+          "index": 59,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "武平元年童谣",
+          "sentences": 2,
+          "chars": 10,
+          "body": "狐截尾。你欲除我我除你。"
+        },
+        {
+          "index": 60,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "洛阳童谣",
+          "sentences": 2,
+          "chars": 14,
+          "body": "名军大将莫自牢。千兵万马避白袍。"
+        },
+        {
+          "index": 102,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "郦道元引橘洲谚",
+          "sentences": 1,
+          "chars": 7,
+          "body": "昭潭无底橘洲浮。"
+        },
+        {
+          "index": 104,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "钜鹿公主歌辞 其二",
+          "sentences": 2,
+          "chars": 14,
+          "body": "车前女子年十五。手弹琵琶玉节舞。"
+        },
+        {
+          "index": 110,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "颜之推引江南谚论书法",
+          "sentences": 2,
+          "chars": 8,
+          "body": "尺牍书疏，千里面目。"
+        },
+        {
+          "index": 111,
+          "reason": "fragment",
+          "author": "佚名",
+          "title": "高允引谚",
+          "sentences": 2,
+          "chars": 8,
+          "body": "其益如毫。其损如刀。"
+        }
+      ]
+    }
+  ]
+}
