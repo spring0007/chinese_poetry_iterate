@@ -1,0 +1,33 @@
+{
+  "entries": [
+    {
+      "source": "魏晋/poet.weijin.0.json",
+      "archive": "poet.weijin.0.json",
+      "original_items": 299,
+      "removed_items": 1,
+      "remaining_items": 298,
+      "processed_at": "2026-10-24T17:21:22",
+      "backup": "E:\\Poetry_Agent\\data\\backup_marks_20261024-172024\\魏晋\\poet.weijin.0.json",
+      "items": [
+        {
+          "index": 35,
+          "reason": "content",
+          "fields": [
+            "paragraphs"
+          ],
+          "author": "左思",
+          "title": "三都赋",
+          "dynasty": "魏晋",
+          "mark_count": 1,
+          "group": null,
+          "variant_of": null
+        }
+      ],
+      "skipped_quoted_only": [],
+      "intact_variant_kept": [],
+      "legacy_items_preserved": 0,
+      "archive_total": 1,
+      "legacy_note": "error/ 下可能已有 2026-06 那轮繁简转换留下的归档；本次为合并写入，历史条目未覆盖"
+    }
+  ]
+}
