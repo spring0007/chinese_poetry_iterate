@@ -102,8 +102,9 @@
   "id": "1af592c8-2f9c-4a86-9372-7fcac591dcc3",
   "dynasty": "明",
   "authorId": "927560fd-78b2-4a3c-b0b1-e166f8f580af",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "于谦",
   "paragraphs": [

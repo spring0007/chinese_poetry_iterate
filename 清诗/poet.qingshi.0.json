@@ -1975,8 +1975,9 @@
   "id": "a9f33c15-a258-4d8e-8a2f-0e26f0db8723",
   "dynasty": "清",
   "authorId": "cbb889d4-d2ef-489e-b9db-1e56f9f4c50e",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "袁枚",
   "paragraphs": [
@@ -2374,8 +2375,9 @@
   "id": "3cc66227-9f76-47d4-8cbf-846882709ea8",
   "dynasty": "清",
   "authorId": "8a32dbaf-8c97-48f2-ac0a-8e73993f0c74",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "郑板桥",
   "paragraphs": [
@@ -2629,8 +2631,9 @@
   "id": "09176573-0a83-42ee-a176-e448f4a3030a",
   "dynasty": "清",
   "authorId": "c8c385a9-3d9e-42e7-a2a0-51a91e0ba57f",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "魏宪",
   "paragraphs": [
@@ -2892,8 +2895,9 @@
   "id": "615b8962-34b9-4157-94ff-484b4df0cee9",
   "dynasty": "清",
   "authorId": "40b2ae31-42ef-4738-8a59-4824f6ff555b",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "龚自珍",
   "paragraphs": [

@@ -3967,8 +3967,9 @@
   "id": "6430cc5a-af85-4d2b-a691-e7953ffa0f89",
   "dynasty": "汉",
   "authorId": "c8672520-8def-4e0e-b609-227df0640834",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "汉乐府",
   "paragraphs": [
@@ -3982,8 +3983,9 @@
   "id": "902529d6-3440-43be-a072-5425bbcca789",
   "dynasty": "汉",
   "authorId": "c8672520-8def-4e0e-b609-227df0640834",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "淮南子",
   "paragraphs": [

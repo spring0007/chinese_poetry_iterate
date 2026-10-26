@@ -26,8 +26,9 @@
   "id": "115ba8e4-cc73-4b3c-acd8-6a635ac3b958",
   "dynasty": "南北朝",
   "authorId": "2b060c1a-9bcc-4161-aa74-ecb6a1d7755f",
-  "genreId": 1
- },
+  "genreId": 1,
+ 
+  "tags": ["学生必背-小学"]},
  {
   "author": "乐府诗集",
   "paragraphs": [
