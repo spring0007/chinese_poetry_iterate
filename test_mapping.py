@@ -48,8 +48,17 @@ def source_files(spec):
 
 
 def test_dataset_ids_are_contiguous():
+    # 数据集 id 是 dataset 表主键、被 work.dataset_id 外键引用，删除一个数据集后
+    # 必须保留 id 空洞（否则会重排、破坏既有数据与注释里"id 钉死"的约定）。
+    # 弃用 id 在 datas.json 的 deprecated_ids 中显式声明，本测试只校验其余 id
+    # 连续 0..N-1。
     ids = sorted(spec["id"] for spec in CONFIG["datasets"].values())
-    assert ids == list(range(len(ids))), f"dataset ids are not 0..N-1: {ids}"
+    deprecated = set(CONFIG.get("deprecated_ids", []))
+    live = [i for i in ids if i not in deprecated]
+    expected = [i for i in range(len(ids) + len(deprecated)) if i not in deprecated]
+    assert live == expected, (
+        f"live dataset ids are not 0..N-1 modulo deprecated ids {sorted(deprecated)}: {ids}"
+    )
 
 
 def test_every_dataset_path_exists():
