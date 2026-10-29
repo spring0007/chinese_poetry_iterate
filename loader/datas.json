@@ -1,5 +1,6 @@
 {
     "cp_path": "./",
+    "deprecated_ids": [8, 10],
     "datasets": {
         "wudai-huajianji": {
             "name": "五代-花间集",
@@ -123,7 +124,8 @@
         "yudingquantangshi": {
             "name": "御定全唐詩",
             "id": 7,
-            "path": "御定全唐詩/json/",
+            "path": "御定全唐詩/",
+            "excludes": ["README.md", "authors.json"],
             "tag": "paragraphs",
             "dynasty": "tang",
             "kind": "shi",
@@ -133,23 +135,7 @@
                 "author": "$.author",
                 "body": "$.paragraphs"
             },
-            "comments": "每条另有 biography(80 字以内作者小传, 与全唐诗/authors.tang.json 同源) 与 volume / no#, 二期接简介时用。"
-        },
-        "caocao": {
-            "name": "曹操诗集",
-            "id": 8,
-            "path": "曹操诗集/caocao.json",
-            "tag": "paragraphs",
-            "dynasty": "han",
-            "kind": "shi",
-            "default_author": "曹操",
-            "mapping": {
-                "root": "list",
-                "title": "$.title",
-                "author": "$.author",
-                "body": "$.paragraphs"
-            },
-            "comments": "整个数据集就是曹操一人, 记录里没有 author 字段, default_author 直接钉死。"
+            "comments": "2026-10 起分片命名与 全唐诗 同构(poet.yuding.NNNN.json, 每片 1000 首), 目录从 json/ 平铺到根目录, 故 path 改指根目录并 excludes authors.json。每条另有 biography(80 字以内作者小传, 与全唐诗/authors.tang.json 同源) 与 volume / no#, 二期接简介时用。"
         },
         "chuci": {
             "name": "楚辞",
@@ -165,21 +151,6 @@
                 "body": "$.content"
             },
             "comments": "content 是 list(65 条全是), 与 youmengying 同名不同型, 故 mapping 各自声明而不是按 tag 猜。另有 section(卷次) 未纳入。"
-        },
-        "shuimotangshi": {
-            "name": "水墨唐诗",
-            "id": 10,
-            "path": "水墨唐诗/shuimotangshi.json",
-            "tag": "paragraphs",
-            "dynasty": "tang",
-            "kind": "shi",
-            "mapping": {
-                "root": "list",
-                "title": "$.title",
-                "author": "$.author",
-                "body": "$.paragraphs"
-            },
-            "comments": "另有 prologue(序) 未纳入。"
         },
         "nalanxingde": {
             "name": "纳兰性德",
