@@ -1,7 +1,7 @@
 {
   "schema": "1.0",
-  "compat_schema": "3.4",
-  "generated_at": "2026-10-19T12:37:39",
+  "compat_schema": "3.7",
+  "generated_at": "2026-10-26T14:37:27",
   "root": "extras",
   "fields": {
     "i": "诗的稳定 uid，与主库 poems.uid 一一对应（内容派生，重建不变；早于 schema 3.1 的老数据这里是数字 poems.id）",
@@ -18,10 +18,10 @@
     "u": "updated      最后更新时间（JSONL 里是本地时间 ISO，落库转成 Unix 整数秒）"
   },
   "image_dir": "images",
-  "count": 99671,
+  "count": 99673,
   "field_counts": {
     "tr": 86804,
-    "nt": 5493,
+    "nt": 5495,
     "in": 990,
     "bg": 3197,
     "ap": 91956
@@ -53,7 +53,7 @@
       "license": "unknown",
       "home": "",
       "attribution": "",
-      "records": 1066
+      "records": 1068
     },
     {
       "name": "llm",
