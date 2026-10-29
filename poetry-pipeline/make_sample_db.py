@@ -48,16 +48,68 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TABLES = ("poems", "authors", "rhythmics", "genre", "sources",
           "poem_extras", "meta")
 
+# ---------------------------------------------------------------- 必选标签
+# 「学生必背」「日月诗词」这类教学分级 / 每日推荐维度的诗，测试库里要**保证命中**，
+# 否则 UI 上「按学段筛选」「每日经典」这些面板没数据可渲染，等于没测。
+#
+# 识别口径：主库 poems.tags 是 \x1f(0x1F) 分隔的多标签串。这些聚合标签
+# （学生必背-小学/初中/高中、日月诗词）是后续轮次才固化进源 JSON 的，历史主库
+# 未必有；但与之等价的教材分级标签（小学古诗/初中古诗/高中古诗/一年级~九年级）
+# 在主库里已经存在，故这里用「教材标签 + 必背关键词」作为匹配集合，两者任一命中
+# 都算「学生必背」范畴。why 不直接写死一个列表：标签体系还会继续长，用集合匹配
+# 比逐条枚举更抗扩展。
+#
+# 「日月诗词」在主库没有等价标签（每日推荐是栏目元数据，非教材维度），
+# 只能靠固定 id 清单兜底。下面 KEEP_IDS 列出的都是「日月诗词」栏目的诗。
+KEEP_TAGS = (
+    "小学古诗", "初中古诗", "高中古诗",          # 三学段聚合标签
+    "一年级上册", "一年级下册", "二年级上册", "二年级下册",
+    "三年级上册", "三年级下册", "四年级上册", "四年级下册",
+    "五年级上册", "五年级下册", "六年级上册", "六年级下册",
+    "七年级上册", "七年级下册", "八年级上册", "八年级下册",
+    "九年级上册", "九年级下册",                  # 分册标签（含课内/课外变体用前缀匹配）
+    "必背",                                     # 兜底：任何含「必背」的标签
+)
+
+# 「日月诗词」栏目（每日推荐）对应的 poems.id。主库无等价标签，只能显式列出。
+# id 沿用主库原值（子集库不重编号），所以这里硬编码的 id 也必须与主库一致。
+#
+# 另外：主库是 2026-10-20 构建的，早于「学生必背」聚合标签固化进源 JSON 的时间，
+# 且部分集合（明/清/汉/元诗等）在 sources.py 里未配置 tags 读取，导致这些集合里的
+# 学生必背名篇在主库 tags 为空、无法被 KEEP_TAGS 命中。这里把**确定属于学生必背、
+# 但主库 tags 为空**的名篇 id 一并列进 KEEP_IDS 兜底，保证样本库不缺这些锚点诗。
+KEEP_IDS = (
+    671221566,   # 陆游《秋日杂咏八首·其七》（日月诗词·今日晨读）
+    # --- 以下为学生必背，但主库 tags 为空（明清/汉诗集合未配 tags 读取）---
+    939524103,   # 于谦《石灰吟》（小学必背）
+    1073742287,  # 龚自珍《己亥杂诗·九州生气恃风雷》（小学必背）
+    1073742216,  # 袁枚《所见》（小学必背）
+    1073742247,  # 郑燮《竹石》（小学必背）
+    1073742268,  # 高鼎《村居》（小学必背）
+    805306544,   # 王冕《墨梅》（小学必背）
+    268435685,   # 汉乐府《江南》（小学必背）
+    268435686,   # 汉乐府《长歌行》（小学必背）
+    1476395009,  # 乐府诗集《敕勒歌》（小学必背）
+    671097441,   # 范仲淹《江上渔者》（小学必背）
+    671219010,   # 陆游《示儿》（小学必背）
+)
+
 if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf8"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 
-def pick_ids(src: str, per_group: int, seed: int, top_n: int = 100):
-    """挑出要保留的 poems.id，返回 (id 列表, {组名: 实际条数}, 高分榜统计)。
+def pick_ids(src: str, per_group: int, seed: int, top_n: int = 100,
+             keep_tags: tuple = (), keep_ids: tuple = ()):
+    """挑出要保留的 poems.id，返回 (id 列表, {组名: 实际条数}, 高分榜统计, 必选统计)。
 
     why 在 Python 里分组、而不是写一段窗口函数 SQL：这里要的是"带资料的优先 +
     组内随机洗牌 + 报告每组实际取到多少条"三段逻辑，SQL 能写，但会变成一段没人
     愿意维护的嵌套子查询；而这点数据量（几十万行）在内存里过一遍只要几秒。
+
+    额外增加「必选」维度（keep_tags / keep_ids）：这些诗不论落在哪个组、有没有被
+    抽中，都要强制保留——它们是教学分级（学生必背）与每日推荐（日月诗词）的锚点，
+    缺了会让对应的 UI 面板在测试库上变成空状态。必选条目叠加在分组配额与高分榜
+    之上，同样只去重、不占额外名额。
     """
     top_n = max(0, top_n)
     con = sqlite3.connect(src)
@@ -81,6 +133,24 @@ def pick_ids(src: str, per_group: int, seed: int, top_n: int = 100):
         top = [r[0] for r in con.execute(
             "SELECT id FROM poems WHERE score > 0 ORDER BY score DESC, id ASC LIMIT ?",
             (top_n,))] if top_n else []
+
+        # 必选（学生必背 / 日月诗词）：标签命中的诗 + 显式 id 清单。
+        # why 标签走 LIKE 而非精确匹配：tags 是 \x1f 分隔串，标签会带「课内/课外」
+        # 等变体，前缀匹配才能覆盖全。
+        keep = set()
+        keep_hit = {}   # 记录每个必选标签实际命中多少条，供报告
+        if keep_tags:
+            rows = con.execute("SELECT id, tags FROM poems").fetchall()
+            for pid, tags in rows:
+                if not tags:
+                    continue
+                for t in keep_tags:
+                    if t in tags:
+                        keep.add(pid)
+                        keep_hit[t] = keep_hit.get(t, 0) + 1
+                        break   # 一个 id 命中多个标签也只算一次
+        id_added = set(keep_ids) & {r[0] for r in con.execute("SELECT id FROM poems")}
+        keep |= id_added
     finally:
         con.close()
 
@@ -105,12 +175,22 @@ def pick_ids(src: str, per_group: int, seed: int, top_n: int = 100):
     if added:
         picked.extend(added)
         picked.sort()                   # 同样回主库顺序
-    return picked, detail, {"n": top_n, "kept": len(top), "added": len(added)}
+
+    # 必选叠加到分组配额 + 高分榜之上：同样只去重、不占额外名额。
+    picked_set = set(picked)
+    keep_added = sorted(i for i in keep if i not in picked_set)
+    if keep_added:
+        picked.extend(keep_added)
+        picked.sort()
+    keep_stats = {"tags": dict(keep_hit), "ids": sorted(id_added),
+                  "total": len(keep), "added": len(keep_added)}
+    return picked, detail, {"n": top_n, "kept": len(top), "added": len(added)}, keep_stats
 
 
 def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42,
-                 top_n: int = 100) -> dict:
-    ids, detail, top = pick_ids(src, per_group, seed, top_n)
+                 top_n: int = 100, keep_tags: tuple = (), keep_ids: tuple = ()) -> dict:
+    ids, detail, top, keep_stats = pick_ids(src, per_group, seed, top_n,
+                                            keep_tags, keep_ids)
     if not ids:
         raise SystemExit("没抽到任何诗——源库可能是空的：%s" % src)
 
@@ -189,6 +269,13 @@ def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42,
             # 不足以复现这份库。
             ("sample_top_score", str(top["n"])),
             ("sample_top_added", str(top["added"])),
+            # 必选（学生必背/日月诗词）口径也落库：它同样影响"库里有哪些诗"，
+            # 只写 per_group/seed/top 不足以复现这份库。
+            ("sample_keep_total", str(keep_stats["total"])),
+            ("sample_keep_added", str(keep_stats["added"])),
+            ("sample_keep_tags", json.dumps(keep_stats["tags"], ensure_ascii=False,
+                                             sort_keys=True)),
+            ("sample_keep_ids", json.dumps(keep_stats["ids"], ensure_ascii=False)),
             ("sample_groups", json.dumps(detail, ensure_ascii=False, sort_keys=True)),
             ("sample_built_at", time.strftime("%Y-%m-%dT%H:%M:%S")),
             # 简化库不建 FTS5：几百到几千行上用 LIKE 已经足够快，而 FTS 的体积放大
@@ -215,12 +302,13 @@ def build_sample(src: str, out: str, per_group: int = 100, seed: int = 42,
     size = os.path.getsize(out)
     con.close()
     return {"stats": stats, "detail": detail, "size": size, "out": out,
-            "ids": len(ids), "top": top}
+            "ids": len(ids), "top": top, "keep": keep_stats}
 
 
 def main():
     ap = argparse.ArgumentParser(
-        description="生成简化版测试库：每个「朝代 × 类型」抽 N 首，并保底收全局高分榜")
+        description="生成简化版测试库：每个「朝代 × 类型」抽 N 首，并保底收全局高分榜、"
+                    "强制保留学生必背/日月诗词标签的诗")
     ap.add_argument("--db", default=os.path.join(HERE, "dist", "poetry.db"),
                     help="源主库，默认 ./dist/poetry.db")
     ap.add_argument("--out", default=os.path.join(HERE, "dist", "poetry-sample.db"),
@@ -229,28 +317,42 @@ def main():
                     help="每个 (朝代,类型) 最多抽几首；0 = 不限（默认 100）")
     ap.add_argument("--top-score", type=int, default=100,
                     help="额外强制保留全局 score 最高的几首；0 = 不要（默认 100）")
+    ap.add_argument("--keep-tags", nargs="*", default=None,
+                    help="额外必选标签（tags 命中即强制保留）；默认用内置教材标签集")
+    ap.add_argument("--keep-ids", nargs="*", type=int, default=None,
+                    help="额外必选 poems.id（逗号/空格分隔）；默认用内置日月诗词清单")
     ap.add_argument("--seed", type=int, default=42, help="随机种子，固定值保证可复现")
     ap.add_argument("--dry-run", action="store_true", help="只报告抽取口径，不写文件")
     args = ap.parse_args()
 
+    keep_tags = tuple(args.keep_tags) if args.keep_tags is not None else KEEP_TAGS
+    keep_ids = tuple(args.keep_ids) if args.keep_ids is not None else KEEP_IDS
+
     t0 = time.time()
     if args.dry_run:
-        ids, detail, top = pick_ids(args.db, args.per_group, args.seed, args.top_score)
+        ids, detail, top, keep_stats = pick_ids(
+            args.db, args.per_group, args.seed, args.top_score, keep_tags, keep_ids)
         for k, v in sorted(detail.items()):
             print("  %-14s %4d 首" % (k, v))
         print("  %-14s %4d 首（其中 %d 首是组外新增）"
               % ("[score 高分榜]", top["kept"], top["added"]))
+        print("  %-14s %4d 首（其中 %d 首是组外新增）"
+              % ("[必选 学生必背/日月]", keep_stats["total"], keep_stats["added"]))
         print("共 %d 组 / %d 首（未写文件）" % (len(detail), len(ids)))
         return
 
     print("源库 %s" % args.db)
-    r = build_sample(args.db, args.out, args.per_group, args.seed, args.top_score)
+    r = build_sample(args.db, args.out, args.per_group, args.seed, args.top_score,
+                     keep_tags, keep_ids)
     print("\n抽取结果（%d 组 / %d 首）：" % (len(r["detail"]), r["ids"]))
     for k, v in sorted(r["detail"].items()):
         print("  %-14s %4d 首" % (k, v))
     t = r["top"]
     print("  %-14s %4d 首（其中 %d 首是组外新增）"
           % ("[score 高分榜]", t["kept"], t["added"]))
+    kp = r["keep"]
+    print("  %-14s %4d 首（其中 %d 首是组外新增）"
+          % ("[必选 学生必背/日月]", kp["total"], kp["added"]))
     s = r["stats"]
     print("\n产物 %s" % r["out"])
     print("  %.1f MB   poems %d / authors %d / rhythmics %d / sources %d / "

@@ -336,7 +336,8 @@ if ext_srcs:
 
 # ---------- 11. 自建号段可用（GUI / API 新增走这里）
 print("\n-- 自建号段 --")
-n_custom = one("SELECT COUNT(*) FROM poems WHERE (id>>27)=?", S.DYNASTY["custom"])
+n_custom = one("SELECT COUNT(*) FROM poems WHERE (id>>%d)=?" % (S.KIND_BITS + S.SEQ_BITS),
+                S.DYNASTY["custom"])
 print("  custom 号段现有 %d 条（GUI/API 新增会落在这里，与构建期 id 不冲突）" % n_custom)
 chk("custom 号段 id 可正常反解", S.parse_id(S.make_id("custom", "poem", S.CUSTOM_SEQ_BASE))
     == ("custom", "poem", S.CUSTOM_SEQ_BASE))

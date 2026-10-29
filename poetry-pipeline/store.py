@@ -202,17 +202,18 @@ def ensure_author(con, name: str, dynasty: str) -> int:
 def ensure_author_row(con, name: str, dynasty: str) -> tuple:
     """保证作者行存在，返回 (author_id, author_uid)。
 
-    同名跨朝代的作者在库里并存（实测 275 组，如 严武 / 乐史 唐宋各一条），
-    这里**取 id 最大的那条**：build.py 里 author_uids 是 {name: 最后一条} 的
-    "同名后者覆盖前者"，而 authors 行是按列表顺序、id 递增插入的，所以"最大 id"
-    就是构建期真正被诗词引用的那一行。两边选行口径一致，重建前后才不会换人。
+    同名跨朝代的作者在库里并存（实测 330 组，如 严武 / 乐史 唐宋各一条），
+    这里按 (name, dynasty) **精确匹配**：build.py 里 author_uids 是
+    {(name, dynasty): uid} 的映射，诗的 author_uid 由 (p.author, p.dynasty)
+    派生，所以运行期新增/编辑诗时也必须用 (name, dynasty) 选行，两边口径一致，
+    才不会把一首「晋」的陶渊明诗挂到「魏晋」的陶渊明行上。
 
     why 仍然返回 author_id：v3.4 起 poems 已经不存这一列（作者关联只走
     author_uid），但它仍是 authors 表的主键，写 authors.n_poems 计数时要用。
     """
     row = con.execute(
-        "SELECT id, uid FROM authors WHERE name=? ORDER BY id DESC LIMIT 1",
-        (name,)).fetchone()
+        "SELECT id, uid FROM authors WHERE name=? AND dynasty=? ORDER BY id DESC LIMIT 1",
+        (name, dynasty)).fetchone()
     if row:
         return row[0], row[1]
     uid = S.make_author_uid(name, dynasty)

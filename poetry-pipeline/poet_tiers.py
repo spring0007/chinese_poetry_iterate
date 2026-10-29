@@ -156,15 +156,28 @@ def score_overrides() -> dict:
 def apply_overrides(scores: dict, name_uid: dict) -> int:
     """把档位分数覆盖到 {uid: score} 映射上（build.py 重建路径用，原地修改）。
 
-    库中无作者行的诗人（name 不在 name_uid）自动跳过——它们只存在于
-    rank/poet-tiers.json，不建作者行。返回覆盖条数。
+    name_uid 两种形态都支持：
+      - {(name, dynasty): uid}：build.py 重建路径（同名跨朝代各有独立作者行，
+        每个朝代的同名作者行都要覆盖为同一档位分——陶渊明 在 魏晋/晋 都算第二档）。
+      - {name: uid}：旧调用方 / 单测兼容。
+    库中无作者行的诗人自动跳过。返回覆盖的 uid 条数。
     """
     n = 0
     for name, score in score_overrides().items():
-        uid = name_uid.get(name)
-        if uid:
-            scores[uid] = score
-            n += 1
+        # 先按 (name, dynasty) 键匹配所有同名朝代的作者行
+        hit = 0
+        for k, uid in name_uid.items():
+            kn = k[0] if isinstance(k, tuple) else k
+            if kn == name and uid:
+                scores[uid] = score
+                n += 1
+                hit += 1
+        # 旧 {name: uid} 形态：没有 (name,dynasty) 键时，按 name 直接查
+        if hit == 0 and isinstance(name_uid, dict) and name in name_uid:
+            uid = name_uid[name]
+            if uid:
+                scores[uid] = score
+                n += 1
     return n
 
 

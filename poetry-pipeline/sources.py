@@ -135,8 +135,8 @@ COLLECTIONS: List[Collection] = [
                rhythmic="rhythmic", notes="notes"),
     Collection("youmengying", "qing", "prose", r"幽梦影\youmengying.json",
                body="content", notes="comment", author="", default_author="张潮"),
-    Collection("caocao", "han", "poem", r"曹操诗集\caocao.json", author="",
-               default_author="曹操"),
+    # 曹操诗集（26 首）已于 2026-10-26 并入汉（曹操归汉，tags=曹操诗集），目录已删除。
+    # 这批诗的 dynasty 统一为 han，作者行复用汉 authors 里的曹操（id 9562cf46…）。
     # 水墨唐诗（176 首诵读选本）已于 2026-10-19 并入全唐诗：176 首逐篇命中原诗，
     # 原记录不保留，只在原诗上追加 tags=水墨唐诗 与 notes=白话译文；目录已删除。
     # 因此这里不再有 shuimo-tangshi 集合，也不再重复读一份 tang/poem。
@@ -166,8 +166,10 @@ COLLECTIONS: List[Collection] = [
     # 以便按 id 回溯源库。朝代编码 weijin/nanbeichao/sui/jin 已在 schema.py 新增。
     # 这八集已逐条标注体裁（记录里的 genreId，登记表 genres.json）：构建时读进
     # poems.genre_id，源文件不必再改；也不参与 make_id / make_uid，故 id 全不变。
-    Collection("han-new", "han", "poem", r"汉\poet.han.*.json", has_id=True),
-    Collection("weijin-new", "weijin", "poem", r"魏晋\poet.weijin.*.json", has_id=True),
+    Collection("han-new", "han", "poem", r"汉\poet.han.*.json",
+               tags="tags", has_id=True),
+    Collection("weijin-new", "weijin", "poem", r"魏晋\poet.weijin.*.json",
+               tags="tags", has_id=True),
     Collection("nanbeichao-new", "nanbeichao", "poem", r"南北朝\poet.nanbeichao.*.json",
                has_id=True),
     Collection("sui-new", "sui", "poem", r"隋\poet.sui.*.json", has_id=True),
@@ -175,6 +177,14 @@ COLLECTIONS: List[Collection] = [
     Collection("yuan-new", "yuan", "poem", r"元诗\poet.yuanshi.*.json", has_id=True),
     Collection("ming-new", "ming", "poem", r"明\poet.ming.*.json", has_id=True),
     Collection("qing-new", "qing", "poem", r"清诗\poet.qingshi.*.json", has_id=True),
+    # 2026-10-26 朝代对齐：自 shiwudi.com 采集的三国/晋（网站拆分「魏晋」而来，
+    # 另有「西夏」0 篇未收录；网站「辽」6 篇系误标北宋诗，已弃用）。命名沿用
+    # <code>-new，追加在末尾不位移既有 id。
+    # has_id=True：记录的 id 是本地确定性 UUID（uuid5，见 _scrape/gen_dynasty_json.py），
+    # 不是源站数字 id——因为 shiwudi 的 poetry 只有数字 id，本地补全朝代惯例用 UUID。
+    # 三国（2026-10-26 上旬）与晋（2026-10-26 傍晚）均已并入魏晋：
+    #   三国 tags=["三国"]、晋 tags=["晋"]，dynasty 统一 weijin，源目录已删除，
+    #   故 sango-new / jinchao-new 两个集合在此移除（原 jinchao 编码保留为死编码）。
 ]
 
 # ---------------------------------------------------------------- 外接集合
@@ -301,6 +311,24 @@ AUTHOR_SOURCES: List[AuthorSource] = [
     # 字段结构与 全唐诗\authors.tang.json 一致（desc/name/id），dynasty 必须与集合
     # 的 modern 完全相同，否则 load_authors() 出来的名字挂不到那批作品上。
     AuthorSource("jinxiandai.authors", "modern", r"近现代\authors.jinxiandai.json"),
+    # 三国 authors.sango.json 已于 2026-10-26 并入魏晋 authors.weijin.json
+    # （曹叡/应璩 新增，曹植/嵇康/阮籍/曹丕 复用魏晋既有条目；曹操归汉，见 han.authors）。
+    # 晋 authors.jinchao.json 同日并入：新增陆云/曹摅/卢谌/孙楚/袁宏/杨济 6 位
+    # （id 沿用晋源文件），并给全部作者补 dynasty=实际年代（西晋/东晋/曹魏…）。
+    # 两个源目录已删除，故 sango.authors / jinchao.authors 在此移除。
+    # 补全朝代作者小传（2026-10 自古文岛分站采集，与下方 -new 集合同源）。
+    # 字段结构（desc/name/id）与 全唐诗\authors.tang.json 一致；dynasty 必须与
+    # 所属 Collection 相同，否则 load_authors() 出来的名字挂不到那批作品上。
+    # 此前遗漏：这八个 authors.*.json 一直没进 AUTHOR_SOURCES，作者小传（desc 有
+    # 完整传记）在构建时被 merge_poem_authors 以空 desc 补齐，等于白采集。
+    AuthorSource("han.authors", "han", r"汉\authors.han.json"),
+    AuthorSource("weijin.authors", "weijin", r"魏晋\authors.weijin.json"),
+    AuthorSource("nanbeichao.authors", "nanbeichao", r"南北朝\authors.nanbeichao.json"),
+    AuthorSource("sui.authors", "sui", r"隋\authors.sui.json"),
+    AuthorSource("jin.authors", "jin", r"金\authors.jin.json"),
+    AuthorSource("yuan.authors", "yuan", r"元诗\authors.yuanshi.json"),
+    AuthorSource("ming.authors", "ming", r"明\authors.ming.json"),
+    AuthorSource("qing.authors", "qing", r"清诗\authors.qingshi.json"),
 ]
 
 # ---------------------------------------------------------------- 关联数据

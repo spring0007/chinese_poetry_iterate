@@ -110,6 +110,7 @@ SPAN_BASE = {
     "preqin": 5.0, "tang": 4.5, "song": 4.5, "han": 4.0, "wudai": 4.0,
     "weijin": 4.0, "nanbeichao": 4.0, "sui": 4.0, "jin": 3.5, "yuan": 3.5,
     "ming": 3.0, "qing": 3.0, "modern": 2.0, "unknown": 2.5, "custom": 2.5,
+    "sango": 4.0, "jinchao": 4.0,
 }
 
 WEIGHTS = {"breadth": 0.30, "span": 0.20, "depth": 0.25, "now": 0.25}
@@ -118,7 +119,8 @@ STAR_OF = ((90, 5), (75, 4), (55, 3), (35, 2), (0, 1))
 DYN_LABEL = {"tang": "唐", "song": "宋", "preqin": "先秦", "han": "汉", "wudai": "五代",
              "weijin": "魏晋", "nanbeichao": "南北朝", "sui": "隋", "jin": "金",
              "yuan": "元", "ming": "明", "qing": "清", "modern": "近现代",
-             "unknown": "未详", "custom": "自建"}
+             "unknown": "未详", "custom": "自建",
+             "sango": "三国", "jinchao": "晋"}
 KIND_LABEL = {"poem": "诗", "ci": "词", "qu": "曲", "prose": "文",
               "classic": "经", "fu": "赋", "article": "论著"}
 
@@ -198,9 +200,10 @@ def parse_id(pid: int):
     return (
         {0: "unknown", 1: "preqin", 2: "han", 3: "wudai", 4: "tang", 5: "song",
          6: "yuan", 7: "ming", 8: "qing", 9: "modern", 10: "weijin",
-         11: "nanbeichao", 12: "sui", 13: "jin", 15: "custom"}[(pid >> 27) & 0xF],
+         11: "nanbeichao", 12: "sui", 13: "jin", 15: "custom",
+         16: "sango", 17: "jinchao"}[(pid >> 26) & 0x1F],
         {0: "poem", 1: "ci", 2: "qu", 3: "prose", 4: "classic", 5: "fu",
-         6: "article"}[(pid >> 24) & 0x7],
+         6: "article"}[(pid >> 23) & 0x7],
     )
 
 

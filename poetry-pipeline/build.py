@@ -279,16 +279,17 @@ def merge_poem_authors(authors: List[dict], poems: List[Poem]) -> List[dict]:
     等于把真作者静默抹掉。这是最难发现的一类脏数据：表面上一切正常，
     只有按作者检索时人才不见了。
     """
-    known = {a["name"] for a in authors}
-    miss: Dict[str, str] = {}
+    known = {(a["name"], a["dynasty"]) for a in authors}
+    miss: Dict[Tuple[str, str], str] = {}
     for p in poems:
-        if p.author and p.author not in known and p.author not in miss:
-            miss[p.author] = p.dynasty
-    for nm in sorted(miss):
-        authors.append({"name": nm, "dynasty": miss[nm], "desc": "", "src": "poem-records"})
+        k = (p.author, p.dynasty)
+        if p.author and k not in known and k not in miss:
+            miss[k] = p.dynasty
+    for (nm, dyn) in sorted(miss):
+        authors.append({"name": nm, "dynasty": dyn, "desc": "", "src": "poem-records"})
     if miss:
         print("  补齐正文出现、作者库缺失的姓名 %d 个，例：%s"
-              % (len(miss), "、".join(sorted(miss)[:8])))
+              % (len(miss), "、".join("%s[%s]" % k for k in sorted(miss)[:8])))
     return authors
 
 
@@ -364,7 +365,7 @@ def dedup(poems: List[Poem]) -> List[Poem]:
 def enrich_tags(poems: List[Poem]):
     """三百首系列带分类标签（咏物/五言律诗/思乡…），主库里没有。
     按 (author, 首行) 匹配回填，匹配不上就跳过——不猜。"""
-    overlays = [("全唐诗/唐诗三百首.json", "tang"), ("宋词/宋词三百首.json", "song")]
+    overlays = [("全唐诗/唐诗三百首.json", "tang"), ("宋词/宋词三百首.jsonl", "song")]
     idx = collections.defaultdict(list)
     for p in poems:
         idx[(p.author, p.lines[0][:20])].append(p)
@@ -464,14 +465,14 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # extras 落库表在这里只建结构，内容由 extras_db.sync() 灌（见 main 第 5.5 步）。
     XDB.create_table(con)
 
-    # 作者名 -> 稳定 uid。uid 按 (姓名, 朝代) 算，与 authors 行一一对应（同名跨朝代
-    # 是不同的人，实测 275 组，见 schema.make_author_uid）。
-    # 同名跨朝代时**后者覆盖前者**（字典推导天然如此）：authors 行是按列表顺序、
-    # id 递增插入的，所以"列表里最后一条"就是原来 author_ids = {name: i+1} 指的那
-    # 一行。这个口径必须与 store.ensure_author_row（取 id 最大的一条）一致——
-    # 它是 v3.2 起就定下的既有语义，不能借"去掉 author_id"顺手改成别的选行规则，
-    # 否则重建前后同一首诗会挂到另一个同名作者上。
-    author_uids = {a["name"]: make_author_uid(a["name"], a["dynasty"]) for a in authors}
+    # 作者 (姓名, 朝代) -> 稳定 uid。uid 按 (姓名, 朝代) 算，与 authors 行一一对应
+    # （同名跨朝代是不同的人，实测 330 组，见 schema.make_author_uid）。
+    # 键必须是 (name, dynasty) 二元组，不能只用 name：同名跨朝代（如 严武 在唐宋、
+    # 曹植 在魏晋/三国、陶渊明 在魏晋/晋 各一条）时，name 单键会"后者覆盖前者"，
+    # 让某个朝代的同名作者行变成 n_poems=0 的空壳、其诗被错误挂到另一个朝代名下。
+    # 诗的 author_uid 用 (p.author, p.dynasty) 查，保证每首诗挂到与自己同朝代的作者行。
+    author_uids = {(a["name"], a["dynasty"]): make_author_uid(a["name"], a["dynasty"])
+                   for a in authors}
     rhythmic_ids: Dict[str, int] = {}
     src_ids: Dict[str, int] = {}
 
@@ -493,7 +494,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         rows.append((
             p.id,
             uid,
-            author_uids.get(p.author, ""),
+            author_uids.get((p.author, p.dynasty), ""),
             p.title,
             _tid(rhythmic_ids, p.rhythmic),
             _tid(src_ids, p.src),
@@ -506,7 +507,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
         if p.notes:
             notes_map[uid] = "\n".join(p.notes)
 
-    lost = sum(1 for p in poems if p.author and not author_uids.get(p.author))
+    lost = sum(1 for p in poems if p.author and not author_uids.get((p.author, p.dynasty)))
     if lost:
         warn("%d 条记录有作者名却拿不到 author_uid，关联作者时会显示为佚名" % lost)
 
@@ -522,7 +523,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # verify_db.py 有一条断言盯着"n_poems == 实际作品数"。
     used = collections.Counter()
     for p in poems:
-        u = author_uids.get(p.author, "")
+        u = author_uids.get((p.author, p.dynasty), "")
         if u:
             used[u] += 1
     # 作者热度分（热门作者）：调 author_heat.aggregate_author_scores —— 公式全仓
@@ -533,7 +534,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # author_heat.py --apply 事后补（它从落库后的 poems.score 重新聚合）。
     try:
         aheat = {u: v["score"] for u, v in author_heat.aggregate_author_scores(
-            (author_uids.get(p.author, ""), p.score) for p in poems).items()}
+            (author_uids.get((p.author, p.dynasty), ""), p.score) for p in poems).items()}
     except Exception as e:
         warn("作者热度分计算失败：%s（authors.score 置 0，可事后跑 author_heat.py --apply 修复）" % e)
         aheat = {}
@@ -569,7 +570,7 @@ def emit_sqlite(poems: List[Poem], authors: List[dict], out_db: str, with_fts: b
     # 朝代不落列，直接从 id 高位反解统计（v3.7）
     print("  朝代分布 " + "、".join(
         "%s=%d" % (S.DYNASTY_LABEL.get(S.DYNASTY_NAME.get(g), "未知"), n)
-        for g, n in sorted(collections.Counter(p.id >> 27 for p in poems).items())))
+        for g, n in sorted(collections.Counter(p.id >> (S.KIND_BITS + S.SEQ_BITS) for p in poems).items())))
 
     # 注意：rhythmics.name / sources.name 已声明 UNIQUE，SQLite 会自动建
     # sqlite_autoindex_*，再手动建一个同名索引就是纯浪费（实测白白多占一份）。

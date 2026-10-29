@@ -62,9 +62,14 @@ except ImportError:
 SCHEMA_VERSION = "3.7"
 
 # ---------------------------------------------------------------- 编码表
-# 位布局: (dynasty << 27) | (kind << 24) | seq  -> 最大 2^31-1，可存进 int32
-DYN_BITS, KIND_BITS, SEQ_BITS = 4, 3, 24
-SEQ_MAX = (1 << SEQ_BITS) - 1  # 16,777,215
+# 位布局: (dynasty << 26) | (kind << 23) | seq  -> 最大 2^31-1，可存进 int32
+# 2026-10-26 朝代对齐：DYN_BITS 4→5（16→32 槽）、SEQ_BITS 24→23，为新增的
+# 三国/晋 让出槽位。既有编码值 0-15 一个都不动，只新增 16/17，所以
+# 既有数据的 uid（make_uid 用 dynasty 字符串，不依赖编码值）完全不受影响；
+# 只有 id 的位布局从 <<27 变 <<26（dynasty 段 5 位），重建时会整体重排——
+# 这正是 uid 存在的意义（对外稳定引用），id 重排可接受。
+DYN_BITS, KIND_BITS, SEQ_BITS = 5, 3, 23
+SEQ_MAX = (1 << SEQ_BITS) - 1  # 8,388,607
 
 DYNASTY = {
     "unknown": 0,
@@ -80,10 +85,15 @@ DYNASTY = {
     # 10-13：2026-10 新增的缺失朝代（魏晋 / 南北朝 / 隋 / 金）。
     # 仅用于本次新增的八个集合，不影响任何既有 uid（既有数据只用 0-9 / 15）。
     # 号段选择：DYN_BITS=4 共 16 个槽位，原本用掉 0-9 + 15，10-14 空闲，取 10-13。
-    "weijin": 10,       # 魏晋
+    "weijin": 10,       # 魏晋（三国两晋笼统合集；网站拆为「三国」+「晋」两朝）
     "nanbeichao": 11,   # 南北朝
     "sui": 12,          # 隋
     "jin": 13,          # 金（女真金，区别于 宋 与 元）
+    # 已废弃（2026-10-26）：三国、晋两个采集集合先后并入 weijin，数据不再使用
+    # 这两个编码。保留槽位是为了让历史 dist/poetry.db 里的旧 id 仍能反解，
+    # 不要复用这两个数字（复用会让新旧 id 混淆）。
+    "sango": 16,        # 【废弃】三国（原 shiwudi 采集，已并入 weijin，tags=["三国"]）
+    "jinchao": 17,      # 【废弃】晋（原 shiwudi 采集，已并入 weijin，tags=["晋"]）
     # 15 固定保留给「自建」：GUI 录入 / API 新增的条目写在这里。
     # why 用最高位而不是另起一张表：新增条目与既有条目共用同一条查询路径，
     # 不需要在 search() 里 union 两张表，也不会和构建期生成的 id 撞号。
@@ -107,6 +117,7 @@ DYNASTY_LABEL = {
     "song": "宋", "yuan": "元", "ming": "明", "qing": "清",
     "modern": "近现代", "unknown": "未详", "custom": "自建",
     "weijin": "魏晋", "nanbeichao": "南北朝", "sui": "隋", "jin": "金",
+    "sango": "三国", "jinchao": "晋",
 }
 
 KIND_LABEL = {
@@ -169,9 +180,12 @@ KIND_GENRE = {
     "article": 6,   # 论著 —— 落到「文」
 }
 
-# 自建号段的 seq 起点：与构建期产物（从 0 开始）错开 1000 万，
-# 避免同一 (dynasty,kind) 下手工录入与批量导入互相覆盖。
-CUSTOM_SEQ_BASE = 10_000_000
+# 自建号段的 seq 起点：与构建期产物（从 0 开始）错开，避免同一 (dynasty,kind) 下
+# 手工录入与批量导入互相覆盖。必须 < SEQ_MAX（否则 make_id 直接抛错）。
+# 2026-10-26：DYN_BITS 4→5、SEQ_BITS 24→23 后 SEQ_MAX 从 16,777,215 降到 8,388,607，
+# 原 10,000,000 已越界，改回 8,000,000（仍远大于构建期任一 (dynasty,kind) 的 seq，
+# 宋词最大约 27 万）。别再手写死值，直接绑定 SEQ_MAX 留 38 万余量。
+CUSTOM_SEQ_BASE = 8_000_000
 
 
 def make_id(dynasty: str, kind: str, seq: int) -> int:
@@ -183,8 +197,8 @@ def make_id(dynasty: str, kind: str, seq: int) -> int:
 
 def parse_id(pid: int) -> tuple[str, str, int]:
     return (
-        DYNASTY_NAME[(pid >> (KIND_BITS + SEQ_BITS)) & 0xF],
-        KIND_NAME[(pid >> SEQ_BITS) & 0x7],
+        DYNASTY_NAME[(pid >> (KIND_BITS + SEQ_BITS)) & ((1 << DYN_BITS) - 1)],
+        KIND_NAME[(pid >> SEQ_BITS) & ((1 << KIND_BITS) - 1)],
         pid & SEQ_MAX,
     )
 
