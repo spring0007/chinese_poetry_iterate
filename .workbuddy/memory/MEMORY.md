@@ -62,13 +62,23 @@
 - 千家诗并入记录：2026-10-17 将 `蒙学/qianjiashi.json`（219 条/展开组诗后 226 首）与主库比对，222 首已收录（多为异题/异撰/异文），仅 4 首补录：杜牧《清明》、赵嘏《闻笛》（→poet.tang.57000）、王中《干戈》（→poet.song.254000）、朱权《送天师》（→明/poet.ming.0），tags=[诗体, "千家诗"]。匹配链：全文精确→跨作者前8字→同作者模糊≥0.70→同题+相似度，另有人工甄别覆盖（王维《送朱大入秦》实为孟浩然同题诗、王淇《上元应制》实为王珪《恭和御制上元观灯》，均不重复添加）。**2026-10-19 该文件与 `tangshisanbaishou.json` 已删除**（逐首核对：千家诗 226/226、唐诗三百首 320/320 正文均已存在于全唐诗/水墨唐诗，仅存异文差异）；原件用 `git show HEAD:蒙学/qianjiashi.json` 可取回。
 - 注意：**loader/datas.json 没有 明 数据集**，明库改动暂不进 DB；tangsong 数据集按文件名 glob 自动纳入新分片。
 
+## 改正文 → uid 必变 → 必须 remap（2026-10-29，重要）
+- `uid = uuid5(dynasty, author, title, body)`（归一后）。**任何动 author/title/正文的清理都会改 uid**，连带 `rank/heat-scores.json`（键=uid）与 `poetry-pipeline/extras/*.jsonl`（`"i"`=uid）失配。固定流程：改源数据 → `build.py` → `remap_uid.py --baseline <旧库> --target dist/poetry.db --apply` → 再 `build.py` → `verify_db.py`。
+- remap 规则：按「同作者同题 → 仅同题（覆盖作者被规范化，如「宣宗皇帝李忱」→「李忱」）」两级候选，相似度 ≥0.90 且唯一最优；自动备份 + 出 `backups/remap-report-*.json` 审计清单。
+- **删正文元素的脚本必须同步修逗号**，否则 JSON 直接坏：数组末项留尾逗号、相邻字符串缺逗号。10-29 的提交 `c4b8910` 就是漏了这步（2 个分片、3 处）。
+- 清洗工具 `clean_punct_paras.py`：删孤立纯标点段（`）。`/`。`/`）`/空串），必须同时支持三种形态——多行块、单行块 `"paragraphs": ["长句"],`、元素与 `]` 同行 `"…"],`；块内空行要原位置保留。
+- **既有 bug（未修）**：`build.py:_attach_heat_json` 用**重算 make_uid** 挂接，heat 键却按库 `p.uid` 写。佚名诗（`author_uid=''`）生成 uid 时 author 是「佚名」、挂接时置空 → 4,157 首（1.19%）两端算不出同一 uuid5，**热度从来没挂上**（佚名唐诗约 1,835 首）。
+- `heat-scores.json` 格式：**CRLF + `indent=0` + 严格字典序 + 末尾 CRLF**。用 `indent=2` 重写会让 329,202 行全部重排。正确复现：`json.dumps(dict(sorted(d.items())), ensure_ascii=False, indent=0).replace("\n","\r\n") + "\r\n"`。
+- `extras/*.jsonl`：CRLF 单行紧凑 JSON，逐行替换 `'"i":"<uid>"'` 片段，不要重新序列化。
+
 ## 备份位置（回滚用）
 - `poetry-pipeline/dist/poetry.db.bak-20261017-174715`：v2.0 分级同步前的主库（纯热度分 + v1.0 档位分）。
 - `rank/author-heat-scores.json.bak-20261017-174715`：v2.0 同步前的热度 JSON（v1.0 档位分，13,062 条）。
 - `poetry-pipeline/dist/poetry.db.bak-20261017-171313`：v1.0 分级同步前的主库（纯热度分）。
 - `rank/author-heat-scores.json.bak-20261017-171313`：v1.0 同步前的热度 JSON（13,056 条纯热度分；v2.0 的 apply 会拿它交叉比对 poems 是否被外部改动）。
 - **`dist/backups/` 整个目录已于 2026-10-20 10:40 前后意外消失**（内含 `tangsong-before-clean-20261019.tar.gz`、`empty-body-purge-20261019.tar.gz`、`rank-raw-20261016.tar.gz` 与当天新建的 `poetry-3.7-before-author-dynasty-20261020.db`）。原因未查明：同一时间窗内 `poetry-pipeline/external/`（git 跟踪）也被删，已用 `git checkout` 恢复。**结论：不要把唯一备份放在 `dist/` 下**——它是构建输出目录，多次被整体清理。源语料（全唐诗/宋词等）受 git 保护，风险可控；`rank-raw-20261016.tar.gz`（10-16 前的旧分数据）已无副本。
-- 兜底：`dist/poetry.db` 被 shim 删除时会落在回收站 `E:\$RECYCLE.BIN\S-1-5-21-1100796799-...\`（`$R*.db`），可按大小找回。
+- 兜底：`dist/poetry.db` 被 shim 删除时会落在回收站 `E:\$RECYCLE.BIN\S-1-5-21-1100796799-...\`（`$R*.db`），可按大小找回。**2026-10-29 正是靠这个从回收站捞回了 10-20 库**（`$RIPF1E4.db` 337 MB），现存为 `backups/poetry-3.7-20261020-baseline.db`。
+- **新备份目录：项目根 `backups/`（已加 .gitignore，519 MB）**，存放：10-20 基线库、`heat-scores-before-remap-*.json`、`extras-before-remap-*/`、`remap-report-*.json`、修复前的坏分片。以后不要再往 `dist/` 下放唯一备份。
 - rank/ 为 git 跟踪目录，删除的原始文件可用 `git checkout -- rank/` 恢复。
 
 ## 御定全唐詩 处理约定（2026-10-19 起）

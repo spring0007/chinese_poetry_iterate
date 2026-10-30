@@ -19,3 +19,6 @@ reconcile_gui.log
 zhconv_*.log
 poetry-pipeline/xcheck/*.log
 poetry-pipeline/xcheck/html/
+
+# 本地备份（构建产物与一次性回滚点，体积大，不进仓）
+backups/

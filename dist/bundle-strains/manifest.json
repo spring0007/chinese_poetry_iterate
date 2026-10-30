@@ -1,7 +1,7 @@
 {
   "schema_version": "3.7",
   "package": "strains",
-  "built_at": "2026-10-29T20:12:00",
+  "built_at": "2026-10-29T20:28:29",
   "compression": "zstd-12",
   "fields": [
     {
